@@ -50,7 +50,7 @@ export interface Answer {
   updated_at: string;
 }
 
-export interface QuestionVote {
+interface QuestionVote {
   id: string;
   question_id: string;
   user_id: string;
@@ -58,7 +58,7 @@ export interface QuestionVote {
   created_at: string;
 }
 
-export interface AnswerVote {
+interface AnswerVote {
   id: string;
   answer_id: string;
   user_id: string;
@@ -66,7 +66,7 @@ export interface AnswerVote {
   created_at: string;
 }
 
-export interface CreateQuestionData {
+interface CreateQuestionData {
   title: string;
   content: string;
   category_id?: string;
@@ -75,7 +75,7 @@ export interface CreateQuestionData {
   meta_description?: string;
 }
 
-export interface CreateAnswerData {
+interface CreateAnswerData {
   content: string;
   question_id: string;
 }

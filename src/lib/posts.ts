@@ -28,12 +28,12 @@ export interface CreatePostData {
   };
 }
 
-export interface UpdatePostData extends Partial<CreatePostData> {
+interface UpdatePostData extends Partial<CreatePostData> {
   id: string;
 }
 
 // Upload image to Supabase storage
-export const uploadPostImage = async (file: File, postId: string): Promise<string | null> => {
+const uploadPostImage = async (file: File, postId: string): Promise<string | null> => {
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${postId}-${Date.now()}.${fileExt}`;
@@ -64,7 +64,7 @@ export const uploadPostImage = async (file: File, postId: string): Promise<strin
 };
 
 // Delete image from storage
-export const deletePostImage = async (imageUrl: string): Promise<boolean> => {
+const deletePostImage = async (imageUrl: string): Promise<boolean> => {
   try {
     // Extract file path from URL
     const urlParts = imageUrl.split('/');
@@ -166,7 +166,7 @@ const _getPosts = async (language: string = 'uz', options?: {
       .select(`
         *,
         author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-        category:categories!posts_category_id_fkey(id, name, slug, color),
+        category:categories!posts_category_id_fkey(id, name, slug),
         translations:post_translations(*)
       `)
       .order('created_at', { ascending: false });
@@ -282,7 +282,7 @@ const _getPostBySlug = async (slug: string, language: string = 'uz'): Promise<{ 
         post:posts(
           *,
           author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-          category:categories!posts_category_id_fkey(id, name, slug, color)
+          category:categories!posts_category_id_fkey(id, name, slug)
         )
       `)
       .eq('slug', slug)
@@ -296,7 +296,7 @@ const _getPostBySlug = async (slug: string, language: string = 'uz'): Promise<{ 
         .select(`
           *,
           author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-          category:categories!posts_category_id_fkey(id, name, slug, color),
+          category:categories!posts_category_id_fkey(id, name, slug),
           translations:post_translations(*)
         `)
         .eq('slug', slug)
@@ -388,7 +388,7 @@ const _getPostById = async (id: string, language: string = 'uz'): Promise<{ data
       .select(`
         *,
         author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-        category:categories!posts_category_id_fkey(id, name, slug, color),
+        category:categories!posts_category_id_fkey(id, name, slug),
         translations:post_translations(*)
       `)
       .eq('id', id)
@@ -572,7 +572,7 @@ export const createPost = async (postData: CreatePostData): Promise<{ data: Post
           .select(`
             *,
             author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-            category:categories!posts_category_id_fkey(id, name, slug, color),
+            category:categories!posts_category_id_fkey(id, name, slug),
             translations:post_translations(*)
           `)
           .single();
@@ -591,7 +591,7 @@ export const createPost = async (postData: CreatePostData): Promise<{ data: Post
       .select(`
         *,
         author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-        category:categories!posts_category_id_fkey(id, name, slug, color),
+        category:categories!posts_category_id_fkey(id, name, slug),
         translations:post_translations(*)
       `)
       .eq('id', post.id)
@@ -630,7 +630,7 @@ export const updatePost = async (postData: UpdatePostData): Promise<{ data: Post
       .select(`
         *,
         author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-        category:categories!posts_category_id_fkey(id, name, slug, color)
+        category:categories!posts_category_id_fkey(id, name, slug)
       `)
       .single();
 
@@ -681,7 +681,7 @@ export const searchPosts = async (query: string, options?: {
       .select(`
         *,
         author:profiles!posts_author_id_fkey(id, full_name, role, avatar_url),
-        category:categories!posts_category_id_fkey(id, name, slug, color)
+        category:categories!posts_category_id_fkey(id, name, slug)
       `)
       .or(`title.ilike.%${query}%,content.ilike.%${query}%,excerpt.ilike.%${query}%`)
       .order('created_at', { ascending: false });
@@ -726,7 +726,6 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '1',
         name: 'Artrit',
         slug: 'artrit',
-        color: '#3B82F6',
         created_at: '2024-01-01'
       },
       tags: ['artrit', 'revmatik kasallik', 'davolash'],
@@ -760,7 +759,6 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '2',
         name: 'Artroz',
         slug: 'artroz',
-        color: '#10B981',
         created_at: '2024-01-01'
       },
       tags: ['artroz', 'belgilar', 'profilaktika'],
@@ -793,7 +791,6 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '3',
         name: 'Jismoniy tarbiya',
         slug: 'jismoniy-tarbiya',
-        color: '#F59E0B',
         created_at: '2024-01-01'
       },
       tags: ['mashqlar', 'og\'riq', 'reabilitatsiya'],

@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'moderator' | 'doctor' | 'patient' | 'guest';
+type UserRole = 'admin' | 'moderator' | 'doctor' | 'patient' | 'guest';
 
 export interface User {
   id: string;
@@ -50,7 +50,7 @@ export interface PostTranslation {
   updated_at: string;
 }
 
-export interface Category {
+interface Category {
   id: string;
   name: string;
   slug: string;

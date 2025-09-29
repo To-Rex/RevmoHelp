@@ -1,7 +1,7 @@
 import { supabase, isSupabaseAvailable } from './supabase';
 
 // Upload avatar image to Supabase storage
-export const uploadDoctorAvatar = async (file: File, doctorId: string): Promise<string | null> => {
+const uploadDoctorAvatar = async (file: File, doctorId: string): Promise<string | null> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       console.log('⚠️ Supabase not available for avatar upload');
@@ -45,7 +45,7 @@ export const uploadDoctorAvatar = async (file: File, doctorId: string): Promise<
 };
 
 // Delete avatar from storage
-export const deleteDoctorAvatar = async (avatarUrl: string): Promise<boolean> => {
+const deleteDoctorAvatar = async (avatarUrl: string): Promise<boolean> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return true; // Fallback
@@ -98,7 +98,7 @@ export interface DoctorProfile {
   current_language?: string;
 }
 
-export interface DoctorProfileTranslation {
+interface DoctorProfileTranslation {
   id: string;
   doctor_profile_id: string;
   language: 'uz' | 'ru' | 'en';

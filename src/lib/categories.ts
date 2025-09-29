@@ -17,7 +17,7 @@ export interface CreateCategoryData {
   color: string;
 }
 
-export interface UpdateCategoryData extends Partial<CreateCategoryData> {
+interface UpdateCategoryData extends Partial<CreateCategoryData> {
   id: string;
 }
 
