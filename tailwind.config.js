@@ -1,0 +1,105 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#f5f6f5',
+          100: '#CAD8D6',
+          200: '#B8C9C5',
+          300: '#A6BAB4',
+          400: '#94ABA3',
+          500: '#90978C',
+          600: '#7A8177',
+          700: '#6B7268',
+          800: '#5C6359',
+          900: '#4D544A',
+        },
+        secondary: {
+          50: '#f5f6f5',
+          100: '#e8eae8',
+          200: '#d1d5d1',
+          300: '#b0b6b0',
+          400: '#90978C',
+          500: '#90978C',
+          600: '#7A8177',
+          700: '#6B7268',
+          800: '#5C6359',
+          900: '#3E433B',
+        },
+        accent: {
+          50: '#f5f6f5',
+          100: '#CAD8D6',
+          200: '#B8C9C5',
+          300: '#A6BAB4',
+          400: '#94ABA3',
+          500: '#90978C',
+          600: '#7A8177',
+          700: '#6B7268',
+          800: '#5C6359',
+          900: '#4D544A',
+        },
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+        },
+        error: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+        },
+      },
+      fontFamily: {
+        sans: [
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif',
+        ],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      },
+      boxShadow: {
+        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'large': '0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.6s ease-out forwards',
+        'slide-up': 'slideUp 0.8s ease-out forwards',
+        'float': 'float 6s ease-in-out infinite',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      screens: {
+        'xs': '475px',
+        '3xl': '1600px',
+      },
+    },
+  },
+  plugins: [],
+};
