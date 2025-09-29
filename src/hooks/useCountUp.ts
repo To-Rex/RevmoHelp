@@ -72,3 +72,4 @@ export const useCountUp = ({
   return { count, ref: elementRef };
 };
 
+export default useCountUp;

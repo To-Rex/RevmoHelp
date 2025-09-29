@@ -28,7 +28,7 @@ export interface PatientStory {
   current_language?: string;
 }
 
-interface PatientStoryTranslation {
+export interface PatientStoryTranslation {
   id: string;
   story_id: string;
   language: 'uz' | 'ru' | 'en';
@@ -87,7 +87,7 @@ export interface CreatePatientStoryData {
   };
 }
 
-interface UpdatePatientStoryData extends Partial<CreatePatientStoryData> {
+export interface UpdatePatientStoryData extends Partial<CreatePatientStoryData> {
   id: string;
 }
 
@@ -136,7 +136,7 @@ export const uploadStoryImage = async (file: File, storyId: string): Promise<str
 };
 
 // Delete image from storage
-const deleteStoryImage = async (imageUrl: string): Promise<boolean> => {
+export const deleteStoryImage = async (imageUrl: string): Promise<boolean> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return true; // Fallback

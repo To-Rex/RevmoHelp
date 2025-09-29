@@ -14,7 +14,7 @@ export interface DoctorReview {
   updated_at: string;
 }
 
-interface DoctorRatingStats {
+export interface DoctorRatingStats {
   averageRating: number;
   totalReviews: number;
   ratingDistribution: {
