@@ -51,7 +51,7 @@ export const getGlobalColorScheme = async (): Promise<{ data: GlobalColorScheme 
       .select('setting_value')
       .eq('setting_key', 'color_scheme')
       .eq('active', true)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.log('❌ Supabase error loading global color scheme:', error);
