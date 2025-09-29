@@ -13,7 +13,7 @@ export interface GlobalColorScheme {
   appliedBy: string;
 }
 
-interface GlobalSetting {
+export interface GlobalSetting {
   id: string;
   setting_key: string;
   setting_value: any;
@@ -51,7 +51,7 @@ export const getGlobalColorScheme = async (): Promise<{ data: GlobalColorScheme 
       .select('setting_value')
       .eq('setting_key', 'color_scheme')
       .eq('active', true)
-      .maybeSingle();
+      .single();
 
     if (error) {
       console.log('❌ Supabase error loading global color scheme:', error);
@@ -166,7 +166,7 @@ export const subscribeToGlobalSettings = (callback: (colorScheme: GlobalColorSch
 };
 
 // Get all global settings
-const getAllGlobalSettings = async (): Promise<{ data: GlobalSetting[] | null; error: any }> => {
+export const getAllGlobalSettings = async (): Promise<{ data: GlobalSetting[] | null; error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return { data: [], error: null };

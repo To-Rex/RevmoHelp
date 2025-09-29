@@ -5,15 +5,15 @@ import { createClient } from '@supabase/supabase-js';
 // const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 // const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
-const supabaseUrl = 'https://ynintnofgobkalrlvpxb.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluaW50bm9mZ29ia2Fscmx2cHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwNTEyNDIsImV4cCI6MjA3MzYyNzI0Mn0.GUuUCDz2ZzneOEd04cWLSYbJ0O3sSZMEjX7iBpHtnhg';
-const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluaW50bm9mZ29ia2Fscmx2cHhiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODA1MTI0MiwiZXhwIjoyMDczNjI3MjQyfQ.T3QeRm8xiuBjL8egM-bdH-fTAHiQ33Tg1nLzIOVi-Ow';
+// const supabaseUrl = 'https://ynintnofgobkalrlvpxb.supabase.co';
+// const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluaW50bm9mZ29ia2Fscmx2cHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwNTEyNDIsImV4cCI6MjA3MzYyNzI0Mn0.GUuUCDz2ZzneOEd04cWLSYbJ0O3sSZMEjX7iBpHtnhg';
+// const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluaW50bm9mZ29ia2Fscmx2cHhiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODA1MTI0MiwiZXhwIjoyMDczNjI3MjQyfQ.T3QeRm8xiuBjL8egM-bdH-fTAHiQ33Tg1nLzIOVi-Ow';
 
 
 
-// const supabaseUrl = 'https://rgcorbmtpltsqmfnmwrp.supabase.co';
-// const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY29yYm10cGx0c3FtZm5td3JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwMzkyMjgsImV4cCI6MjA3NDYxNTIyOH0.O-lRSL7t7qADXPqsOBQVEL9jYz0sey3ckbwUVtin_Bo';
-// const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY29yYm10cGx0c3FtZm5td3JwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTAzOTIyOCwiZXhwIjoyMDc0NjE1MjI4fQ.y_MLOYjCuAHyTDMVum2yRAmDo7-FRRFkSab__VsjKU8';
+const supabaseUrl = 'https://rgcorbmtpltsqmfnmwrp.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY29yYm10cGx0c3FtZm5td3JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwMzkyMjgsImV4cCI6MjA3NDYxNTIyOH0.O-lRSL7t7qADXPqsOBQVEL9jYz0sey3ckbwUVtin_Bo';
+const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY29yYm10cGx0c3FtZm5td3JwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTAzOTIyOCwiZXhwIjoyMDc0NjE1MjI4fQ.y_MLOYjCuAHyTDMVum2yRAmDo7-FRRFkSab__VsjKU8';
 
 
 const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
@@ -57,7 +57,7 @@ export const isSupabaseAvailable = () => {
 };
 
 // Test Supabase connection
-const testSupabaseConnection = async (): Promise<{ success: boolean; error?: string }> => {
+export const testSupabaseConnection = async (): Promise<{ success: boolean; error?: string }> => {
   if (!isSupabaseConfigured || !supabase) {
     return { success: false, error: 'Supabase not configured' };
   }

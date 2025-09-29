@@ -66,14 +66,14 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
   // Mock data for demonstration
   const mockPosts: Post[] = [
     {
-      id: '550e8400-e29b-41d4-a716-446655440001',
+      id: '1',
       title: 'Artrit kasalligi: belgilar, sabablari va davolash usullari',
       excerpt: 'Artrit kasalligi haqida to\'liq ma\'lumot, uning turlari, belgilari va zamonaviy davolash usullari.',
       slug: 'artrit-kasalligi-belgilar-sabablari-davolash',
       featured_image_url: 'https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=800',
       author_id: '1',
       author: {
-        id: '550e8400-e29b-41d4-a716-446655440001',
+        id: '1',
         email: 'doctor1@example.com',
         full_name: 'Dr. Aziz Karimov',
         role: 'doctor',
@@ -82,7 +82,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       },
       category_id: '1',
       category: {
-        id: '550e8400-e29b-41d4-a716-446655440001',
+        id: '1',
         name: 'Artrit',
         slug: 'artrit',
         color: '#3B82F6',
@@ -99,7 +99,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       meta_description: ''
     },
     {
-      id: '550e8400-e29b-41d4-a716-446655440002',
+      id: '2',
       title: 'Osteoartroz: erta belgilarni qanday aniqlash mumkin',
       excerpt: 'Osteoartroz kasalligining erta belgilari va oldini olish choralari haqida batafsil ma\'lumot.',
       slug: 'osteoartroz-erta-belgilar',
@@ -107,7 +107,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       youtube_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       author_id: '2',
       author: {
-        id: '550e8400-e29b-41d4-a716-446655440002',
+        id: '2',
         email: 'doctor2@example.com',
         full_name: 'Dr. Bobur Toshmatov',
         role: 'doctor',
@@ -116,7 +116,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       },
       category_id: '2',
       category: {
-        id: '550e8400-e29b-41d4-a716-446655440002',
+        id: '2',
         name: 'Artroz',
         slug: 'artroz',
         color: '#10B981',
@@ -133,14 +133,14 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       meta_description: ''
     },
     {
-      id: '550e8400-e29b-41d4-a716-446655440003',
+      id: '3',
       title: 'Qo\'shma og\'riqlarini kamaytirish uchun mashqlar',
       excerpt: 'Revmatik kasalliklardan aziyat chekayotgan bemorlar uchun maxsus jismoniy mashqlar kompleksi.',
       slug: 'qoshma-ogriqlarini-kamaytirish-mashqlar',
       featured_image_url: 'https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?auto=compress&cs=tinysrgb&w=800',
       author_id: '3',
       author: {
-        id: '550e8400-e29b-41d4-a716-446655440003',
+        id: '3',
         email: 'doctor3@example.com',
         full_name: 'Dr. Nilufar Abdullayeva',
         role: 'doctor',
@@ -149,7 +149,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       },
       category_id: '3',
       category: {
-        id: '550e8400-e29b-41d4-a716-446655440003',
+        id: '3',
         name: 'Jismoniy tarbiya',
         slug: 'jismoniy-tarbiya',
         color: '#F59E0B',

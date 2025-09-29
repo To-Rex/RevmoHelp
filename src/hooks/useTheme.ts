@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-type Theme = 'light';
+export type Theme = 'light';
 
 export const useTheme = () => {
   const [theme] = useState<Theme>('light');

@@ -1,14 +1,14 @@
 // Comprehensive Caching System for Revmoinfo
 // Provides intelligent caching with TTL, invalidation, and memory management
 
-interface CacheItem<T> {
+export interface CacheItem<T> {
   data: T;
   timestamp: number;
   ttl: number; // Time to live in milliseconds
   key: string;
 }
 
-interface CacheConfig {
+export interface CacheConfig {
   defaultTTL: number;
   maxSize: number;
   enableLogging: boolean;
@@ -226,7 +226,7 @@ export const dataCache = new CacheManager({
   enableLogging: true
 });
 
-const imageCache = new CacheManager({
+export const imageCache = new CacheManager({
   defaultTTL: 30 * 60 * 1000, // 30 minutes for images
   maxSize: 200,
   enableLogging: false
@@ -405,4 +405,4 @@ setTimeout(() => {
 }, 1000);
 
 // Export cache instances for direct use
-;
+export { CacheManager };

@@ -28,7 +28,7 @@ export interface CreateCommentData {
   parent_id?: string; // For replies
 }
 
-interface UpdateCommentData {
+export interface UpdateCommentData {
   id: string;
   content: string;
 }
@@ -156,7 +156,7 @@ export const createComment = async (commentData: CreateCommentData): Promise<{ d
 };
 
 // Update comment
-const updateComment = async (commentData: UpdateCommentData): Promise<{ data: Comment | null; error: any }> => {
+export const updateComment = async (commentData: UpdateCommentData): Promise<{ data: Comment | null; error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return { data: null, error: { message: 'Supabase not available' } };
@@ -182,7 +182,7 @@ const updateComment = async (commentData: UpdateCommentData): Promise<{ data: Co
 };
 
 // Delete comment
-const deleteComment = async (commentId: string): Promise<{ error: any }> => {
+export const deleteComment = async (commentId: string): Promise<{ error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return { error: { message: 'Supabase not available' } };
@@ -200,7 +200,7 @@ const deleteComment = async (commentId: string): Promise<{ error: any }> => {
 };
 
 // Approve comment (admin only)
-const approveComment = async (commentId: string): Promise<{ error: any }> => {
+export const approveComment = async (commentId: string): Promise<{ error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return { error: { message: 'Supabase not available' } };
@@ -218,7 +218,7 @@ const approveComment = async (commentId: string): Promise<{ error: any }> => {
 };
 
 // Get all comments for admin
-const getAllComments = async (): Promise<{ data: Comment[] | null; error: any }> => {
+export const getAllComments = async (): Promise<{ data: Comment[] | null; error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
       return { data: [], error: null };

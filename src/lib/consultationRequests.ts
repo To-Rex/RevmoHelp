@@ -13,7 +13,7 @@ export interface ConsultationRequest {
   updated_at: string;
 }
 
-interface UpdateConsultationRequestData {
+export interface UpdateConsultationRequestData {
   id: string;
   status?: 'pending' | 'contacted' | 'completed' | 'cancelled';
   comments?: string;

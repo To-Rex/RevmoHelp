@@ -22,7 +22,7 @@ export interface Doctor {
   current_language?: string;
 }
 
-interface DoctorTranslation {
+export interface DoctorTranslation {
   id: string;
   doctor_id: string;
   language: 'uz' | 'ru' | 'en';
@@ -52,7 +52,7 @@ export interface CreateDoctorData {
   };
 }
 
-interface UpdateDoctorData extends Partial<CreateDoctorData> {
+export interface UpdateDoctorData extends Partial<CreateDoctorData> {
   id: string;
 }
 
