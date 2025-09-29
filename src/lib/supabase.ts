@@ -57,7 +57,7 @@ export const isSupabaseAvailable = () => {
 };
 
 // Test Supabase connection
-export const testSupabaseConnection = async (): Promise<{ success: boolean; error?: string }> => {
+const testSupabaseConnection = async (): Promise<{ success: boolean; error?: string }> => {
   if (!isSupabaseConfigured || !supabase) {
     return { success: false, error: 'Supabase not configured' };
   }

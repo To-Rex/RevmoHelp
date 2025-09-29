@@ -8,7 +8,7 @@
 import { getGlobalColorScheme, updateGlobalColorScheme, subscribeToGlobalSettings } from '../lib/globalSettings';
 import type { GlobalColorScheme } from '../lib/globalSettings';
 
-export type ColorScheme = 'default' | 'blue' | 'green' | 'purple' | 'orange' | 'teal' | 'red';
+type ColorScheme = 'default' | 'blue' | 'green' | 'purple' | 'orange' | 'teal' | 'red';
 
 export interface CustomColorScheme {
   id: string;
@@ -23,7 +23,7 @@ export interface CustomColorScheme {
   createdAt: string;
 }
 
-export interface ColorSchemeConfig {
+interface ColorSchemeConfig {
   name: string;
   primary: string;
   primaryHover: string;
@@ -34,7 +34,7 @@ export interface ColorSchemeConfig {
   isCustom?: boolean;
 }
 
-export const colorSchemes: Record<ColorScheme, ColorSchemeConfig> = {
+const colorSchemes: Record<ColorScheme, ColorSchemeConfig> = {
   default: {
     name: 'Revmohelp (Default)',
     primary: '#90978C',
@@ -103,7 +103,7 @@ export const colorSchemes: Record<ColorScheme, ColorSchemeConfig> = {
 /**
  * Get custom color schemes from localStorage
  */
-export const getCustomColorSchemes = (): Record<string, CustomColorScheme> => {
+const getCustomColorSchemes = (): Record<string, CustomColorScheme> => {
   try {
     const saved = localStorage.getItem('revmoinfo-custom-color-schemes');
     return saved ? JSON.parse(saved) : {};
@@ -195,7 +195,7 @@ export const generateColorVariants = (primaryColor: string): { hover: string; ac
 /**
  * Apply colors directly to DOM from GlobalColorScheme
  */
-export const applyGlobalColorScheme = (colorScheme: GlobalColorScheme): void => {
+const applyGlobalColorScheme = (colorScheme: GlobalColorScheme): void => {
   console.log(`🎨 Applying global color scheme: ${colorScheme.name}`);
   
   const root = document.documentElement;
@@ -338,7 +338,7 @@ export const loadGlobalColorScheme = async (): Promise<void> => {
 /**
  * Initialize global color scheme subscription
  */
-export const initializeGlobalColorScheme = (): (() => void) | null => {
+const initializeGlobalColorScheme = (): (() => void) | null => {
   // Load initial global color scheme
   loadGlobalColorScheme();
   

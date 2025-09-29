@@ -22,7 +22,7 @@ export interface Disease {
   current_language?: string;
 }
 
-export interface DiseaseTranslation {
+interface DiseaseTranslation {
   id: string;
   disease_id: string;
   language: 'uz' | 'ru' | 'en';
@@ -66,7 +66,7 @@ export interface CreateDiseaseData {
   };
 }
 
-export interface UpdateDiseaseData extends Partial<CreateDiseaseData> {
+interface UpdateDiseaseData extends Partial<CreateDiseaseData> {
   id: string;
 }
 

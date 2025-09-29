@@ -33,7 +33,7 @@ export interface CreatePartnerData {
   order_index?: number;
 }
 
-export interface UpdatePartnerData extends Partial<CreatePartnerData> {
+interface UpdatePartnerData extends Partial<CreatePartnerData> {
   id: string;
 }
 

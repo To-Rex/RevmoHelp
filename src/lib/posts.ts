@@ -28,12 +28,12 @@ export interface CreatePostData {
   };
 }
 
-export interface UpdatePostData extends Partial<CreatePostData> {
+interface UpdatePostData extends Partial<CreatePostData> {
   id: string;
 }
 
 // Upload image to Supabase storage
-export const uploadPostImage = async (file: File, postId: string): Promise<string | null> => {
+const uploadPostImage = async (file: File, postId: string): Promise<string | null> => {
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${postId}-${Date.now()}.${fileExt}`;
@@ -64,7 +64,7 @@ export const uploadPostImage = async (file: File, postId: string): Promise<strin
 };
 
 // Delete image from storage
-export const deletePostImage = async (imageUrl: string): Promise<boolean> => {
+const deletePostImage = async (imageUrl: string): Promise<boolean> => {
   try {
     // Extract file path from URL
     const urlParts = imageUrl.split('/');
