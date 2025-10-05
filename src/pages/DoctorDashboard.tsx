@@ -169,7 +169,7 @@ const DoctorDashboard: React.FC = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
               <FileText size={24} className="text-blue-600" />
             </div>
@@ -177,7 +177,7 @@ const DoctorDashboard: React.FC = () => {
             <div className="theme-text-secondary">Jami maqolalar</div>
           </div>
           
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={24} className="text-green-600" />
             </div>
@@ -185,7 +185,7 @@ const DoctorDashboard: React.FC = () => {
             <div className="theme-text-secondary">Nashr etilgan</div>
           </div>
           
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
             <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Eye size={24} className="text-purple-600" />
             </div>
@@ -193,7 +193,7 @@ const DoctorDashboard: React.FC = () => {
             <div className="theme-text-secondary">Ko'rishlar</div>
           </div>
           
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center">
             <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Star size={24} className="text-yellow-600" />
             </div>
@@ -206,7 +206,7 @@ const DoctorDashboard: React.FC = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Quick Actions */}
-            <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
               <h2 className="text-xl font-bold theme-text mb-4">Tezkor Amallar</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link
@@ -223,25 +223,11 @@ const DoctorDashboard: React.FC = () => {
                   <Edit size={20} />
                   <span className="font-medium">Profilni Tahrirlash</span>
                 </Link>
-                <Link
-                  to="/doctor/appointments"
-                  className="flex items-center space-x-3 p-4 bg-purple-50 text-purple-700 rounded-xl hover:bg-purple-100 transition-colors duration-200"
-                >
-                  <Calendar size={20} />
-                  <span className="font-medium">Uchrashuvlar</span>
-                </Link>
-                <Link
-                  to="/doctor/messages"
-                  className="flex items-center space-x-3 p-4 bg-orange-50 text-orange-700 rounded-xl hover:bg-orange-100 transition-colors duration-200"
-                >
-                  <MessageSquare size={20} />
-                  <span className="font-medium">Xabarlar</span>
-                </Link>
               </div>
             </div>
 
             {/* Recent Posts */}
-            <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold theme-text">So'nggi Maqolalarim</h2>
                 <Link
@@ -255,7 +241,7 @@ const DoctorDashboard: React.FC = () => {
               {posts.length > 0 ? (
                 <div className="space-y-4">
                   {posts.slice(0, 3).map((post) => (
-                    <div key={post.id} className="flex items-center justify-between p-4 theme-bg-secondary rounded-xl">
+                    <div key={post.id} className="flex items-center justify-between p-4 bg-white rounded-xl theme-border border">
                       <div className="flex-1">
                         <h3 className="font-semibold theme-text mb-1 line-clamp-1">{post.title}</h3>
                         <div className="flex items-center space-x-4 text-sm theme-text-muted">
@@ -302,7 +288,7 @@ const DoctorDashboard: React.FC = () => {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Profile Summary */}
-            <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
               <h3 className="text-lg font-bold theme-text mb-4">Profil Xulasasi</h3>
               
               <div className="text-center mb-6">
@@ -353,7 +339,7 @@ const DoctorDashboard: React.FC = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
               <h3 className="text-lg font-bold theme-text mb-4">Aloqa Ma'lumotlari</h3>
               
               <div className="space-y-3">
@@ -377,7 +363,7 @@ const DoctorDashboard: React.FC = () => {
             </div>
 
             {/* Recent Activity */}
-            <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
               <h3 className="text-lg font-bold theme-text mb-4">So'nggi Faollik</h3>
               
               <div className="space-y-3">

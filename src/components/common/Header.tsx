@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, User, Stethoscope, LogOut, Settings } from 'lucide-react';
@@ -10,6 +10,24 @@ import NotificationBell from './NotificationBell';
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
+
   const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -130,7 +148,7 @@ const Header: React.FC = () => {
                 </button>
 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 theme-bg rounded-lg theme-shadow-lg theme-border border py-2">
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg theme-shadow-lg theme-border border py-2" ref={menuRef}>
                     <div className="px-4 py-3 theme-border border-b">
                       <div className="text-sm font-semibold theme-text">{user.full_name}</div>
                       <div className="text-xs theme-text-muted">{user.email}</div>

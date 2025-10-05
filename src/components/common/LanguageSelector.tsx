@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown } from 'lucide-react';
 import { useLanguageRouting } from '../../hooks/useLanguageRouting';
@@ -12,6 +12,24 @@ const languages: Language[] = [
 
 const LanguageSelector: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   const { i18n } = useTranslation();
   const { changeLanguage } = useLanguageRouting();
 
@@ -34,7 +52,7 @@ const LanguageSelector: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 theme-bg rounded-lg theme-shadow-lg theme-border border py-2 z-50">
+        <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg theme-shadow-lg theme-border border py-2 z-50" ref={menuRef}>
           {languages.map((language) => (
             <button
               key={language.code}

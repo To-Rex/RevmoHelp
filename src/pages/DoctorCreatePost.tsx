@@ -454,7 +454,7 @@ const DoctorCreatePost: React.FC = () => {
             <button
               onClick={() => handleSubmit(true)}
               disabled={isSubmitting}
-              className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50"
+              className="flex items-center space-x-2 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200 disabled:opacity-50"
             >
               <Save size={16} />
               <span>Qoralama</span>
@@ -492,7 +492,7 @@ const DoctorCreatePost: React.FC = () => {
           {/* Main Content */}
           <div className="xl:col-span-3 space-y-6">
             {/* Title */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-3">
                 Maqola Sarlavhasi
               </label>
@@ -501,12 +501,12 @@ const DoctorCreatePost: React.FC = () => {
                 placeholder="Maqola sarlavhasini kiriting"
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
-                className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-lg font-medium"
+                className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text text-lg font-medium"
               />
             </div>
 
             {/* Slug */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-2">
                 URL Slug
               </label>
@@ -516,13 +516,13 @@ const DoctorCreatePost: React.FC = () => {
                   type="text"
                   value={formData.slug}
                   onChange={(e) => handleInputChange('slug', e.target.value)}
-                  className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
               </div>
             </div>
 
             {/* Post Type */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-4">
                 Maqola Turi
               </label>
@@ -551,7 +551,7 @@ const DoctorCreatePost: React.FC = () => {
 
             {/* Media Upload */}
             {(formData.post_type === 'image' || formData.post_type === 'video') && (
-              <div className="theme-bg rounded-lg theme-shadow theme-border border p-6 animate-fade-in">
+              <div className="bg-white rounded-lg theme-shadow theme-border border p-6 animate-fade-in">
                 {formData.post_type === 'image' && (
                   <div>
                     <label className="block text-sm font-medium theme-text-secondary mb-4">
@@ -573,7 +573,7 @@ const DoctorCreatePost: React.FC = () => {
                         </button>
                       </div>
                     ) : (
-                      <label className="flex flex-col items-center justify-center w-full h-48 border-2 theme-border border-dashed rounded-lg cursor-pointer theme-bg-tertiary hover:theme-bg-quaternary transition-colors duration-200">
+                      <label className="flex flex-col items-center justify-center w-full h-48 border-2 theme-border border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-50 transition-colors duration-200">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <Upload className="w-8 h-8 mb-4 theme-text-muted" />
                           <p className="mb-2 text-sm theme-text-secondary">
@@ -604,7 +604,7 @@ const DoctorCreatePost: React.FC = () => {
                       placeholder="https://www.youtube.com/watch?v=..."
                       value={formData.youtube_url || ''}
                       onChange={(e) => handleInputChange('youtube_url', e.target.value)}
-                      className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                      className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                     />
                   </div>
                 )}
@@ -612,13 +612,13 @@ const DoctorCreatePost: React.FC = () => {
             )}
 
             {/* Content Editor */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               {/* Language Tabs */}
               <div className="flex items-center justify-between mb-6">
                 <label className="block text-sm font-medium theme-text-secondary">
                   Maqola Matni
                 </label>
-                <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                <div className="flex space-x-1 bg-white theme-border border rounded-lg p-1">
                   {[
                     { code: 'uz', label: 'O\'zbek', flag: '🇺🇿' },
                     { code: 'ru', label: 'Русский', flag: '🇷🇺' },
@@ -630,7 +630,7 @@ const DoctorCreatePost: React.FC = () => {
                       onClick={() => setActiveLanguageTab(lang.code as 'uz' | 'ru' | 'en')}
                       className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 ${
                         activeLanguageTab === lang.code
-                          ? 'bg-white dark:bg-gray-700 theme-text shadow-sm'
+                          ? 'bg-blue-50 dark:bg-blue-900/20 theme-text shadow-sm'
                           : 'theme-text-secondary hover:theme-text'
                       }`}
                     >
@@ -649,14 +649,14 @@ const DoctorCreatePost: React.FC = () => {
                     placeholder="Maqola sarlavhasi (O'zbek)"
                     value={formData.title}
                     onChange={(e) => handleInputChange('title', e.target.value)}
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text font-semibold"
                   />
                   <textarea
                     rows={12}
                     placeholder="Tibbiy maqola matnini shu yerga yozing... (O'zbek tilida)"
                     value={formData.content}
                     onChange={(e) => handleInputChange('content', e.target.value)}
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   />
                   <div className="text-sm theme-text-muted">
                     {formData.content.length} belgi
@@ -672,7 +672,7 @@ const DoctorCreatePost: React.FC = () => {
                     value={formData.translations.ru.title}
                     onChange={handleTranslationChange}
                     name="title"
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text font-semibold"
                   />
                   <textarea
                     rows={12}
@@ -680,7 +680,7 @@ const DoctorCreatePost: React.FC = () => {
                     value={formData.translations.ru.content}
                     onChange={handleTranslationChange}
                     name="content"
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   />
                   <div className="text-sm theme-text-muted">
                     {formData.translations.ru.content.length} символов
@@ -696,7 +696,7 @@ const DoctorCreatePost: React.FC = () => {
                     value={formData.translations.en.title}
                     onChange={handleTranslationChange}
                     name="title"
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text font-semibold"
                   />
                   <textarea
                     rows={12}
@@ -704,7 +704,7 @@ const DoctorCreatePost: React.FC = () => {
                     value={formData.translations.en.content}
                     onChange={handleTranslationChange}
                     name="content"
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   />
                   <div className="text-sm theme-text-muted">
                     {formData.translations.en.content.length} characters
@@ -714,7 +714,7 @@ const DoctorCreatePost: React.FC = () => {
             </div>
 
             {/* Translation Excerpts */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-4">
                 Qisqacha Mazmun ({activeLanguageTab === 'uz' ? "O'zbek" : activeLanguageTab === 'ru' ? 'Русский' : 'English'})
               </label>
@@ -725,7 +725,7 @@ const DoctorCreatePost: React.FC = () => {
                   placeholder="Maqolaning qisqacha mazmuni (avtomatik yaratiladi)"
                   value={formData.excerpt}
                   onChange={(e) => handleInputChange('excerpt', e.target.value)}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                 />
               )}
 
@@ -736,7 +736,7 @@ const DoctorCreatePost: React.FC = () => {
                   value={formData.translations.ru.excerpt}
                   onChange={handleTranslationChange}
                   name="excerpt"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                 />
               )}
 
@@ -747,13 +747,13 @@ const DoctorCreatePost: React.FC = () => {
                   value={formData.translations.en.excerpt}
                   onChange={handleTranslationChange}
                   name="excerpt"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                 />
               )}
             </div>
 
             {/* SEO for each language */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <h3 className="text-lg font-semibold theme-text mb-4">
                 SEO Sozlamalari ({activeLanguageTab === 'uz' ? "O'zbek" : activeLanguageTab === 'ru' ? 'Русский' : 'English'})
               </h3>
@@ -769,7 +769,7 @@ const DoctorCreatePost: React.FC = () => {
                       placeholder="Qidiruv tizimlari uchun sarlavha"
                       value={formData.meta_title}
                       onChange={(e) => handleInputChange('meta_title', e.target.value)}
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.meta_title.length}/60 belgi
@@ -784,7 +784,7 @@ const DoctorCreatePost: React.FC = () => {
                       placeholder="Qidiruv tizimlari uchun qisqacha tavsif"
                       value={formData.meta_description}
                       onChange={(e) => handleInputChange('meta_description', e.target.value)}
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.meta_description.length}/160 belgi
@@ -800,7 +800,7 @@ const DoctorCreatePost: React.FC = () => {
                         type="text"
                         value={formData.slug}
                         onChange={(e) => handleInputChange('slug', e.target.value)}
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                       />
                     </div>
                   </div>
@@ -819,7 +819,7 @@ const DoctorCreatePost: React.FC = () => {
                       value={formData.translations.ru.meta_title}
                       onChange={handleTranslationChange}
                       name="meta_title"
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.translations.ru.meta_title.length}/60 символов
@@ -835,7 +835,7 @@ const DoctorCreatePost: React.FC = () => {
                       value={formData.translations.ru.meta_description}
                       onChange={handleTranslationChange}
                       name="meta_description"
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.translations.ru.meta_description.length}/160 символов
@@ -852,7 +852,7 @@ const DoctorCreatePost: React.FC = () => {
                         value={formData.translations.ru.slug}
                         onChange={handleTranslationChange}
                         name="slug"
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                       />
                     </div>
                   </div>
@@ -871,7 +871,7 @@ const DoctorCreatePost: React.FC = () => {
                       value={formData.translations.en.meta_title}
                       onChange={handleTranslationChange}
                       name="meta_title"
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.translations.en.meta_title.length}/60 characters
@@ -887,7 +887,7 @@ const DoctorCreatePost: React.FC = () => {
                       value={formData.translations.en.meta_description}
                       onChange={handleTranslationChange}
                       name="meta_description"
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                     />
                     <div className="mt-1 text-xs theme-text-muted">
                       {formData.translations.en.meta_description.length}/160 characters
@@ -904,7 +904,7 @@ const DoctorCreatePost: React.FC = () => {
                         value={formData.translations.en.slug}
                         onChange={handleTranslationChange}
                         name="slug"
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                       />
                     </div>
                   </div>
@@ -913,24 +913,24 @@ const DoctorCreatePost: React.FC = () => {
             </div>
 
             {/* Translation Progress */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <h3 className="text-lg font-semibold theme-text mb-4">Tarjima Holati</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="text-center p-4 theme-bg-secondary rounded-xl">
+                <div className="text-center p-4 bg-white rounded-xl theme-border border">
                   <div className="text-2xl mb-2">🇺🇿</div>
                   <div className="text-sm font-medium theme-text">O'zbek</div>
                   <div className={`text-xs mt-1 ${formData.title && formData.content ? 'text-green-600' : 'theme-text-muted'}`}>
                     {formData.title && formData.content ? 'Tayyor' : 'To\'ldirilmagan'}
                   </div>
                 </div>
-                <div className="text-center p-4 theme-bg-secondary rounded-xl">
+                <div className="text-center p-4 bg-white rounded-xl theme-border border">
                   <div className="text-2xl mb-2">🇷🇺</div>
                   <div className="text-sm font-medium theme-text">Русский</div>
                   <div className={`text-xs mt-1 ${formData.translations.ru.title && formData.translations.ru.content ? 'text-green-600' : 'theme-text-muted'}`}>
                     {formData.translations.ru.title && formData.translations.ru.content ? 'Готово' : 'Не заполнено'}
                   </div>
                 </div>
-                <div className="text-center p-4 theme-bg-secondary rounded-xl">
+                <div className="text-center p-4 bg-white rounded-xl theme-border border">
                   <div className="text-2xl mb-2">🇺🇸</div>
                   <div className="text-sm font-medium theme-text">English</div>
                   <div className={`text-xs mt-1 ${formData.translations.en.title && formData.translations.en.content ? 'text-green-600' : 'theme-text-muted'}`}>
@@ -944,7 +944,7 @@ const DoctorCreatePost: React.FC = () => {
           {/* Sidebar */}
           <div className="xl:col-span-1 space-y-6">
             {/* Publish Settings */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <h3 className="text-lg font-semibold theme-text mb-4">Nashr Sozlamalari</h3>
               <div className="space-y-4">
                 <label className="flex items-center space-x-3">
@@ -962,14 +962,14 @@ const DoctorCreatePost: React.FC = () => {
             </div>
 
             {/* Category */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-3">
                 Kategoriya
               </label>
               <select
                 value={formData.category_id}
                 onChange={(e) => handleInputChange('category_id', e.target.value)}
-                className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
               >
                 <option value="">Kategoriya tanlang</option>
                 {categories.map((category) => (
@@ -981,7 +981,7 @@ const DoctorCreatePost: React.FC = () => {
             </div>
 
             {/* Tags */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="bg-white rounded-lg theme-shadow theme-border border p-6">
               <label className="block text-sm font-medium theme-text-secondary mb-3">
                 Teglar
               </label>
@@ -992,7 +992,7 @@ const DoctorCreatePost: React.FC = () => {
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                  className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
                 <button
                   type="button"

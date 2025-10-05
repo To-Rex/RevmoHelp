@@ -78,7 +78,7 @@ const NotificationBell: React.FC = () => {
           />
           
           {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-80 theme-bg rounded-xl theme-shadow-lg theme-border border py-2 z-50 max-h-96 overflow-hidden">
+          <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl theme-shadow-lg theme-border border py-2 z-50 max-h-96 overflow-hidden">
             {/* Header */}
             <div className="px-4 py-3 theme-border border-b flex items-center justify-between">
               <h3 className="font-semibold theme-text">Bildirishnomalar</h3>

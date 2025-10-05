@@ -349,7 +349,7 @@ const DoctorProfileEdit: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <h2 className="text-xl font-bold theme-text mb-6 flex items-center space-x-2">
               <User size={20} className="text-blue-600" />
               <span>Asosiy Ma'lumotlar</span>
@@ -410,7 +410,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={formData.specialization}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
               </div>
 
@@ -426,7 +426,7 @@ const DoctorProfileEdit: React.FC = () => {
                   required
                   min="0"
                   max="50"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
               </div>
 
@@ -440,7 +440,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={formData.consultation_fee}
                   onChange={handleInputChange}
                   min="0"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
               </div>
 
@@ -452,7 +452,7 @@ const DoctorProfileEdit: React.FC = () => {
                   name="consultation_duration"
                   value={formData.consultation_duration}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 >
                   <option value={15}>15 daqiqa</option>
                   <option value={30}>30 daqiqa</option>
@@ -464,7 +464,7 @@ const DoctorProfileEdit: React.FC = () => {
           </div>
 
           {/* Bio with Translations */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold theme-text flex items-center space-x-2">
                 <FileText size={20} className="text-green-600" />
@@ -500,7 +500,7 @@ const DoctorProfileEdit: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   placeholder="O'zingiz haqingizda batafsil yozing..."
                 />
               </div>
@@ -516,7 +516,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={formData.translations.ru.bio}
                   onChange={handleTranslationChange}
                   rows={6}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   placeholder="Подробно расскажите о себе..."
                 />
               </div>
@@ -532,7 +532,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={formData.translations.en.bio}
                   onChange={handleTranslationChange}
                   rows={6}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text resize-none"
                   placeholder="Tell us about yourself in detail..."
                 />
               </div>
@@ -540,7 +540,7 @@ const DoctorProfileEdit: React.FC = () => {
           </div>
 
           {/* Certificates */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <h2 className="text-xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Award size={20} className="text-purple-600" />
               <span>Sertifikatlar</span>
@@ -554,7 +554,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={newCertificate}
                   onChange={(e) => setNewCertificate(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCertificate())}
-                  className="flex-1 px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="flex-1 px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
                 <button
                   type="button"
@@ -586,7 +586,7 @@ const DoctorProfileEdit: React.FC = () => {
           </div>
 
           {/* Education */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <h2 className="text-xl font-bold theme-text mb-6 flex items-center space-x-2">
               <GraduationCap size={20} className="text-orange-600" />
               <span>Ta'lim</span>
@@ -600,7 +600,7 @@ const DoctorProfileEdit: React.FC = () => {
                   value={newEducation}
                   onChange={(e) => setNewEducation(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addEducation())}
-                  className="flex-1 px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="flex-1 px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                 />
                 <button
                   type="button"
@@ -632,7 +632,7 @@ const DoctorProfileEdit: React.FC = () => {
           </div>
 
           {/* Languages */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <h2 className="text-xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Languages size={20} className="text-teal-600" />
               <span>Tillar</span>
@@ -640,7 +640,7 @@ const DoctorProfileEdit: React.FC = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {availableLanguages.map((lang) => (
-                <label key={lang.code} className="flex items-center space-x-3 p-4 theme-bg-secondary rounded-lg cursor-pointer hover:theme-shadow-md transition-all duration-200">
+                <label key={lang.code} className="flex items-center space-x-3 p-4 theme-bg-secondary rounded-lg border theme-border cursor-pointer hover:theme-shadow-md transition-all duration-200">
                   <input
                     type="checkbox"
                     checked={formData.languages.includes(lang.code)}
@@ -654,7 +654,7 @@ const DoctorProfileEdit: React.FC = () => {
           </div>
 
           {/* Working Hours */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8">
             <h2 className="text-xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Clock size={20} className="text-indigo-600" />
               <span>Ish Vaqti</span>
@@ -662,7 +662,7 @@ const DoctorProfileEdit: React.FC = () => {
             
             <div className="space-y-4">
               {weekDays.map((day) => (
-                <div key={day.key} className="flex items-center space-x-4 p-4 theme-bg-secondary rounded-lg">
+                <div key={day.key} className="flex items-center space-x-4 p-4 theme-bg-secondary rounded-lg border theme-border">
                   <div className="w-24">
                     <span className="text-sm font-medium theme-text">{day.label}</span>
                   </div>
@@ -683,14 +683,14 @@ const DoctorProfileEdit: React.FC = () => {
                         type="time"
                         value={formData.working_hours[day.key].start}
                         onChange={(e) => handleWorkingHoursChange(day.key, 'start', e.target.value)}
-                        className="px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                       />
                       <span className="theme-text-secondary">dan</span>
                       <input
                         type="time"
                         value={formData.working_hours[day.key].end}
                         onChange={(e) => handleWorkingHoursChange(day.key, 'end', e.target.value)}
-                        className="px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-white theme-text"
                       />
                       <span className="theme-text-secondary">gacha</span>
                     </>
