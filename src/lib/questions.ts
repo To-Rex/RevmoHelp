@@ -181,6 +181,20 @@ const _getQuestionBySlug = async (slug: string): Promise<{ data: Question | null
       .update({ views_count: (data.views_count || 0) + 1 })
       .eq('id', data.id);
 
+    // Get user vote if authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: vote } = await supabase
+        .from('question_votes')
+        .select('vote_type')
+        .eq('question_id', data.id)
+        .eq('user_id', user.id)
+        .single();
+      data.user_vote_type = vote?.vote_type || null;
+    } else {
+      data.user_vote_type = null;
+    }
+
     return { data, error: null };
   } catch (error) {
     console.warn('❓ Error fetching question by slug:', error);
@@ -317,7 +331,7 @@ export const createQuestion = async (questionData: CreateQuestionData): Promise<
     }
 
     // Invalidate cache
-    invalidateRelatedCache(cacheKeys.QUESTIONS);
+    invalidateRelatedCache('question');
 
     return { data, error: null };
   } catch (err) {
@@ -367,7 +381,7 @@ export const createAnswer = async (answerData: CreateAnswerData): Promise<{ data
     }
 
     // Invalidate cache
-    invalidateRelatedCache(cacheKeys.QUESTIONS);
+    invalidateRelatedCache('question');
     invalidateRelatedCache(`answers.${answerData.question_id}`);
     
     return { data, error: null };
@@ -423,7 +437,7 @@ export const voteQuestion = async (questionId: string, voteType: 'up' | 'down'):
     }
 
     // Invalidate cache
-    invalidateRelatedCache(cacheKeys.QUESTIONS);
+    invalidateRelatedCache('question');
     
     return { error: null };
   } catch (error) {
@@ -547,8 +561,7 @@ export const markBestAnswer = async (questionId: string, answerId: string): Prom
       .eq('id', questionId);
 
     // Invalidate cache
-    invalidateRelatedCache(cacheKeys.QUESTIONS);
-    invalidateRelatedCache(`answers.${questionId}`);
+    invalidateRelatedCache('question', questionId);
     
     return { error: null };
   } catch (error) {

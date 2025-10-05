@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold theme-text">Quick Links</h3>
+            <h3 className="text-lg font-semibold theme-text">{t('footerQuickLinks')}</h3>
             <div className="space-y-2">
               <LanguageAwareLink
                 to="/"
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
 
           {/* Legal */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold theme-text">Legal</h3>
+            <h3 className="text-lg font-semibold theme-text">{t('footerLegal')}</h3>
             <div className="space-y-2">
               <LanguageAwareLink
                 to="/privacy"
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
 
           {/* Contact */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold theme-text">Contact</h3>
+            <h3 className="text-lg font-semibold theme-text">{t('footerContact')}</h3>
             <div className="space-y-3">
               <LanguageAwareLink
                 to="/about"

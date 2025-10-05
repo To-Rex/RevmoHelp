@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  Search, 
-  Filter, 
-  Plus, 
-  MessageSquare, 
-  ThumbsUp, 
-  Eye, 
-  Calendar, 
+import {
+  Search,
+  Filter,
+  Plus,
+  MessageSquare,
+  ThumbsUp,
+  Eye,
+  Calendar,
   User,
   CheckCircle,
   Clock,
@@ -16,7 +16,9 @@ import {
   TrendingUp,
   Award,
   HelpCircle,
-  Star
+  Star,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import SEOHead from '../components/common/SEOHead';
 import LanguageAwareLink from '../components/common/LanguageAwareLink';
@@ -48,6 +50,8 @@ const QA: React.FC = () => {
   const [stats, setStats] = useState({ totalQuestions: 0, totalAnswers: 0, totalDoctors: 0, answeredQuestions: 0 });
   const [topDoctors, setTopDoctors] = useState<Doctor[]>([]);
   const [doctorRatings, setDoctorRatings] = useState<Record<string, { averageRating: number; totalReviews: number }>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Load data
   useEffect(() => {
@@ -104,7 +108,13 @@ const QA: React.FC = () => {
       }
     };
     loadTopExperts();
-  }, [i18n.language]);
+   }, [i18n.language]);
+
+
+   // Reset page when filters change
+   useEffect(() => {
+     setCurrentPage(1);
+   }, [searchTerm, selectedCategory, selectedStatus]);
 
   // Mock questions data
   const mockQuestions: Question[] = [];
@@ -124,11 +134,18 @@ const QA: React.FC = () => {
 
   const filteredQuestions = baseQuestions.filter((question: any) => {
     const matchesSearch = question.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         question.content.toLowerCase().includes(searchTerm.toLowerCase());
+                          question.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || question.category_id === selectedCategory;
     const matchesStatus = selectedStatus === 'all' || question.status === selectedStatus;
     return matchesSearch && matchesCategory && matchesStatus;
   });
+
+
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedQuestions = filteredQuestions.slice(startIndex, endIndex);
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('uz-UZ', {
@@ -228,7 +245,7 @@ const QA: React.FC = () => {
               </button>
               <Link
                 to="/doctors"
-                className="bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-teal-700 transition-colors duration-200 transform hover:scale-105 shadow-lg"
+                className="bg-primary-500 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-600 transition-colors duration-200 transform hover:scale-105 shadow-lg"
               >
                 {t('meetDoctors')}
               </Link>
@@ -273,7 +290,7 @@ const QA: React.FC = () => {
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-8">
               {/* Search and Filters */}
-              <div className="bg-white rounded-2xl theme-shadow-lg p-6 ring-1 ring-gray-200/60 dark:ring-white/10">
+              <div className="bg-white rounded-2xl theme-shadow-lg p-6 pr-8 ring-1 ring-gray-200/60 dark:ring-white/10">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-1">
@@ -294,7 +311,7 @@ const QA: React.FC = () => {
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="w-full px-4 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      className="w-full px-4 pr-8 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     >
                       {categories.map((category) => (
                         <option key={category.value} value={category.value}>
@@ -309,7 +326,7 @@ const QA: React.FC = () => {
                     <select
                       value={selectedStatus}
                       onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="w-full px-4 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      className="w-full px-4 pr-8 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     >
                       {statuses.map((status) => (
                         <option key={status.value} value={status.value}>
@@ -333,77 +350,73 @@ const QA: React.FC = () => {
               </div>
 
               {/* Questions List */}
-              <div className="space-y-6">
-                {filteredQuestions.map((question, index) => (
-                  <div
-                    key={question.id}
-                    className="bg-white rounded-2xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-300 p-6 animate-fade-in transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-3">
-                          {question.category && (
-                            <span
-                              className="px-3 py-1 rounded-full text-white text-sm font-medium"
-                              style={{ backgroundColor: question.category.color }}
-                            >
-                              {question.category.name}
+              <div className="space-y-5">
+                {paginatedQuestions.map((question, index) => (
+                  <LanguageAwareLink key={question.id} to={`/questions/${question.slug}`} className="block">
+                    <div className="bg-white rounded-2xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-300 p-6 animate-fade-in transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10 cursor-pointer" style={{ animationDelay: `${index * 100}ms` }}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-3">
+                            {question.category && (
+                              <span
+                                className="px-3 py-1 rounded-full text-white text-sm font-medium"
+                                style={{ backgroundColor: question.category.color }}
+                              >
+                                {question.category.name}
+                              </span>
+                            )}
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(question.status)}`}>
+                              {getStatusLabel(question.status)}
                             </span>
-                          )}
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(question.status)}`}>
-                            {getStatusLabel(question.status)}
-                          </span>
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-200">
-                          <LanguageAwareLink to={`/questions/${question.slug}`}>
-                            {question.title}
-                          </LanguageAwareLink>
-                        </h3>
-                        
-                        <p className="theme-text-secondary leading-relaxed mb-4 line-clamp-2">
-                          {question.content}
-                        </p>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {question.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-1 theme-bg-tertiary theme-text-secondary text-sm rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 cursor-pointer"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Meta Info */}
-                        <div className="flex items-center justify-between text-sm theme-text-muted">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-1">
-                              <User size={14} />
-                              <span>{question.author?.full_name}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Calendar size={14} />
-                              <span>{formatDate(question.created_at)}</span>
-                            </div>
                           </div>
-                          <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-1">
-                              <MessageSquare size={14} />
-                              <span>{question.answers_count} javob</span>
+
+                          <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-200 cursor-pointer">
+                            {question.title}
+                          </h3>
+
+                          <p className="theme-text-secondary leading-relaxed mb-4 line-clamp-2">
+                            {question.content}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {question.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-1 bg-[#CAD8D6] text-[#3E433B] dark:bg-red dark:text-black text-sm rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 cursor-pointer"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Meta Info */}
+                          <div className="flex items-center justify-between text-sm theme-text-muted">
+                            <div className="flex items-center space-x-4">
+                              <div className="flex items-center space-x-1">
+                                <User size={14} />
+                                <span>{question.author?.full_name}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Calendar size={14} />
+                                <span>{formatDate(question.created_at)}</span>
+                              </div>
                             </div>
-                            <div className="flex items-center space-x-1">
-                              <Eye size={14} />
-                              <span>{question.views_count} ko'rishlar</span>
+                            <div className="flex items-center space-x-4">
+                              <div className="flex items-center space-x-1">
+                                <MessageSquare size={14} />
+                                <span>{question.answers_count} javob</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Eye size={14} />
+                                <span>{question.views_count} ko'rishlar</span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </LanguageAwareLink>
                 ))}
               </div>
 
@@ -425,11 +438,33 @@ const QA: React.FC = () => {
                 </div>
               )}
 
-              {/* Load More */}
-              {filteredQuestions.length > 0 && (
-                <div className="text-center">
-                  <button onClick={() => setAskOpen(true)} className="bg-white border-2 border-blue-600 theme-accent px-8 py-4 rounded-xl font-semibold hover:theme-bg-tertiary transition-colors duration-200 transform hover:scale-105">
-                    Ko'proq savollarni ko'rish
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center space-x-2 mt-8">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center space-x-1"
+                  >
+                    <ChevronLeft size={16} />
+                    <span>Oldingi</span>
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-4 py-2 rounded-lg border ${currentPage === page ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-gray-300 hover:bg-gray-50'}`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center space-x-1"
+                  >
+                    <span>Keyingi</span>
+                    <ChevronRight size={16} />
                   </button>
                 </div>
               )}

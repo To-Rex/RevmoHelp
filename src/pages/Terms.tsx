@@ -124,7 +124,7 @@ const Terms: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
+                  className="theme-bg-secondary rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className={`w-16 h-16 ${section.color} rounded-2xl flex items-center justify-center mb-6 animate-pulse-medical`}>
@@ -140,7 +140,7 @@ const Terms: React.FC = () => {
           {/* User Rights and Prohibitions */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             {/* User Rights */}
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left delay-600">
+            <div className="theme-bg-secondary rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left delay-600">
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/50 dark:to-blue-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Users size={32} className="text-green-600 dark:text-green-400" />
@@ -166,7 +166,7 @@ const Terms: React.FC = () => {
             </div>
 
             {/* Prohibited Actions */}
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right delay-600">
+            <div className="theme-bg-secondary rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right delay-600">
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-red-100 to-orange-100 dark:from-red-900/50 dark:to-orange-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Ban size={32} className="text-red-600 dark:text-red-400" />
@@ -193,12 +193,12 @@ const Terms: React.FC = () => {
           </div>
 
           {/* Medical Disclaimer */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-3xl p-8 mb-16 border-l-4 border-yellow-500 animate-slide-up delay-800">
+          <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-3xl p-8 mb-16 border-l-4 border-yellow-500 animate-slide-up delay-800">
             <div className="flex items-start space-x-4">
               <AlertTriangle size={32} className="text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-1 animate-pulse-medical" />
               <div>
                 <h3 className="text-2xl font-bold text-yellow-900 dark:text-yellow-200 mb-4">Tibbiy Ogohlantirish</h3>
-                <div className="space-y-3 text-yellow-800 dark:text-yellow-300 leading-relaxed">
+                <div className="space-y-3 text-yellow-900 dark:text-yellow-300 leading-relaxed">
                   <p>
                     <strong>Muhim:</strong> Ushbu platforma faqat ma'lumot berish maqsadida yaratilgan. 
                     Bu yerda berilgan ma'lumotlar shifokor maslahati, diagnostika yoki davolash o\'rnini bosa olmaydi.
@@ -217,7 +217,7 @@ const Terms: React.FC = () => {
           </div>
 
           {/* Contact for Terms */}
-          <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000">
+          <div className="theme-bg-secondary rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold theme-text mb-4">Shartlar Bo'yicha Savollar</h2>
               <p className="theme-text-secondary">
@@ -228,7 +228,7 @@ const Terms: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-6 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-300 transform hover:-translate-y-1">
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Mail size={20} className="text-blue-600 dark:text-blue-400" />
+                  <Mail size={20} className="text-blue-800 dark:text-blue-800" />
                 </div>
                 <h4 className="font-semibold theme-text mb-2">Email</h4>
                 <p className="theme-text-secondary text-sm">legal@revmoinfo.uz</p>
@@ -236,7 +236,7 @@ const Terms: React.FC = () => {
               
               <div className="text-center p-6 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-300 transform hover:-translate-y-1">
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Phone size={20} className="text-green-600 dark:text-green-400" />
+                  <Phone size={20} className="text-green-800 dark:text-green-800" />
                 </div>
                 <h4 className="font-semibold theme-text mb-2">Telefon</h4>
                 <p className="theme-text-secondary text-sm">+998 71 123 45 67</p>
@@ -244,7 +244,7 @@ const Terms: React.FC = () => {
               
               <div className="text-center p-6 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-300 transform hover:-translate-y-1">
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Building2 size={20} className="text-purple-600 dark:text-purple-400" />
+                  <Building2 size={20} className="text-purple-800 dark:text-purple-800" />
                 </div>
                 <h4 className="font-semibold theme-text mb-2">Manzil</h4>
                 <p className="theme-text-secondary text-sm">Toshkent, Yunusobod</p>

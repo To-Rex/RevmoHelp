@@ -150,7 +150,7 @@ const Contact: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className={`w-16 h-16 ${info.color} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
@@ -385,14 +385,16 @@ const Contact: React.FC = () => {
                   {t('contactPage.sidebar.mapDesc')}
                 </p>
               </div>
-              <div className="bg-gray-100 rounded-2xl h-96 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={48} className="text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">{t('contactPage.sidebar.mapPlaceholder')}</p>
-                  <p className="text-gray-500 text-sm mt-2">
-                    {t('contactPage.sidebar.mapAddressLine')}
-                  </p>
-                </div>
+              <div className="bg-gray-100 rounded-2xl h-96 overflow-hidden">
+                <iframe
+                  src="https://maps.google.com/maps?q=Yunusabad%20district%2C%20Amir%20Temur%20street%20108%2C%20Tashkent&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
             </div>
           </div>

@@ -422,7 +422,7 @@ const DiseaseDetail: React.FC = () => {
         {/* Medical Notice */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
           <div className="p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl animate-fade-in">
-            <div className="flex items-center space-x-3 text-blue-800 dark:text-blue-200">
+            <div className="flex items-center space-x-3 text-black dark:text-black">
               <Shield size={20} className="flex-shrink-0" />
               <div>
                 <h4 className="font-semibold mb-1">Tibbiy Ogohlantirish</h4>

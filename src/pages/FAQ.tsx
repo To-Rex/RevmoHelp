@@ -189,7 +189,7 @@ const FAQ: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           {/* Search and Filter */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 mb-12 animate-slide-up delay-300">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 mb-12 animate-slide-up delay-300">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
               <div className="flex-1">
@@ -200,7 +200,7 @@ const FAQ: React.FC = () => {
                     placeholder="Savollar bo'yicha qidiring..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 theme-bg theme-text"
+                    className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -210,7 +210,7 @@ const FAQ: React.FC = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 theme-bg theme-text"
+                  className="w-full pl-4 pr-12 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white text-gray-900"
                 >
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -235,7 +235,7 @@ const FAQ: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in cursor-pointer"
+                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in cursor-pointer"
                     style={{ animationDelay: `${index * 100}ms` }}
                     onClick={() => toggleItem(item.id)}
                   >
@@ -277,7 +277,7 @@ const FAQ: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    className="theme-bg rounded-xl theme-shadow hover:theme-shadow-lg transition-all duration-300 theme-border border animate-fade-in"
+                    className="bg-white rounded-xl theme-shadow hover:theme-shadow-lg transition-all duration-300 theme-border border animate-fade-in"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
                     <button

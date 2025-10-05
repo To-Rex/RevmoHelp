@@ -164,7 +164,7 @@ const About: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 text-center animate-fade-in hover-medical"
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 text-center animate-fade-in hover-medical"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -179,7 +179,7 @@ const About: React.FC = () => {
 
           {/* Mission & Vision */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left hover-medical">
+            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left hover-medical">
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                 <Target size={32} className="text-blue-600" />
               </div>
@@ -203,7 +203,7 @@ const About: React.FC = () => {
               </div>
             </div>
 
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right hover-medical">
+            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right hover-medical">
               <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mb-6">
                 <Globe size={32} className="text-teal-600" />
               </div>
@@ -242,7 +242,7 @@ const About: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover-medical animate-fade-in"
+                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover-medical animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -268,7 +268,7 @@ const About: React.FC = () => {
               {team.map((member, index) => (
                 <div
                   key={index}
-                  className="theme-bg rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover-medical animate-fade-in"
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover-medical animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="relative">
@@ -315,7 +315,7 @@ const About: React.FC = () => {
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                      <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
+                      <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
                         <div className="text-2xl font-bold text-blue-600 mb-2">{achievement.year}</div>
                         <h3 className="text-lg font-bold theme-text mb-2">{t(achievement.titleKey)}</h3>
                         <p className="theme-text-secondary">{t(achievement.descriptionKey)}</p>

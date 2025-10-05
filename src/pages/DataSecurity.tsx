@@ -150,7 +150,7 @@ const DataSecurity: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
+                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className={`w-14 h-14 ${measure.color} rounded-xl flex items-center justify-center mb-4 animate-pulse-medical`}>
@@ -189,7 +189,7 @@ const DataSecurity: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
+                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
                     style={{ animationDelay: `${index * 150}ms` }}
                   >
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 dark:from-blue-900/50 dark:to-teal-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -219,7 +219,7 @@ const DataSecurity: React.FC = () => {
               {securityPractices.map((practice, index) => (
                 <div
                   key={index}
-                  className="flex items-center space-x-3 p-4 theme-bg rounded-xl theme-shadow hover:theme-shadow-md transition-all duration-200 animate-fade-in"
+                  className="flex items-center space-x-3 p-4 bg-white rounded-xl theme-shadow hover:theme-shadow-md transition-all duration-200 animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <CheckCircle size={16} className="text-green-600 dark:text-green-400 flex-shrink-0" />

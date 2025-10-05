@@ -314,7 +314,15 @@ export const invalidateRelatedCache = (entityType: string, entityId?: string): v
         dataCache.invalidatePattern(`comments.${entityId}.*`);
       }
       break;
-      
+
+    case 'question':
+      dataCache.invalidatePattern('questions.*');
+      dataCache.invalidatePattern('question.*');
+      if (entityId) {
+        dataCache.invalidatePattern(`answers.${entityId}`);
+      }
+      break;
+
     default:
       console.warn(`Unknown entity type for cache invalidation: ${entityType}`);
   }
@@ -392,8 +400,17 @@ export const cacheKeys = {
   partners: (options?: any) => 
     `partners.${JSON.stringify(options || {})}`,
   
-  homepageSettings: (section: string, language: string) => 
-    `homepage.${section}.${language}`
+  homepageSettings: (section: string, language: string) =>
+    `homepage.${section}.${language}`,
+
+  questions: (options?: any) =>
+    `questions.${JSON.stringify(options || {})}`,
+
+  questionBySlug: (slug: string) =>
+    `question.${slug}`,
+
+  answers: (questionId: string) =>
+    `answers.${questionId}`
 };
 
 // Initialize cache system

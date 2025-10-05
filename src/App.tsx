@@ -32,6 +32,7 @@ import QA from './pages/QA';
 import QuestionDetail from './pages/QuestionDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Partnership from './pages/Partnership';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -322,6 +323,7 @@ function App() {
               <Route path="questions/:slug" element={<QuestionDetail />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="partnership" element={<Partnership />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="consultation" element={<ConsultationForm />} />
@@ -352,6 +354,7 @@ function App() {
               <Route path="ru/questions/:slug" element={<QuestionDetail />} />
               <Route path="ru/about" element={<About />} />
               <Route path="ru/contact" element={<Contact />} />
+              <Route path="ru/partnership" element={<Partnership />} />
               <Route path="ru/login" element={<Login />} />
               <Route path="ru/register" element={<Register />} />
               <Route path="ru/consultation" element={<ConsultationForm />} />
@@ -382,6 +385,7 @@ function App() {
               <Route path="en/questions/:slug" element={<QuestionDetail />} />
               <Route path="en/about" element={<About />} />
               <Route path="en/contact" element={<Contact />} />
+              <Route path="en/partnership" element={<Partnership />} />
               <Route path="en/login" element={<Login />} />
               <Route path="en/register" element={<Register />} />
               <Route path="en/consultation" element={<ConsultationForm />} />

@@ -133,7 +133,7 @@ const Privacy: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className={`w-16 h-16 ${section.color} rounded-2xl flex items-center justify-center mb-6 animate-pulse-medical`}>
@@ -147,7 +147,7 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Your Rights */}
-          <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600">
             <div className="text-center mb-8">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <UserCheck size={32} className="text-purple-600 dark:text-purple-400" />
@@ -187,7 +187,7 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Contact for Privacy */}
-          <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold theme-text mb-4">Maxfiylik Bo'yicha Savollar</h2>
               <p className="theme-text-secondary">

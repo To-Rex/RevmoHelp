@@ -29,6 +29,7 @@ import {
 } from '../../lib/doctors';
 import type { Doctor, CreateDoctorData } from '../../lib/doctors';
 
+import { supabase } from '../../lib/supabase';
 const DoctorsManagement: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ const DoctorsManagement: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [activeLanguageTab, setActiveLanguageTab] = useState<'uz' | 'ru' | 'en'>('uz');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<CreateDoctorData>({
     full_name: '',
@@ -74,13 +76,16 @@ const DoctorsManagement: React.FC = () => {
   }, []);
 
   const loadDoctors = async () => {
+    console.log('🔄 Loading doctors in DoctorsManagement component');
     setLoading(true);
     try {
       const { data } = await getDoctors();
+      console.log('📋 Doctors received in component:', data?.length || 0, data?.map(d => ({ id: d.id, name: d.full_name, email: d.email })));
       if (data) {
         setDoctors(data);
       }
     } catch (error) {
+      console.log('❌ Error loading doctors in component:', error);
       setMessage({ type: 'error', text: 'Shifokorlarni yuklashda xatolik' });
     } finally {
       setLoading(false);
@@ -151,6 +156,7 @@ const DoctorsManagement: React.FC = () => {
     setNewCertificate('');
     setEditingDoctor(null);
     setImagePreview(null);
+    setSelectedFile(null);
     setActiveLanguageTab('uz');
   };
 
@@ -173,18 +179,19 @@ const DoctorsManagement: React.FC = () => {
       active: doctor.active,
       order_index: doctor.order_index,
       translations: {
-        ru: { 
-          bio: doctor.translations?.find(t => t.language === 'ru')?.bio || '', 
+        ru: {
+          bio: doctor.translations?.find(t => t.language === 'ru')?.bio || '',
           specialization: doctor.translations?.find(t => t.language === 'ru')?.specialization || ''
         },
-        en: { 
-          bio: doctor.translations?.find(t => t.language === 'en')?.bio || '', 
+        en: {
+          bio: doctor.translations?.find(t => t.language === 'en')?.bio || '',
           specialization: doctor.translations?.find(t => t.language === 'en')?.specialization || ''
         }
       }
     });
     setEditingDoctor(doctor);
     setImagePreview(doctor.avatar_url || null);
+    setSelectedFile(null);
     setShowEditModal(true);
   };
 
@@ -204,12 +211,13 @@ const DoctorsManagement: React.FC = () => {
         return;
       }
 
+      setSelectedFile(file);
+
       // Create preview
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result as string;
         setImagePreview(result);
-        setFormData(prev => ({ ...prev, avatar_url: result }));
       };
       reader.readAsDataURL(file);
     }
@@ -217,6 +225,7 @@ const DoctorsManagement: React.FC = () => {
 
   const removeImage = () => {
     setImagePreview(null);
+    setSelectedFile(null);
     setFormData(prev => ({ ...prev, avatar_url: '' }));
   };
 
@@ -257,7 +266,27 @@ const DoctorsManagement: React.FC = () => {
     setMessage({ type: '', text: '' });
 
     try {
-      const { data, error } = await createDoctor(formData);
+      let finalFormData = { ...formData };
+
+      if (selectedFile) {
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(`doctors/${fileName}`, selectedFile);
+
+        if (uploadError) {
+          throw new Error(`Image upload failed: ${uploadError.message}`);
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(`doctors/${fileName}`);
+
+        finalFormData.avatar_url = urlData.publicUrl;
+      }
+
+      const { data, error } = await createDoctor(finalFormData);
 
       if (error) {
         setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
@@ -268,8 +297,8 @@ const DoctorsManagement: React.FC = () => {
           closeModals();
         }, 1500);
       }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+    } catch (error: any) {
+      setMessage({ type: 'error', text: `Xatolik yuz berdi: ${error.message}` });
     } finally {
       setIsSubmitting(false);
     }
@@ -284,9 +313,29 @@ const DoctorsManagement: React.FC = () => {
     setMessage({ type: '', text: '' });
 
     try {
+      let finalFormData = { ...formData };
+
+      if (selectedFile) {
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(`doctors/${fileName}`, selectedFile);
+
+        if (uploadError) {
+          throw new Error(`Image upload failed: ${uploadError.message}`);
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(`doctors/${fileName}`);
+
+        finalFormData.avatar_url = urlData.publicUrl;
+      }
+
       const { data, error } = await updateDoctor({
         id: editingDoctor.id,
-        ...formData
+        ...finalFormData
       });
 
       if (error) {
@@ -298,8 +347,8 @@ const DoctorsManagement: React.FC = () => {
           closeModals();
         }, 1500);
       }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+    } catch (error: any) {
+      setMessage({ type: 'error', text: `Xatolik yuz berdi: ${error.message}` });
     } finally {
       setIsSubmitting(false);
     }

@@ -191,7 +191,7 @@ const QAPage: React.FC = () => {
       <section className="py-8 theme-bg-secondary theme-border-b border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 pr-4">
               <div className="flex-1 min-w-[300px]">
                 <div className="relative">
                   <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 theme-text-muted" />
@@ -209,7 +209,7 @@ const QAPage: React.FC = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
+                  className="px-4 pr-8 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
                 >
                   <option value="all">{t('allCategories')}</option>
                   {categories.map(category => (
@@ -222,7 +222,7 @@ const QAPage: React.FC = () => {
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-4 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
+                  className="px-4 pr-8 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
                 >
                   <option value="all">{t('allStatuses')}</option>
                   <option value="open">{t('openQuestions')}</option>
@@ -233,7 +233,7 @@ const QAPage: React.FC = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
+                  className="px-4 pr-8 py-3 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 theme-bg theme-text"
                 >
                   <option value="newest">{t('newest')}</option>
                   <option value="popular">{t('mostPopular')}</option>
@@ -377,19 +377,19 @@ const QAPage: React.FC = () => {
                                   {question.category?.name || t('uncategorized')}
                                 </span>
                                 <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                  question.status === 'answered' 
+                                  question.status === 'answered'
                                     ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                                     : question.status === 'closed'
                                     ? 'bg-gray-100 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400'
                                     : 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
                                 }`}>
-                                  {question.status === 'answered' && <CheckCircle size={12} className="inline mr-1" />}
-                                  {question.status === 'open' && <AlertCircle size={12} className="inline mr-1" />}
+                                  {question.status === 'answered' && <CheckCircle size={12} className="inline mr-1 pr-2" />}
+                                  {question.status === 'open' && <AlertCircle size={12} className="inline mr-1 pr-2" />}
                                   {t(question.status)}
                                 </div>
                                 {question.best_answer_id && (
                                   <div className="flex items-center space-x-1 text-green-600">
-                                    <Star size={12} className="fill-current" />
+                                    <Star size={12} className="fill-current pr-1" />
                                     <span className="text-xs font-medium">{t('hasAcceptedAnswer')}</span>
                                   </div>
                                 )}
@@ -421,19 +421,19 @@ const QAPage: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-6 text-sm theme-text-muted">
                                   <div className="flex items-center space-x-1">
-                                    <Eye size={16} />
+                                    <Eye size={16} className="pr-2" />
                                     <span>{question.views_count.toLocaleString()}</span>
                                   </div>
                                   <div className="flex items-center space-x-1">
-                                    <MessageCircle size={16} />
+                                    <MessageCircle size={16} className="pr-2" />
                                     <span>{question.answers_count}</span>
                                   </div>
                                   <div className="flex items-center space-x-1">
-                                    <Clock size={16} />
+                                    <Clock size={16} className="pr-2" />
                                     <span>
-                                      {formatDistanceToNow(new Date(question.created_at), { 
-                                        addSuffix: true, 
-                                        locale: getDateLocale() 
+                                      {formatDistanceToNow(new Date(question.created_at), {
+                                        addSuffix: true,
+                                        locale: getDateLocale()
                                       })}
                                     </span>
                                   </div>

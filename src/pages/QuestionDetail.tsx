@@ -10,7 +10,7 @@ import { uz, ru, enUS } from 'date-fns/locale';
 const QuestionDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t, i18n } = useTranslation();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   
   const [question, setQuestion] = useState<Question | null>(null);
@@ -19,6 +19,7 @@ const QuestionDetail: React.FC = () => {
   const [answerContent, setAnswerContent] = useState('');
   const [submittingAnswer, setSubmittingAnswer] = useState(false);
   const [votingStates, setVotingStates] = useState<Record<string, boolean>>({});
+  const [hasLiked, setHasLiked] = useState(false);
 
   // Get locale for date formatting
   const getDateLocale = () => {
@@ -42,16 +43,17 @@ const QuestionDetail: React.FC = () => {
         ]);
 
         if (questionResult.data) {
-          setQuestion(questionResult.data);
-          
-          // Load answers for this question
-          const answersData = await getAnswers(questionResult.data.id);
-          if (answersData.data) {
-            setAnswers(answersData.data);
-          }
-        } else {
-          navigate('/qa');
-        }
+           setQuestion(questionResult.data);
+           setHasLiked((questionResult.data as any).user_vote_type === 'up');
+
+           // Load answers for this question
+           const answersData = await getAnswers(questionResult.data.id);
+           if (answersData.data) {
+             setAnswers(answersData.data);
+           }
+         } else {
+           navigate('/qa');
+         }
       } catch (error) {
         console.error('Error loading question:', error);
         navigate('/qa');
@@ -84,6 +86,7 @@ const QuestionDetail: React.FC = () => {
         const { data } = await getQuestionBySlug(slug!);
         if (data) {
           setQuestion(data);
+          setHasLiked((data as any).user_vote_type === 'up');
         }
       }
     } catch (error) {
@@ -151,7 +154,8 @@ const QuestionDetail: React.FC = () => {
 
       if (error) {
         console.error('Error creating answer:', error);
-        alert(t('answerSubmissionError'));
+        const errorMessage = error?.message || (typeof error === 'string' ? error : t('answerSubmissionError'));
+        alert(`${t('answerSubmissionError')}: ${errorMessage}`);
       } else {
         setAnswerContent('');
         // Refresh answers
@@ -167,7 +171,8 @@ const QuestionDetail: React.FC = () => {
       }
     } catch (error) {
       console.error('Error submitting answer:', error);
-      alert(t('answerSubmissionError'));
+      const errorMessage = error instanceof Error ? error.message : (typeof error === 'string' ? error : t('answerSubmissionError'));
+      alert(`${t('answerSubmissionError')}: ${errorMessage}`);
     } finally {
       setSubmittingAnswer(false);
     }
@@ -219,8 +224,8 @@ const QuestionDetail: React.FC = () => {
     );
   }
 
-  const canAnswerQuestions = profile && ['doctor', 'admin', 'moderator'].includes(profile.role);
-  const canMarkBestAnswer = user && (question.author_id === user.id || ['admin', 'moderator'].includes(profile?.role || ''));
+  const canAnswerQuestions = user && user.role === 'doctor';
+  const canMarkBestAnswer = user && (question.author_id === user.id || ['admin', 'moderator'].includes(user.role || ''));
 
   return (
     <div className="min-h-screen theme-bg">
@@ -293,22 +298,15 @@ const QuestionDetail: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl p-8 ring-1 ring-gray-200/60 dark:ring-white/10 shadow">
             <div className="flex items-start space-x-6">
-              {/* Vote Section */}
+              {/* Like Section */}
               <div className="flex flex-col items-center space-y-3 min-w-[80px]">
-                <button 
+                <span className="text-2xl font-bold theme-text">{question.votes_count}</span>
+                <button
                   onClick={() => handleQuestionVote('up')}
                   disabled={!user || votingStates[`question-${question.id}`]}
-                  className="p-3 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/20 transition-colors duration-300 disabled:opacity-50"
+                  className={`p-3 rounded-xl transition-colors duration-300 disabled:opacity-50 ${hasLiked ? 'text-red-600 fill-current hover:bg-red-100 dark:hover:bg-red-900/20' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900/20'}`}
                 >
-                  <ThumbsUp size={24} className="text-green-600" />
-                </button>
-                <span className="text-2xl font-bold theme-text">{question.votes_count}</span>
-                <button 
-                  onClick={() => handleQuestionVote('down')}
-                  disabled={!user || votingStates[`question-${question.id}`]}
-                  className="p-3 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors duration-300 disabled:opacity-50"
-                >
-                  <ThumbsDown size={24} className="text-red-600" />
+                  <Heart size={24} />
                 </button>
               </div>
               
@@ -368,91 +366,64 @@ const QuestionDetail: React.FC = () => {
           
           <div className="space-y-6">
             {answers.map(answer => (
-              <div 
-                key={answer.id} 
+              <div
+                key={answer.id}
                 className={`bg-white rounded-2xl p-6 ring-1 ring-gray-200/60 dark:ring-white/10 shadow ${
                   answer.is_best_answer ? 'ring-2 ring-green-500 bg-green-50 dark:bg-green-900/10' : ''
                 }`}
               >
-                <div className="flex items-start space-x-6">
-                  {/* Vote Section */}
-                  <div className="flex flex-col items-center space-y-2 min-w-[60px]">
-                    <button 
-                      onClick={() => handleAnswerVote(answer.id, 'up')}
-                      disabled={!user || votingStates[`answer-${answer.id}`]}
-                      className="p-2 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/20 transition-colors duration-300 disabled:opacity-50"
-                    >
-                      <ThumbsUp size={18} className="text-green-600" />
-                    </button>
-                    <span className="text-lg font-semibold theme-text">{answer.votes_count}</span>
-                    <button 
-                      onClick={() => handleAnswerVote(answer.id, 'down')}
-                      disabled={!user || votingStates[`answer-${answer.id}`]}
-                      className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors duration-300 disabled:opacity-50"
-                    >
-                      <ThumbsDown size={18} className="text-red-600" />
-                    </button>
-                    
-                    {answer.is_best_answer && (
-                      <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full mt-2">
-                        <CheckCircle size={16} className="text-green-600" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Answer Content */}
-                  <div className="flex-1">
-                    {answer.is_best_answer && (
-                      <div className="flex items-center space-x-2 mb-4 text-green-600">
-                        <Award size={16} />
-                        <span className="text-sm font-medium">{t('bestAnswer')}</span>
-                      </div>
-                    )}
-                    
-                    <div className="prose max-w-none theme-text mb-4">
-                      {answer.content.split('\n').map((paragraph, index) => (
-                        <p key={index} className="mb-3">{paragraph}</p>
-                      ))}
+                {/* Answer Content */}
+                <div>
+                  {answer.is_best_answer && (
+                    <div className="flex items-center space-x-2 mb-4 text-green-600">
+                      <Award size={16} />
+                      <span className="text-sm font-medium">{t('bestAnswer')}</span>
                     </div>
-                    
-                    {/* Answer Actions */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-white/10">
-                      <div className="flex items-center space-x-4">
-                        <button 
-                          onClick={() => handleAnswerVote(answer.id, 'helpful')}
-                          disabled={!user || votingStates[`answer-${answer.id}`]}
-                          className="flex items-center space-x-1 text-sm theme-text-muted hover:text-red-600 transition-colors duration-300 disabled:opacity-50"
+                  )}
+
+                  <div className="prose max-w-none theme-text mb-4">
+                    {answer.content.split('\n').map((paragraph, index) => (
+                      <p key={index} className="mb-3">{paragraph}</p>
+                    ))}
+                  </div>
+
+                  {/* Answer Actions */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-white/10">
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={() => handleAnswerVote(answer.id, 'helpful')}
+                        disabled={!user || votingStates[`answer-${answer.id}`]}
+                        className="flex items-center space-x-1 text-sm theme-text-muted hover:text-red-600 transition-colors duration-300 disabled:opacity-50"
+                      >
+                        <Heart size={16} />
+                        <span>{answer.helpful_count} {t('helpful')}</span>
+                      </button>
+
+                      {canMarkBestAnswer && !answer.is_best_answer && (
+                        <button
+                          onClick={() => handleMarkBestAnswer(answer.id)}
+                          className="flex items-center space-x-1 text-sm text-green-600 hover:text-green-700 transition-colors duration-300"
                         >
-                          <Heart size={16} />
-                          <span>{answer.helpful_count} {t('helpful')}</span>
+                          <CheckCircle size={16} />
+                          <span>{t('markAsBest')}</span>
                         </button>
-                        
-                        {canMarkBestAnswer && !answer.is_best_answer && (
-                          <button 
-                            onClick={() => handleMarkBestAnswer(answer.id)}
-                            className="flex items-center space-x-1 text-sm text-green-600 hover:text-green-700 transition-colors duration-300"
-                          >
-                            <CheckCircle size={16} />
-                            <span>{t('markAsBest')}</span>
-                          </button>
-                        )}
-                      </div>
-                      
-                      {/* Answer Author */}
-                      <div className="flex items-center space-x-3">
-                        <img 
-                          src={answer.author?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(answer.author?.full_name || 'Doctor')}&background=10B981&color=fff`} 
-                          alt={answer.author?.full_name || 'Doctor'}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                        <div>
-                          <div className="text-sm font-medium theme-text">{answer.author?.full_name || 'Doctor'}</div>
-                          <div className="text-xs theme-text-muted">
-                            {t(answer.author?.role || 'doctor')} • {formatDistanceToNow(new Date(answer.created_at), { 
-                              addSuffix: true, 
-                              locale: getDateLocale() 
-                            })}
-                          </div>
+                      )}
+                    </div>
+
+                    {/* Answer Author */}
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={answer.author?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(answer.author?.full_name || 'Doctor')}&background=10B981&color=fff`}
+                        alt={answer.author?.full_name || 'Doctor'}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <div>
+                        <div className="text-sm font-medium theme-text">{answer.author?.full_name || 'Doctor'}</div>
+                        <div className="text-xs theme-text-muted">
+                          {t(answer.author?.role || 'doctor')} • {formatDistanceToNow(new Date(answer.created_at), {
+                            addSuffix: true,
+                            locale: getDateLocale()
+                          })}
                         </div>
                       </div>
                     </div>

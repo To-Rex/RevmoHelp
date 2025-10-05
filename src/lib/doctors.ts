@@ -76,7 +76,7 @@ const _getDoctors = async (
   } = {}
 ): Promise<{ data: Doctor[] | null; error: any }> => {
   try {
-    console.log('👨‍⚕️ Loading doctors from Supabase for language:', language);
+    console.log('👨‍⚕️ Loading doctors from Supabase for language:', language, 'options:', { active, verified, limit, page, pageSize });
 
     if (isSupabaseAvailable() && supabase) {
       let allDoctors: Doctor[] = [];
@@ -137,7 +137,9 @@ const _getDoctors = async (
           });
           // Do NOT push yet; we'll merge after getting legacy to control priority per language
           allDoctors = [...allDoctors, ...convertedDoctors];
-          console.log('✅ Doctors loaded from doctor_profiles:', convertedDoctors.length);
+          console.log('✅ Doctors loaded from doctor_profiles:', convertedDoctors.length, convertedDoctors.map(d => ({ id: d.id, name: d.full_name, email: d.email })));
+        } else {
+          console.log('ℹ️ No doctors found in doctor_profiles');
         }
       } catch (profilesError) {
         console.log('⚠️ Error loading doctor_profiles:', profilesError);
@@ -145,11 +147,11 @@ const _getDoctors = async (
 
       // 2) Load from legacy doctors with filters and translations
       try {
+        // For legacy doctors, load without translations first to avoid RLS issues
         let legacyQuery = supabase
           .from('doctors')
           .select(`
-            id, full_name, email, phone, specialization, experience_years, bio, avatar_url, certificates, verified, active, order_index, created_at, updated_at,
-            translations:doctor_translations(*)
+            id, full_name, email, phone, specialization, experience_years, bio, avatar_url, certificates, verified, active, order_index, created_at, updated_at
           `)
           .order('order_index', { ascending: true });
 
@@ -159,13 +161,31 @@ const _getDoctors = async (
           const startIndex = (page - 1) * pageSize;
           legacyQuery = legacyQuery.range(startIndex, startIndex + pageSize - 1);
         }
-        
+
         const { data, error } = await legacyQuery;
         if (error) {
           console.log('❌ Supabase error loading doctors:', error);
         } else if (data && data.length > 0) {
+          // If we need translations for non-Uzbek languages, load them separately
+          let translationsData: any[] = [];
+          if (language !== 'uz') {
+            try {
+              const { data: transData, error: transError } = await supabase
+                .from('doctor_translations')
+                .select('*')
+                .in('doctor_id', data.map(d => d.id));
+
+              if (!transError && transData) {
+                translationsData = transData;
+              }
+            } catch (transError) {
+              console.log('⚠️ Error loading translations:', transError);
+            }
+          }
+
           const processedDoctors: Doctor[] = data.map((doctor: any) => {
-            const translation = language === 'uz' ? null : pickTranslation(doctor.translations, language);
+            const doctorTranslations = translationsData.filter(t => t.doctor_id === doctor.id);
+            const translation = language === 'uz' ? null : pickTranslation(doctorTranslations, language);
             const specialization = translation?.specialization || doctor.specialization;
             const bio = translation?.bio || doctor.bio;
             return {
@@ -190,7 +210,9 @@ const _getDoctors = async (
           // For now, store in a temp variable on closure
           // To keep code simple, append and handle priority in dedupe order below
           allDoctors = [...processedDoctors, ...allDoctors];
-          console.log('✅ Doctors loaded from legacy doctors:', processedDoctors.length);
+          console.log('✅ Doctors loaded from legacy doctors:', processedDoctors.length, processedDoctors.map(d => ({ id: d.id, name: d.full_name, email: d.email })));
+        } else {
+          console.log('ℹ️ No doctors found in legacy doctors table');
         }
       } catch (legacyError) {
         console.log('⚠️ Error loading legacy doctors:', legacyError);
@@ -198,7 +220,9 @@ const _getDoctors = async (
 
       // 3) Dedupe by email (prefer profiles added first), then sort and apply final limit
       // Determine merge priority: if Uzbek, prefer legacy (added first above); otherwise prefer profiles
+      console.log('🔄 Merging doctors. Total before merge:', allDoctors.length);
       const ordered = language === 'uz' ? allDoctors : [...allDoctors].reverse();
+      console.log('🔄 Ordered doctors for language', language, ':', ordered.length);
 
       const uniqueByEmail = new Map<string, Doctor>();
       for (const d of ordered) {
@@ -206,6 +230,7 @@ const _getDoctors = async (
         if (!uniqueByEmail.has(key)) uniqueByEmail.set(key, d);
       }
       let merged = Array.from(uniqueByEmail.values());
+      console.log('🔄 After dedupe:', merged.length, 'doctors');
 
       merged.sort((a, b) => {
         // active desc
@@ -224,7 +249,7 @@ const _getDoctors = async (
         merged = merged.slice(0, limit);
       }
 
-      console.log('✅ Total doctors loaded:', merged.length);
+      console.log('✅ Total doctors loaded:', merged.length, merged.map(d => ({ id: d.id, name: d.full_name, email: d.email, order_index: d.order_index })));
       return { data: merged, error: null };
     }
 
@@ -240,9 +265,10 @@ const _getDoctors = async (
 // Cached version of getDoctors
 export const getDoctors = withCache(
   _getDoctors,
-  (language, { active, verified, limit, page, pageSize, allowMock }: { active?: boolean; verified?: boolean; limit?: number; page?: number; pageSize?: number; allowMock?: boolean }) => {
-    const options = { active, verified, limit, page, pageSize, allowMock };
-    return cacheKeys.doctors(language || 'uz', options);
+  (language = 'uz', options: { active?: boolean; verified?: boolean; limit?: number; page?: number; pageSize?: number; allowMock?: boolean } = {}) => {
+    const { active, verified, limit, page, pageSize, allowMock } = options;
+    const opts = { active, verified, limit, page, pageSize, allowMock };
+    return cacheKeys.doctors(language, opts);
   },
   3 * 60 * 1000 // 3 minutes TTL
 );
@@ -338,18 +364,19 @@ const _getDoctorById = async (id: string, language: string = 'uz'): Promise<{ da
 // Cached version of getDoctorById
 export const getDoctorById = withCache(
   _getDoctorById,
-  (id, language) => cacheKeys.doctorById(id, language || 'uz'),
+  (id: string, language = 'uz') => cacheKeys.doctorById(id, language),
   5 * 60 * 1000 // 5 minutes TTL
 );
 
 // Yangi shifokor yaratish
 export const createDoctor = async (doctorData: CreateDoctorData): Promise<{ data: Doctor | null; error: any }> => {
   try {
+    console.log('👨‍⚕️ Creating doctor:', { full_name: doctorData.full_name, email: doctorData.email, specialization: doctorData.specialization });
     if (!isSupabaseAvailable() || !supabase) {
       return { data: null, error: { message: 'Supabase not available' } };
     }
 
-    
+
         // Shifokorni yaratish
         const { data: doctor, error: doctorError } = await supabase
           .from('doctors')
@@ -368,11 +395,12 @@ export const createDoctor = async (doctorData: CreateDoctorData): Promise<{ data
           })
           .select()
           .single();
-    
+
         if (doctorError) {
           console.log('❌ Supabase error creating doctor:', doctorError);
           return { data: null, error: doctorError };
         }
+        console.log('✅ Doctor created successfully:', { id: doctor.id, name: doctor.full_name, email: doctor.email });
     // Tarjimalarni yaratish
     if (doctorData.translations) {
       const translationInserts = Object.entries(doctorData.translations).map(([lang, translation]) => ({

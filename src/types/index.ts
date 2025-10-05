@@ -73,8 +73,11 @@ export interface Question {
   status: 'open' | 'answered' | 'closed';
   answers_count: number;
   views_count: number;
+  votes_count: number;
+  best_answer_id?: string;
   created_at: string;
   updated_at: string;
+  user_vote_type?: 'up' | 'down' | null;
 }
 
 export interface Answer {
@@ -83,8 +86,9 @@ export interface Answer {
   question_id: string;
   author_id: string;
   author?: User;
-  is_accepted: boolean;
+  is_best_answer: boolean;
   votes_count: number;
+  helpful_count?: number;
   created_at: string;
   updated_at: string;
 }

@@ -100,64 +100,7 @@ const FeaturedDoctors: React.FC<FeaturedDoctorsProps> = ({ doctors = [] }) => {
   };
 
   // Mock data for demonstration
-  const mockDoctors: Doctor[] = [
-    {
-      id: '550e8400-e29b-41d4-a716-446655440001',
-      email: 'aziza.karimova@revmoinfo.uz',
-      full_name: 'Dr. Aziza Karimova',
-      role: 'doctor',
-      avatar_url: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Revmatologiya bo\'yicha 15 yillik tajribaga ega mutaxassis. Revmatoid artrit va boshqa autoimmun kasalliklar bo\'yicha ekspert.',
-      specialization: 'Revmatologiya',
-      experience_years: 15,
-      certificates: ['Revmatologiya diplomi', 'Autoimmun kasalliklar sertifikati'],
-      verified: true,
-      created_at: '2024-01-01',
-      updated_at: '2024-01-01'
-    },
-    {
-      id: '550e8400-e29b-41d4-a716-446655440002',
-      email: 'bobur.toshmatov@revmoinfo.uz',
-      full_name: 'Dr. Bobur Toshmatov',
-      role: 'doctor',
-      avatar_url: 'https://images.pexels.com/photos/6098828/pexels-photo-6098828.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Ortopediya va travmatologiya mutaxassisi. Qo\'shma kasalliklari va jarrohlik amaliyotlari bo\'yicha tajribali.',
-      specialization: 'Ortopediya va travmatologiya',
-      experience_years: 12,
-      certificates: ['Ortopediya diplomi', 'Jarrohlik sertifikati'],
-      verified: true,
-      created_at: '2024-01-01',
-      updated_at: '2024-01-01'
-    },
-    {
-      id: '550e8400-e29b-41d4-a716-446655440003',
-      email: 'nilufar.abdullayeva@revmoinfo.uz',
-      full_name: 'Dr. Nilufar Abdullayeva',
-      role: 'doctor',
-      avatar_url: 'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Reabilitatsiya va jismoniy terapiya mutaxassisi. Harakat terapiyasi va bemor reabilitatsiyasi bo\'yicha ekspert.',
-      specialization: 'Reabilitatsiya va jismoniy terapiya',
-      experience_years: 10,
-      certificates: ['Jismoniy terapiya diplomi', 'Reabilitatsiya sertifikati'],
-      verified: true,
-      created_at: '2024-01-01',
-      updated_at: '2024-01-01'
-    },
-    {
-      id: '550e8400-e29b-41d4-a716-446655440004',
-      email: 'sardor.rahimov@revmoinfo.uz',
-      full_name: 'Dr. Sardor Rahimov',
-      role: 'doctor',
-      avatar_url: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Ichki kasalliklar va kardiologiya mutaxassisi. Yurak-qon tomir kasalliklari va metabolik buzilishlar bo\'yicha tajribali.',
-      specialization: 'Ichki kasalliklar, Kardiologiya',
-      experience_years: 18,
-      certificates: ['Ichki kasalliklar diplomi', 'Kardiologiya sertifikati'],
-      verified: true,
-      created_at: '2024-01-01',
-      updated_at: '2024-01-01'
-    }
-  ];
+  const mockDoctors: Doctor[] = [];
 
   const displayDoctors = loadedDoctors.length > 0 ? loadedDoctors : (doctors.length > 0 ? doctors : mockDoctors);
 
@@ -302,9 +245,10 @@ const FeaturedDoctors: React.FC<FeaturedDoctorsProps> = ({ doctors = [] }) => {
         <div className="text-center">
           <Link
             to="/doctors"
-            className="inline-flex items-center space-x-2 theme-border border theme-accent px-8 py-4 rounded-lg font-semibold hover:theme-bg-tertiary transition-colors duration-300"
+            className="inline-flex items-center space-x-3 theme-accent-bg text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <span>{t('viewAllDoctors')}</span>
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
         </div>
       </div>
