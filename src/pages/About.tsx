@@ -148,7 +148,7 @@ const About: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">About Revmoinfo</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{t('aboutTitle')}</span>
+              <span className="text-primary-500">{t('aboutTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               {t('aboutSubtitle')}
@@ -158,14 +158,14 @@ const About: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16 mt-12">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 text-center animate-fade-in hover-medical"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Icon size={32} className="text-blue-600" />
@@ -179,7 +179,7 @@ const About: React.FC = () => {
 
           {/* Mission & Vision */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left hover-medical">
+            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                 <Target size={32} className="text-blue-600" />
               </div>
@@ -203,7 +203,7 @@ const About: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right hover-medical">
+            <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-right hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mb-6">
                 <Globe size={32} className="text-teal-600" />
               </div>
@@ -242,8 +242,8 @@ const About: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover-medical animate-fade-in"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Icon size={28} className="text-blue-600" />
@@ -268,8 +268,8 @@ const About: React.FC = () => {
               {team.map((member, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover-medical animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className="relative">
                     <img
@@ -315,7 +315,7 @@ const About: React.FC = () => {
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                      <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6">
+                      <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                         <div className="text-2xl font-bold text-blue-600 mb-2">{achievement.year}</div>
                         <h3 className="text-lg font-bold theme-text mb-2">{t(achievement.titleKey)}</h3>
                         <p className="theme-text-secondary">{t(achievement.descriptionKey)}</p>
@@ -386,7 +386,7 @@ const About: React.FC = () => {
           </div>
 
           {/* Contact CTA */}
-          <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl p-12 text-center text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl p-12 text-center text-white hover:shadow-xl transition-all duration-300 transform hover:scale-105">
             <h2 className="text-3xl font-bold mb-4">{t('contactUs')}</h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {t('haveQuestions')}
@@ -394,11 +394,11 @@ const About: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-8">
               <div className="flex items-center space-x-2">
                 <Mail size={20} />
-                <span>info@revmohelp.uz</span>
+                <span>revmohelp@gmail.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={20} />
-                <span>+998 71 123 45 67</span>
+                <span>+998 (93) 200 10 22</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin size={20} />
@@ -409,7 +409,7 @@ const About: React.FC = () => {
                 </span>
               </div>
             </div>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-colors duration-200 transform hover:scale-105">
+            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
               {t('contactUsBtn')}
             </button>
             <p className="mt-4 text-blue-100">

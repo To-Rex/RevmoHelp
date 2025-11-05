@@ -52,7 +52,7 @@ const LanguageSelector: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg theme-shadow-lg theme-border border py-2 z-50" ref={menuRef}>
+        <div className="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-xl theme-border border py-2 z-50" ref={menuRef} style={{ backgroundColor: 'white', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
           {languages.map((language) => (
             <button
               key={language.code}

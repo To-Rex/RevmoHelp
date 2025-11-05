@@ -119,7 +119,7 @@ const Partnership: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">Partnership Program</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{t('partnershipTitle')}</span>
+              <span className="text-primary-500">{t('partnershipTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               {t('partnershipSubtitle')}
@@ -136,7 +136,7 @@ const Partnership: React.FC = () => {
                 <div
                   key={index}
                   className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 text-center animate-fade-in hover-medical"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Icon size={32} className="text-blue-600" />
@@ -163,7 +163,7 @@ const Partnership: React.FC = () => {
                   <div
                     key={index}
                     className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-left hover-medical"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
                     <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
                       <Icon size={32} className="text-blue-600" />
@@ -201,7 +201,7 @@ const Partnership: React.FC = () => {
                   <div
                     key={index}
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover-medical animate-fade-in"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Icon size={28} className="text-blue-600" />
@@ -277,11 +277,11 @@ const Partnership: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-8">
               <div className="flex items-center space-x-2">
                 <Mail size={20} />
-                <span>partnership@revmohelp.uz</span>
+                <span>revmohelp@gmail.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={20} />
-                <span>+998 71 123 45 67</span>
+                <span>+998 (93) 200 10 22</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin size={20} />

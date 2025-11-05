@@ -130,7 +130,7 @@ const Diseases: React.FC = () => {
               <span className="text-red-800 dark:text-red-300 text-sm font-medium">Medical Conditions</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Revmatik <span className="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">Kasalliklar</span>
+              Revmatik <span className="text-red-600">Kasalliklar</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               Eng keng tarqalgan revmatik kasalliklar haqida batafsil ma'lumot oling. 

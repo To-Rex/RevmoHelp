@@ -32,6 +32,8 @@ export interface Post {
   created_at: string;
   updated_at: string;
   views_count: number;
+  rating?: number;
+  rating_count?: number;
   translations?: PostTranslation[];
   current_language?: string;
 }

@@ -39,13 +39,13 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
     name: '',
     slug: '',
     description: '',
-    color: '#3B82F6'
+    color: '#62B6CB'
   });
 
   const predefinedColors = [
-    '#3B82F6', '#10B981', '#F59E0B', '#EC4899', 
-    '#8B5CF6', '#06B6D4', '#EF4444', '#84CC16',
-    '#F97316', '#6366F1', '#14B8A6', '#F43F5E'
+    '#62B6CB', '#5FA8D3', '#1B4965', '#BEE9E8',
+    '#CAE9FF', '#62B6CB', '#1B4965', '#BEE9E8',
+    '#5FA8D3', '#CAE9FF', '#62B6CB', '#1B4965'
   ];
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
       name: '',
       slug: '',
       description: '',
-      color: '#3B82F6'
+      color: '#62B6CB'
     });
     setEditingCategory(null);
   };

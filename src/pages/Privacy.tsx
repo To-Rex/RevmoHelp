@@ -70,8 +70,8 @@ const Privacy: React.FC = () => {
   ];
 
   const contacts = [
-    { icon: Mail, label: 'Email', value: 'privacy@revmoinfo.uz' },
-    { icon: Phone, label: 'Telefon', value: '+998 71 123 45 67' },
+    { icon: Mail, label: 'Email', value: 'revmohelp@gmail.com' },
+    { icon: Phone, label: 'Telefon', value: '+998 (93) 200 10 22' },
     { icon: Globe, label: 'Manzil', value: 'Toshkent, Yunusobod tumani' }
   ];
 
@@ -94,7 +94,7 @@ const Privacy: React.FC = () => {
               <span className="text-blue-800 dark:text-blue-300 text-sm font-medium">Privacy & Security</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Maxfiylik</span> Siyosati
+              <span className="text-primary-500">Maxfiylik</span> Siyosati
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               Sizning shaxsiy ma'lumotlaringiz bizning eng muhim ustuvorligimizdir. 
@@ -134,7 +134,7 @@ const Privacy: React.FC = () => {
                 <div
                   key={index}
                   className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
                 >
                   <div className={`w-16 h-16 ${section.color} rounded-2xl flex items-center justify-center mb-6 animate-pulse-medical`}>
                     <Icon size={28} />
@@ -147,7 +147,7 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Your Rights */}
-          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600" style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
             <div className="text-center mb-8">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <UserCheck size={32} className="text-purple-600 dark:text-purple-400" />
@@ -163,7 +163,7 @@ const Privacy: React.FC = () => {
                 <div
                   key={index}
                   className="flex items-center space-x-3 p-4 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-200 animate-fade-in"
-                  style={{ animationDelay: `${(index + 6) * 100}ms` }}
+                  style={{ animationDelay: `${(index + 6) * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
                 >
                   <CheckCircle size={20} className="text-green-600 dark:text-green-400 flex-shrink-0" />
                   <span className="theme-text-secondary">{right}</span>
@@ -187,7 +187,7 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Contact for Privacy */}
-          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000" style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold theme-text mb-4">Maxfiylik Bo'yicha Savollar</h2>
               <p className="theme-text-secondary">
@@ -202,7 +202,7 @@ const Privacy: React.FC = () => {
                   <div
                     key={index}
                     className="text-center p-6 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
-                    style={{ animationDelay: `${(index + 10) * 100}ms` }}
+                    style={{ animationDelay: `${(index + 10) * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
                   >
                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
                       <Icon size={20} className="text-blue-600 dark:text-blue-400" />

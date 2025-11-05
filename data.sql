@@ -801,8 +801,6 @@ From 2019 to the present - Head of the Department of Propaedeutics of Internal M
 -- Data for Name: global_settings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."global_settings" ("id", "setting_key", "setting_value", "updated_by", "active", "created_at", "updated_at") VALUES
-	('d2ea36c6-d428-49a0-9ae2-6eba9f1e5fd9', 'color_scheme', '{"name": "Revmohelp (Default)", "items": "#FFFFFF", "scheme": "default", "primary": "#90978C", "appliedAt": "2025-09-27T06:30:10.251Z", "background": "#CAD8D6", "primaryHover": "#7A8177", "primaryActive": "#6B7268"}', NULL, true, '2025-09-24 19:58:57.322534+00', '2025-09-27 06:30:10.326143+00');
 
 
 --

@@ -1,20 +1,22 @@
+
+/* Import centralized color system */
+@import './styles/colors.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import centralized color system */
-@import './styles/colors.css';
 
 
 /* Global transitions */
 *,
 *::before,
 *::after {
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ border: none;
+ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+             color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+             border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+             box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+             opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Theme-aware utility classes */
@@ -90,18 +92,15 @@
   box-shadow: 0 20px 25px -5px var(--shadow-lg), 0 10px 10px -5px var(--shadow-md);
 }
 
-.theme-gradient {
-  background: var(--gradient-primary);
+.theme-shadow-elevation-6 {
+  box-shadow: var(--shadow-elevation-6);
 }
 
-.theme-gradient-secondary {
-  background: var(--gradient-secondary);
-}
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #CAD8D6;
+    background-color: #FFFFFF;
     color: var(--text-primary);
   }
 
@@ -111,7 +110,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
-    background-color: #CAD8D6;
+    background-color: #FFFFFF;
     color: var(--text-primary);
   }
 
@@ -257,10 +256,6 @@
     transform: scale(0.9);
   }
 
-  .animate-gradient {
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
-  }
 
   .animate-blob {
     animation: blob 8s infinite;
@@ -337,18 +332,10 @@
     backdrop-filter: blur(8px);
   }
 
-  .bg-gradient-radial {
-    background-image: radial-gradient(ellipse at center, var(--tw-gradient-stops));
-  }
-
   .glass-effect {
-    background: rgba(202, 216, 214, 0.1);
+    background: rgba(190, 233, 232, 0.1);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(202, 216, 214, 0.2);
-  }
-
-  .medical-gradient {
-    background: linear-gradient(135deg, #CAD8D6 0%, #90978C 100%);
+    border: 1px solid rgba(190, 233, 232, 0.2);
   }
 }
 
@@ -542,11 +529,6 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
 @keyframes blob {
   0% { transform: translate(0px, 0px) scale(1); }
@@ -631,7 +613,7 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #90978C;
+  outline: 2px solid #62B6CB;
   outline-offset: 2px;
 }
 
@@ -697,7 +679,6 @@ textarea:focus-visible {
   .animate-spin-slow,
   .animate-wiggle,
   .animate-scale-in,
-  .animate-gradient,
   .animate-blob,
   .animate-tilt,
   .animate-heartbeat,

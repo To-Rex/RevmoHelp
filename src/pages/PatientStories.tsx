@@ -123,7 +123,7 @@ const PatientStories: React.FC = () => {
               <span className="text-green-800 dark:text-green-300 text-sm font-medium">Patient Success Stories</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">{t('patientStoriesTitle')}</span>
+              <span className="text-green-600">{t('patientStoriesTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               {t('patientStoriesSubtitle')}
@@ -149,32 +149,32 @@ const PatientStories: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           {/* Success Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-            <div className="bg-white dark:bg-white rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] dark:ring-white/10 p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16 mt-8">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Heart size={32} className="text-white" />
               </div>
               <div className="text-3xl font-bold theme-text mb-2">{stories.length}+</div>
               <div className="theme-text-secondary">{t('healedPatients')}</div>
             </div>
-            
-            <div className="bg-white dark:bg-white rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] dark:ring-white/10 p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-100">
+
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-100 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <TrendingUp size={32} className="text-white" />
               </div>
               <div className="text-3xl font-bold theme-text mb-2">95%</div>
               <div className="theme-text-secondary">{t('successRate')}</div>
             </div>
-            
-            <div className="bg-white dark:bg-white rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] dark:ring-white/10 p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-200">
+
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-200 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Stethoscope size={32} className="text-white" />
               </div>
               <div className="text-3xl font-bold theme-text mb-2">15+</div>
               <div className="theme-text-secondary">{t('expertDoctors')}</div>
             </div>
-            
-            <div className="bg-white dark:bg-white rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] dark:ring-white/10 p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-300">
+
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in delay-300 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Clock size={32} className="text-white" />
               </div>
@@ -184,52 +184,24 @@ const PatientStories: React.FC = () => {
           </div>
 
           {/* Content Type Filter */}
-          <div className="bg-white dark:bg-white rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] dark:ring-white/10 p-6 mb-12">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={() => setSelectedType('all')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 font-medium ${
-                  selectedType === 'all'
-                    ? 'bg-white dark:bg-white ring-2 ring-[#94ABA3] theme-accent font-semibold shadow-md'
-                    : 'bg-white dark:bg-white ring-1 ring-[#CAD8D6] text-[#3E433B] dark:text-black hover:ring-[#94ABA3]'
-                }`}
-              >
-                <Heart size={18} />
-                <span>Barcha hikoyalar ({stories.length})</span>
-              </button>
-              <button
-                onClick={() => setSelectedType('text')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 font-medium ${
-                  selectedType === 'text'
-                    ? 'bg-white dark:bg-white ring-2 ring-[#94ABA3] theme-accent font-semibold shadow-md'
-                    : 'bg-white dark:bg-white ring-1 ring-[#CAD8D6] text-[#3E433B] dark:text-black hover:ring-[#94ABA3]'
-                }`}
-              >
-                <FileText size={18} />
-                <span>{t('textStories')} ({stories.filter(s => s.content_type === 'text').length})</span>
-              </button>
-              <button
-                onClick={() => setSelectedType('image')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 font-medium ${
-                  selectedType === 'image'
-                    ? 'bg-white dark:bg-white ring-2 ring-[#94ABA3] theme-accent font-semibold shadow-md'
-                    : 'bg-white dark:bg-white ring-1 ring-[#CAD8D6] text-[#3E433B] dark:text-black hover:ring-[#94ABA3]'
-                }`}
-              >
-                <ImageIcon size={18} />
-                <span>{t('imageStories')} ({stories.filter(s => s.content_type === 'image').length})</span>
-              </button>
-              <button
-                onClick={() => setSelectedType('video')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 font-medium ${
-                  selectedType === 'video'
-                    ? 'bg-white dark:bg-white ring-2 ring-[#94ABA3] theme-accent font-semibold shadow-md'
-                    : 'bg-white dark:bg-white ring-1 ring-[#CAD8D6] text-[#3E433B] dark:text-black hover:ring-[#94ABA3]'
-                }`}
-              >
-                <Video size={18} />
-                <span>{t('videoStories')} ({stories.filter(s => s.content_type === 'video').length})</span>
-              </button>
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 mb-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* All Stories Filter */}
+              <div className="flex-1">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                  <select style={{ backgroundColor: '#ffffff' }}
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                  >
+                    <option value="all">Barcha hikoyalar ({stories.length})</option>
+                    <option value="text">{t('textStories')} ({stories.filter(s => s.content_type === 'text').length})</option>
+                    <option value="image">{t('imageStories')} ({stories.filter(s => s.content_type === 'image').length})</option>
+                    <option value="video">{t('videoStories')} ({stories.filter(s => s.content_type === 'video').length})</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -240,8 +212,8 @@ const PatientStories: React.FC = () => {
               return (
                 <article
                   key={story.id}
-                  className="bg-white dark:bg-white rounded-3xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-500 transform hover:-translate-y-3 ring-1 ring-[#CAD8D6] hover:ring-[#94ABA3] border-0 overflow-hidden animate-fade-in group cursor-pointer"
-                  style={{ animationDelay: `${index * 150}ms` }}
+                  className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in group cursor-pointer hover:theme-shadow-lg transition-all duration-500 transform hover:-translate-y-3 hover-medical"
+                  style={{ animationDelay: `${index * 150}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   onClick={() => handleOpenDetail(story.id)}
                   role="link"
                   tabIndex={0}
@@ -417,7 +389,7 @@ const PatientStories: React.FC = () => {
           )}
 
           {/* Call to Action */}
-          <div className="mt-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-12 text-white text-center animate-zoom-in">
+          <div className="mt-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-12 text-white text-center animate-zoom-in" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-pulse-medical">
               <Heart size={36} className="text-white" />
             </div>

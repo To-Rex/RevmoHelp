@@ -7,7 +7,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import { supabase, isSupabaseAvailable, setSupabaseConnectionHealth } from './lib/supabase';
 import { useAuth } from './hooks/useAuth';
 import { useLanguageRouting } from './hooks/useLanguageRouting';
-import { initializeColorScheme, loadGlobalColorScheme } from './utils/colorScheme';
 import { preloadCriticalData } from './lib/cache';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -239,14 +238,9 @@ function App() {
   const { ready } = useTranslation();
   const { user, loading } = useAuth();
 
-  // Initialize color scheme on app load
+  // Preload critical data on app load
   useEffect(() => {
-    loadGlobalColorScheme();
-    
-    // Preload critical data after color scheme is loaded
-    setTimeout(() => {
-      preloadCriticalData();
-    }, 500);
+    preloadCriticalData();
   }, []);
 
   // Handle auth state changes and redirects

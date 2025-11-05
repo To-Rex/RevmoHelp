@@ -308,7 +308,7 @@ const DoctorRegistration: React.FC = () => {
             <span className="text-blue-800 text-sm font-medium">Doctor Registration</span>
           </div>
           <h1 className="text-4xl font-bold theme-text mb-4">
-            Shifokor <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Profili</span> Yaratish
+            Shifokor <span className="text-primary-500">Profili</span> Yaratish
           </h1>
           <p className="text-xl theme-text-secondary max-w-2xl mx-auto">
             Professional shifokor profili yarating va bemorlar bilan bog'laning. 

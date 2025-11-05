@@ -525,7 +525,7 @@ const PatientStoryDetail: React.FC = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="mt-16 theme-gradient-secondary rounded-3xl p-12 text-white text-center animate-zoom-in delay-1000">
+          <div className="mt-16 bg-primary-500 rounded-3xl p-12 text-white text-center animate-zoom-in delay-1000">
             <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-pulse-medical">
               <Heart size={36} className="text-white" />
             </div>

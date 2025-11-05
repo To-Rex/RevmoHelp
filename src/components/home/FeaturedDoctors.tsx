@@ -34,10 +34,10 @@ const FeaturedDoctors: React.FC<FeaturedDoctorsProps> = ({ doctors = [] }) => {
       const cacheKey = `featured_doctors_${i18n.language}`;
       const cachedData = dataCache.get(cacheKey);
       
-      if (cachedData) {
-        setLoadedDoctors(cachedData.doctors);
-        setDoctorRatings(cachedData.ratings);
-        setDoctorComments(cachedData.comments);
+      if (cachedData && typeof cachedData === 'object' && 'doctors' in cachedData) {
+        setLoadedDoctors((cachedData as any).doctors);
+        setDoctorRatings((cachedData as any).ratings);
+        setDoctorComments((cachedData as any).comments);
         setDataLoaded(true);
         setLoading(false);
         console.log('📦 Using cached featured doctors data');
@@ -153,8 +153,8 @@ const FeaturedDoctors: React.FC<FeaturedDoctorsProps> = ({ doctors = [] }) => {
           {displayDoctors.slice(0, 3).map((doctor, index) => (
             <div
               key={doctor.id}
-              className="bg-white dark:bg-white rounded-3xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-500 hover:-translate-y-2 ring-1 ring-[#CAD8D6] hover:ring-[#94ABA3] border-0 overflow-hidden animate-fade-in h-full flex flex-col group"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in h-full flex flex-col group hover:theme-shadow-lg transition-all duration-500 hover:-translate-y-2 hover-medical"
+              style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
             >
               {/* Doctor Photo */}
               <div className="relative overflow-hidden">
@@ -245,7 +245,7 @@ const FeaturedDoctors: React.FC<FeaturedDoctorsProps> = ({ doctors = [] }) => {
         <div className="text-center">
           <Link
             to="/doctors"
-            className="inline-flex items-center space-x-3 theme-accent-bg text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center space-x-3 bg-[#62B6CB] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#5FA8D3] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <span>{t('viewAllDoctors')}</span>
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />

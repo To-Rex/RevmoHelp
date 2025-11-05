@@ -126,10 +126,10 @@ const Posts: React.FC = () => {
 
   // Mock categories
   const getMockCategories = () => [
-    { id: '1', name: 'Artrit', slug: 'artrit', color: '#3B82F6', created_at: '2024-01-01' },
-    { id: '2', name: 'Artroz', slug: 'artroz', color: '#10B981', created_at: '2024-01-01' },
-    { id: '3', name: 'Jismoniy tarbiya', slug: 'jismoniy-tarbiya', color: '#F59E0B', created_at: '2024-01-01' },
-    { id: '4', name: 'Dorilar', slug: 'dorilar', color: '#EC4899', created_at: '2024-01-01' }
+    { id: '1', name: 'Artrit', slug: 'artrit', color: '#62B6CB', created_at: '2024-01-01' },
+    { id: '2', name: 'Artroz', slug: 'artroz', color: '#5FA8D3', created_at: '2024-01-01' },
+    { id: '3', name: 'Jismoniy tarbiya', slug: 'jismoniy-tarbiya', color: '#1B4965', created_at: '2024-01-01' },
+    { id: '4', name: 'Dorilar', slug: 'dorilar', color: '#BEE9E8', created_at: '2024-01-01' }
   ];
 
   // Mock posts
@@ -154,7 +154,7 @@ const Posts: React.FC = () => {
         id: '1',
         name: 'Artrit',
         slug: 'artrit',
-        color: '#3B82F6',
+        color: '#62B6CB',
         created_at: '2024-01-01'
       },
       tags: ['artrit', 'revmatik kasallik', 'davolash'],
@@ -188,7 +188,7 @@ const Posts: React.FC = () => {
         id: '2',
         name: 'Artroz',
         slug: 'artroz',
-        color: '#10B981',
+        color: '#5FA8D3',
         created_at: '2024-01-01'
       },
       tags: ['artroz', 'belgilar', 'profilaktika'],
@@ -221,7 +221,7 @@ const Posts: React.FC = () => {
         id: '3',
         name: 'Jismoniy tarbiya',
         slug: 'jismoniy-tarbiya',
-        color: '#F59E0B',
+        color: '#1B4965',
         created_at: '2024-01-01'
       },
       tags: ['mashqlar', 'og\'riq', 'reabilitatsiya'],
@@ -285,7 +285,7 @@ const Posts: React.FC = () => {
           </div>
 
           {/* Search and Filter */}
-          <div className="bg-white dark:bg-[#3E433B] rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] p-6 mb-8 animate-slide-up" style={{ backgroundColor: '#ffffff' }}>
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 mb-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1">
@@ -296,7 +296,7 @@ const Posts: React.FC = () => {
                    placeholder={t('searchPosts')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#CAD8D6] border-transparent rounded-lg focus:ring-2 focus:ring-[#90978C] focus:border-[#90978C] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
                   />
                 </div>
               </div>
@@ -308,7 +308,7 @@ const Posts: React.FC = () => {
                   <select style={{ backgroundColor: '#ffffff' }}
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#CAD8D6] border-transparent rounded-lg focus:ring-2 focus:ring-[#90978C] focus:border-[#90978C] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
                   >
                    <option value="all">{t('allCategories')}</option>
                     {categories.map((category) => (
@@ -338,7 +338,7 @@ const Posts: React.FC = () => {
                 className="group block h-full"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <article className="bg-white dark:bg-[#3E433B] rounded-3xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-500 hover:-translate-y-2 ring-1 ring-[#CAD8D6] hover:ring-[#94ABA3] border-0 overflow-hidden animate-fade-in group-hover:scale-[1.02] h-full flex flex-col" style={{ backgroundColor: '#ffffff' }}>
+                <article className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in group-hover:scale-[1.02] h-full flex flex-col hover:theme-shadow-lg transition-all duration-500 hover:-translate-y-2 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   {/* Post Media */}
                   <div className="relative overflow-hidden aspect-[16/9]">
                     {post.featured_image_url ? (
@@ -357,7 +357,7 @@ const Posts: React.FC = () => {
                           loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = `https://img.youtube.com/vi/${post.youtube_url.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
+                            target.src = `https://img.youtube.com/vi/${post.youtube_url?.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
                           }}
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center group-hover:bg-opacity-50 transition-all duration-300">
@@ -529,8 +529,9 @@ const Posts: React.FC = () => {
           {/* Load More */}
           {filteredPosts.length > 0 && (
             <div className="text-center">
-              <button className="theme-accent-bg text-white px-8 py-4 rounded-xl font-semibold hover:opacity-95 transition-colors duration-200 transform hover:scale-105 shadow-lg">
-                Ko'proq maqolalarni ko'rish
+              <button className="inline-flex items-center space-x-2 bg-[#62B6CB] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#5FA8D3] transition-colors duration-300 transform hover:scale-105">
+                <span>Ko'proq maqolalarni ko'rish</span>
+                <ArrowRight size={20} />
               </button>
             </div>
           )}

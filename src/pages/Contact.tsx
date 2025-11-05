@@ -56,13 +56,13 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       title: t('contactPage.info.emailTitle'),
-      details: [t('contactPage.info.email1'), t('contactPage.info.email2')],
+      details: [t('contactPage.info.email1')],
       color: 'bg-blue-100 text-blue-600'
     },
     {
       icon: Phone,
       title: t('contactPage.info.phoneTitle'),
-      details: [t('contactPage.info.phone1'), t('contactPage.info.phone2')],
+      details: [t('contactPage.info.phone1')],
       color: 'bg-green-100 text-green-600'
     },
     {
@@ -134,7 +134,7 @@ const Contact: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">{t('contactPage.badge')}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{t('contactPage.heading')}</span>
+              <span className="text-primary-500">{t('contactPage.heading')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               {t('contactPage.intro')}
@@ -144,14 +144,14 @@ const Contact: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 mt-12">
             {contactInfo.map((info, index) => {
               const Icon = info.icon;
               return (
                 <div
                   key={index}
                   className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className={`w-16 h-16 ${info.color} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
                     <Icon size={28} />
@@ -201,7 +201,7 @@ const Contact: React.FC = () => {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                           placeholder={t('contactPage.form.namePlaceholder')}
                         />
                       </div>
@@ -215,7 +215,7 @@ const Contact: React.FC = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                           placeholder={t('contactPage.form.emailPlaceholder')}
                         />
                       </div>
@@ -231,7 +231,7 @@ const Contact: React.FC = () => {
                           name="phone"
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                           placeholder={t('contactPage.form.phonePlaceholder')}
                         />
                       </div>
@@ -244,7 +244,7 @@ const Contact: React.FC = () => {
                           value={formData.type}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         >
                           <option value="general">{t('contactPage.form.types.general')}</option>
                           <option value="medical">{t('contactPage.form.types.medical')}</option>
@@ -264,7 +264,7 @@ const Contact: React.FC = () => {
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder={t('contactPage.form.subjectPlaceholder')}
                       />
                     </div>
@@ -279,7 +279,7 @@ const Contact: React.FC = () => {
                         onChange={handleInputChange}
                         required
                         rows={6}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
                         placeholder={t('contactPage.form.messagePlaceholder')}
                       />
                     </div>
@@ -387,7 +387,7 @@ const Contact: React.FC = () => {
               </div>
               <div className="bg-gray-100 rounded-2xl h-96 overflow-hidden">
                 <iframe
-                  src="https://maps.google.com/maps?q=Yunusabad%20district%2C%20Amir%20Temur%20street%20108%2C%20Tashkent&output=embed"
+                  src="https://maps.google.com/maps?q=41.347861,69.367472&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

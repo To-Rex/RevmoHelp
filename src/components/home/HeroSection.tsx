@@ -31,12 +31,13 @@ const StatCard: React.FC<{
   };
 
   return (
-    <div 
+    <div
       ref={ref}
-      className="group text-center p-6 theme-bg-secondary backdrop-blur-sm rounded-xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-300 hover:scale-105 theme-border border"
+      className="group text-center p-6 theme-bg-secondary backdrop-blur-sm rounded-xl theme-shadow-lg theme-border border hover:theme-shadow-lg transition-all duration-300 hover:scale-105 hover-medical"
+      style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
     >
       <div className="inline-flex items-center justify-center w-14 h-14 bg-primary-100 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
-        <Icon size={28} className="theme-accent" />
+        <Icon size={28} className="text-white" />
       </div>
       <div className="text-2xl font-bold theme-text mb-2 tabular-nums">
         {formatNumber(count)}{suffix}
@@ -123,8 +124,8 @@ const HeroSection: React.FC = () => {
       {/* Animated Geometric Shapes */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large Geometric Shapes */}
-        <div className="absolute -top-40 -right-40 w-80 h-80 theme-gradient opacity-20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 theme-gradient-secondary opacity-15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 opacity-20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary-200 opacity-15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-200 opacity-10 rounded-full blur-2xl animate-pulse-slow"></div>
         
         {/* Medical Icons - Subtle and Professional */}
@@ -153,9 +154,9 @@ const HeroSection: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10">
         <div className="text-center max-w-4xl mx-auto">
           {/* Animated Badge */}
-          <div className="inline-flex items-center space-x-2 theme-bg-secondary backdrop-blur-sm rounded-full px-6 py-3 mb-8 animate-fade-in hover:scale-105 transition-all duration-300 theme-shadow-lg theme-border border">
+          <div className="inline-flex items-center space-x-2 theme-bg-secondary backdrop-blur-sm rounded-full px-6 py-3 mb-8 animate-fade-in hover:scale-105 transition-all duration-300 theme-shadow-lg theme-border border" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <Stethoscope size={18} className="theme-accent" />
-            <span className="theme-accent text-sm font-medium">Professional Medical Platform</span>
+            <span className="theme-accent text-sm font-medium border border-secondary-500 rounded px-1">Professional Medical Platform</span>
           </div>
 
           {/* Main Heading */}
@@ -181,7 +182,7 @@ const HeroSection: React.FC = () => {
               <>
                 <LanguageAwareLink
                   to="/posts"
-                  className="group theme-accent-bg text-white px-8 py-4 rounded-xl font-semibold hover:theme-accent-bg transition-all duration-300 transform hover:scale-105 theme-shadow-lg hover:theme-shadow-xl flex items-center space-x-3"
+                  className="group bg-[#62B6CB] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#5FA8D3] transition-all duration-300 transform hover:scale-105 theme-shadow-lg hover:theme-shadow-xl flex items-center space-x-3"
                 >
                   <BookOpen size={20} />
                   <span>{t('readArticles')}</span>
@@ -199,11 +200,11 @@ const HeroSection: React.FC = () => {
               // Non-authenticated user buttons
               <>
                 <LanguageAwareLink
-                  to="/consultation"
+                  to="/register"
                   className="group bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:scale-105 theme-shadow-lg hover:theme-shadow-xl flex items-center space-x-3"
                 >
                   <MessageSquare size={20} />
-                  <span>{t('getFreeConsultation')}</span>
+                  <span>{t('register')}</span>
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </LanguageAwareLink>
                 <LanguageAwareLink

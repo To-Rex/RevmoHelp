@@ -125,7 +125,7 @@ const DiseasesSection: React.FC = () => {
                 className="group block animate-fade-in transform hover:scale-105 transition-all duration-300"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className={`relative overflow-hidden rounded-2xl border-2 ${bgColor} p-6 h-full hover:shadow-xl transition-all duration-500 group-hover:-translate-y-2`}>
+                <div className={`relative overflow-hidden rounded-2xl border-2 ${bgColor} p-6 h-full hover:shadow-xl transition-all duration-500 group-hover:-translate-y-2`} style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   {/* Background Pattern */}
                   <div className="absolute inset-0 opacity-5">
                     <div className="absolute inset-0" style={{
@@ -190,7 +190,7 @@ const DiseasesSection: React.FC = () => {
         <div className="text-center animate-fade-in delay-700">
           <LanguageAwareLink
             to="/diseases"
-            className="inline-flex items-center space-x-3 theme-accent-bg text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center space-x-3 bg-[#62B6CB] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#5FA8D3] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <Activity size={20} />
             <span>{t('allDiseases')}</span>

@@ -2,20 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
-  Mail, 
-  Lock, 
   Eye, 
   EyeOff, 
-  User, 
-  Phone,
   ArrowRight, 
   Stethoscope,
   Heart,
   Activity,
   Shield,
-  CheckCircle,
   AlertCircle,
-  UserPlus,
   Users,
   BookOpen
 } from 'lucide-react';
@@ -55,15 +49,15 @@ const Register: React.FC = () => {
 
   const validateStep1 = () => {
     if (!formData.fullName.trim()) {
-      setError('To\'liq ismingizni kiriting');
+      setError(t('registerPage.errorFullNameRequired'));
       return false;
     }
     if (!formData.email.trim()) {
-      setError('Email manzilni kiriting');
+      setError(t('registerPage.errorEmailRequired'));
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError('To\'g\'ri email manzil kiriting');
+      setError(t('registerPage.errorEmailInvalid'));
       return false;
     }
     return true;
@@ -71,19 +65,19 @@ const Register: React.FC = () => {
 
   const validateStep2 = () => {
     if (formData.password.length < 6) {
-      setError('Parol kamida 6 ta belgidan iborat bo\'lishi kerak');
+      setError(t('registerPage.errorPasswordLength'));
       return false;
     }
     if (formData.password !== formData.confirmPassword) {
-      setError('Parollar mos kelmaydi');
+      setError(t('registerPage.errorPasswordMismatch'));
       return false;
     }
     if (!formData.agreeToTerms) {
-      setError('Foydalanish shartlarini qabul qiling');
+      setError(t('registerPage.errorAgreeTerms'));
       return false;
     }
     if (!formData.agreeToPrivacy) {
-      setError('Maxfiylik siyosatini qabul qiling');
+      setError(t('registerPage.errorAgreePrivacy'));
       return false;
     }
     return true;
@@ -121,22 +115,22 @@ const Register: React.FC = () => {
       
       if (error) {
         if (error.message.includes('User already registered')) {
-          setError('Bu email bilan allaqachon ro\'yxatdan o\'tilgan');
+          setError(t('registerPage.errorUserExists'));
         } else if (error.message.includes('Password should be at least 6 characters')) {
-          setError('Parol kamida 6 ta belgidan iborat bo\'lishi kerak');
+          setError(t('registerPage.errorPasswordLength'));
         } else {
           setError(error.message);
         }
       } else {
         navigate('/login', { 
           state: { 
-            message: 'Ro\'yxatdan o\'tish muvaffaqiyatli! Email orqali tasdiqlang va kirish mumkin.',
+            message: t('registerPage.successMessage'),
             email: formData.email
           }
         });
       }
     } catch (err) {
-      setError('Xatolik yuz berdi. Qaytadan urinib ko\'ring.');
+      setError(t('registerPage.errorGeneral'));
     } finally {
       setIsLoading(false);
     }
@@ -149,14 +143,14 @@ const Register: React.FC = () => {
     try {
       const { error } = await signInWithGoogle();
       if (error) {
-        setError('Google orqali ro\'yxatdan o\'tish xatoligi: ' + error.message);
+        setError(t('registerPage.errorGoogleSignUp') + ': ' + error.message);
         setIsGoogleLoading(false);
       } else {
         // Don't set loading to false here, let the redirect happen
         console.log('Google sign-up initiated');
       }
     } catch (err) {
-      setError('Google orqali ro\'yxatdan o\'tish xatoligi yuz berdi');
+      setError(t('registerPage.errorGoogleSignUp'));
       setIsGoogleLoading(false);
     }
   };
@@ -164,9 +158,9 @@ const Register: React.FC = () => {
   return (
     <div className="min-h-screen theme-bg relative overflow-hidden">
       <SEOHead
-        title="Ro'yxatdan o'tish"
-        description="Revmohelp platformasida ro'yxatdan o'ting. Professional tibbiy ma'lumotlar va shifokor maslahatlari."
-        keywords="ro'yxatdan o'tish, register, revmohelp, tibbiy platforma"
+        title={t('registerPage.seoTitle')}
+        description={t('registerPage.seoDescription')}
+        keywords={t('registerPage.seoKeywords')}
         url="https://revmohelp.uz/register"
       />
 
@@ -178,8 +172,8 @@ const Register: React.FC = () => {
         {/* Animated Geometric Shapes */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Large Geometric Shapes */}
-          <div className="absolute -top-40 -right-40 w-80 h-80 theme-gradient opacity-20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 theme-gradient-secondary opacity-15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 opacity-20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary-200 opacity-15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-200 opacity-10 rounded-full blur-2xl animate-pulse-slow"></div>
           
           {/* Medical Icons - Subtle and Professional */}
@@ -222,29 +216,28 @@ const Register: React.FC = () => {
               <div className="w-10 h-10 bg-gradient-to-r from-teal-600 to-blue-600 rounded-xl flex items-center justify-center animate-pulse-medical group-hover:animate-heartbeat transition-all duration-300 transform group-hover:scale-110">
                 <Stethoscope size={20} className="text-white animate-stethoscope" />
               </div>
-              <span className="text-xl font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmoinfo</span>
               <span className="text-xl font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmohelp</span>
             </Link>
             
             <h2 className="text-2xl font-bold theme-text mb-2 animate-slide-up">
-              Ro'yxatdan o'ting
+              {t('registerPage.title')}
             </h2>
             <p className="text-sm theme-text-secondary animate-slide-up delay-100">
-              Professional tibbiy platformaga qo'shiling
+              {t('registerPage.subtitle')}
             </p>
 
             {/* Progress Indicator */}
             <div className="flex items-center justify-center space-x-3 mt-4 animate-zoom-in delay-200">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${
-                step >= 1 ? 'bg-teal-600 text-white' : 'bg-gray-200 dark:bg-gray-700 theme-text-muted'
+                step >= 1 ? 'bg-blue-600 text-white' : 'bg-blue-200 theme-text-muted'
               }`}>
                 1
               </div>
               <div className={`w-8 h-1 rounded-full transition-all duration-300 ${
-                step >= 2 ? 'bg-teal-600' : 'bg-gray-200 dark:bg-gray-700'
+                step >= 2 ? 'bg-blue-600' : 'bg-blue-200'
               }`}></div>
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${
-                step >= 2 ? 'bg-teal-600 text-white' : 'bg-gray-200 dark:bg-gray-700 theme-text-muted'
+                step >= 2 ? 'bg-blue-600 text-white' : 'bg-blue-200 theme-text-muted'
               }`}>
                 2
               </div>
@@ -252,8 +245,8 @@ const Register: React.FC = () => {
           </div>
 
           {/* Registration Form */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 animate-zoom-in delay-300 backdrop-blur-sm bg-opacity-95">
-            <form onSubmit={step === 1 ? (e) => { e.preventDefault(); handleNext(); } : handleSubmit} className="space-y-4">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-6 animate-zoom-in delay-300" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+            <form onSubmit={step === 1 ? (e) => { e.preventDefault(); handleNext(); } : handleSubmit} className="space-y-3">
               {/* Error Message */}
               {error && (
                 <div className="flex items-center space-x-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg animate-shake">
@@ -266,89 +259,74 @@ const Register: React.FC = () => {
               {step === 1 && (
                 <div className="space-y-4 animate-slide-right">
                   <div className="text-center mb-4">
-                    <h3 className="text-base font-semibold theme-text mb-1">Asosiy ma'lumotlar</h3>
-                    <p className="text-xs theme-text-secondary">Shaxsiy ma'lumotlaringizni kiriting</p>
+                    <h3 className="text-base font-semibold theme-text mb-1">{t('registerPage.step1Title')}</h3>
+                    <p className="text-xs theme-text-secondary">{t('registerPage.step1Subtitle')}</p>
                   </div>
 
                   {/* Full Name */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      To'liq ism
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.fullNameLabel')}
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <User className="h-4 w-4 theme-text-muted group-focus-within:text-primary-500 transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="text"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder="Ismingiz va familiyangiz"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('registerPage.fullNamePlaceholder')}
+                    />
                   </div>
 
                   {/* Email */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      Email manzil
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.emailLabel')}
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Mail className="h-4 w-4 theme-text-muted group-focus-within:text-primary-500 transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder="email@example.com"
-                      />
-                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('registerPage.emailPlaceholder')}
+                    />
                   </div>
 
                   {/* Phone */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      Telefon raqam (ixtiyoriy)
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.phoneLabel')}
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Phone className="h-4 w-4 theme-text-muted group-focus-within:text-primary-500 transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder="+998 90 123 45 67"
-                      />
-                    </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('registerPage.phonePlaceholder')}
+                    />
                   </div>
 
                   {/* Role Selection */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      Sizning rolingiz
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.roleLabel')}
                     </label>
                     <select
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text"
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     >
-                      <option value="patient">Bemor</option>
-                      <option value="doctor">Shifokor</option>
+                      <option value="patient">{t('registerPage.rolePatient')}</option>
+                      <option value="doctor">{t('registerPage.roleDoctor')}</option>
                     </select>
                     {formData.role === 'doctor' && (
-                      <p className="text-xs theme-text-muted mt-1">
-                        Shifokor sifatida ro'yxatdan o'tgandan so'ng professional profil yaratishingiz kerak bo'ladi.
+                      <p className="text-xs text-gray-500 mt-1">
+                        {t('registerPage.doctorNote')}
                       </p>
                     )}
                   </div>
@@ -359,32 +337,29 @@ const Register: React.FC = () => {
               {step === 2 && (
                 <div className="space-y-4 animate-slide-left">
                   <div className="text-center mb-4">
-                    <h3 className="text-base font-semibold theme-text mb-1">Xavfsizlik</h3>
-                    <p className="text-xs theme-text-secondary">Parol yarating va shartlarni qabul qiling</p>
+                    <h3 className="text-base font-semibold theme-text mb-1">{t('registerPage.step2Title')}</h3>
+                    <p className="text-xs theme-text-secondary">{t('registerPage.step2Subtitle')}</p>
                   </div>
 
                   {/* Password */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      Parol
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.passwordLabel')}
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Lock className="h-4 w-4 theme-text-muted group-focus-within:text-primary-500 transition-colors duration-200" />
-                      </div>
+                    <div className="relative">
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
                         required
-                        className="w-full pl-10 pr-10 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder="Kamida 6 ta belgi"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 pr-10"
+                        placeholder={t('registerPage.passwordPlaceholder')}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center theme-text-muted hover:theme-accent transition-colors duration-200 z-10"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                       >
                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -392,27 +367,24 @@ const Register: React.FC = () => {
                   </div>
 
                   {/* Confirm Password */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-medium theme-text-secondary">
-                      Parolni tasdiqlang
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {t('registerPage.confirmPasswordLabel')}
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Lock className="h-4 w-4 theme-text-muted group-focus-within:text-primary-500 transition-colors duration-200" />
-                      </div>
+                    <div className="relative">
                       <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
                         required
-                        className="w-full pl-10 pr-10 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder="Parolni qaytaring"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 pr-10"
+                        placeholder={t('registerPage.confirmPasswordPlaceholder')}
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center theme-text-muted hover:theme-accent transition-colors duration-200 z-10"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                       >
                         {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -427,23 +399,23 @@ const Register: React.FC = () => {
                         name="agreeToTerms"
                         checked={formData.agreeToTerms}
                         onChange={handleInputChange}
-                        className="w-3 h-3 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2 mt-1 transition-all duration-200"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 transition-all duration-200"
                       />
-                      <span className="text-xs theme-text-secondary group-hover:theme-accent transition-colors duration-200">
-                        <Link to="/terms" className="theme-accent hover:underline">Foydalanish shartlari</Link>ni qabul qilaman
+                      <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
+                        <Link to="/terms" className="text-blue-600 hover:underline">{t('termsOfUse')}</Link> {t('registerPage.agreeToTerms')}
                       </span>
                     </label>
-                    
+
                     <label className="flex items-start space-x-3 cursor-pointer group">
                       <input
                         type="checkbox"
                         name="agreeToPrivacy"
                         checked={formData.agreeToPrivacy}
                         onChange={handleInputChange}
-                        className="w-3 h-3 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2 mt-1 transition-all duration-200"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 transition-all duration-200"
                       />
-                      <span className="text-xs theme-text-secondary group-hover:theme-accent transition-colors duration-200">
-                        <Link to="/privacy" className="theme-accent hover:underline">Maxfiylik siyosati</Link>ni qabul qilaman
+                      <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
+                        <Link to="/privacy" className="text-blue-600 hover:underline">{t('privacyPolicy')}</Link> {t('registerPage.agreeToPrivacy')}
                       </span>
                     </label>
                   </div>
@@ -456,25 +428,25 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 py-3 px-4 border-2 theme-border text-sm font-medium rounded-lg theme-text-secondary hover:theme-bg-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 transform hover:scale-105"
+                    className="flex-1 py-2 px-4 border-2 theme-border text-sm font-medium rounded-lg theme-text-secondary hover:theme-bg-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 transform hover:scale-105"
                   >
-                    Orqaga
+                    {t('registerPage.backButton')}
                   </button>
                 )}
                 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`group relative ${step === 2 ? 'flex-1' : 'w-full'} flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg`}
+                  className={`group relative ${step === 2 ? 'flex-1' : 'w-full'} flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg`}
                 >
                   {isLoading ? (
                     <div className="flex items-center space-x-2">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Ro'yxatdan o'tilmoqda...</span>
+                      <span>{t('registerPage.registering')}</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2">
-                      <span>{step === 1 ? 'Davom etish' : "Ro'yxatdan o'tish"}</span>
+                      <span>{step === 1 ? t('registerPage.nextButton') : t('registerPage.registerButton')}</span>
                       <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
                     </div>
                   )}
@@ -483,12 +455,12 @@ const Register: React.FC = () => {
             </form>
 
             {/* Divider */}
-            <div className="relative my-4">
+            <div className="relative my-3">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t theme-border"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-2 theme-bg theme-text-muted">yoki</span>
+                <span className="px-2 theme-bg theme-text-muted">{t('registerPage.or')}</span>
               </div>
             </div>
 
@@ -497,12 +469,12 @@ const Register: React.FC = () => {
               type="button"
               onClick={handleGoogleSignUp}
               disabled={isGoogleLoading}
-              className="w-full flex items-center justify-center space-x-2 py-3 px-4 border-2 theme-border rounded-lg hover:theme-bg-tertiary transition-all duration-300 transform hover:scale-105 hover:shadow-md group disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full flex items-center justify-center space-x-2 py-2 px-4 border-2 border-blue-300 rounded-xl bg-blue-50/50 hover:bg-blue-50 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isGoogleLoading ? (
                 <div className="flex items-center space-x-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
-                  <span className="theme-text text-sm">Google'ga ulanmoqda...</span>
+                  <span className="theme-text text-sm">{t('registerPage.connectingGoogle')}</span>
                 </div>
               ) : (
                 <>
@@ -515,7 +487,7 @@ const Register: React.FC = () => {
                     </svg>
                   </div>
                   <span className="theme-text text-sm group-hover:theme-accent transition-colors duration-200">
-                    Google bilan ro'yxatdan o'tish
+                    {t('registerPage.googleSignUp')}
                   </span>
                 </>
               )}
@@ -523,31 +495,31 @@ const Register: React.FC = () => {
 
             {/* Login Link */}
             <div className="mt-4 text-center">
-              <p className="theme-text-secondary">
-                Hisobingiz bormi?{' '}
+              <p className="text-gray-600">
+                {t('registerPage.haveAccount')}{' '}
                 <Link
                   to="/login"
-                  className="theme-accent hover:text-primary-700 text-sm font-medium transition-colors duration-200 hover:underline"
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 hover:underline"
                 >
-                  Kirish
+                  {t('registerPage.loginLink')}
                 </Link>
               </p>
             </div>
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center space-x-6 opacity-70 animate-fade-in delay-500 pb-8">
+          <div className="flex items-center justify-center space-x-6 opacity-70 animate-fade-in delay-500 pb-6">
             <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
               <Shield size={14} className="animate-pulse-medical" />
-              <span className="text-xs font-medium">Xavfsiz</span>
+              <span className="text-xs font-medium">{t('registerPage.secure')}</span>
             </div>
             <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
               <Heart size={14} className="animate-heartbeat" />
-              <span className="text-xs font-medium">Ishonchli</span>
+              <span className="text-xs font-medium">{t('registerPage.trusted')}</span>
             </div>
             <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
               <Activity size={14} className="animate-pulse" />
-              <span className="text-xs font-medium">Professional</span>
+              <span className="text-xs font-medium">{t('registerPage.professional')}</span>
             </div>
           </div>
         </div>

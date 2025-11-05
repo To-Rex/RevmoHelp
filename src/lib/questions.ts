@@ -634,7 +634,7 @@ const getMockQuestions = (): Question[] => [
       id: 'cat1',
       name: 'Artrit',
       slug: 'artrit',
-      color: '#3B82F6'
+      color: '#62B6CB'
     },
     tags: ['artrit', 'belgilar', 'diagnostika'],
     status: 'answered',
@@ -662,7 +662,7 @@ const getMockQuestions = (): Question[] => [
       id: 'cat2',
       name: 'Artroz',
       slug: 'artroz',
-      color: '#10B981'
+      color: '#5FA8D3'
     },
     tags: ['artroz', 'mashqlar', 'jismoniy tarbiya'],
     status: 'answered',
@@ -690,7 +690,7 @@ const getMockQuestions = (): Question[] => [
       id: 'cat3',
       name: 'Profilaktika',
       slug: 'profilaktika',
-      color: '#F59E0B'
+      color: '#1B4965'
     },
     tags: ['profilaktika', 'genetika', 'oldini olish'],
     status: 'open',

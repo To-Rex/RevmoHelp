@@ -125,7 +125,7 @@ const DataSecurity: React.FC = () => {
               <span className="text-green-800 dark:text-green-300 text-sm font-medium">Data Security</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Ma'lumotlar <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">Xavfsizligi</span>
+              Ma'lumotlar <span className="text-green-600">Xavfsizligi</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               Sizning tibbiy ma'lumotlaringiz eng yuqori xavfsizlik standartlari bilan himoyalanadi. 
@@ -151,7 +151,7 @@ const DataSecurity: React.FC = () => {
                   <div
                     key={index}
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
                     <div className={`w-14 h-14 ${measure.color} rounded-xl flex items-center justify-center mb-4 animate-pulse-medical`}>
                       <Icon size={24} />
@@ -190,7 +190,7 @@ const DataSecurity: React.FC = () => {
                   <div
                     key={index}
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    style={{ animationDelay: `${index * 150}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 dark:from-blue-900/50 dark:to-teal-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Icon size={28} className="text-blue-600 dark:text-blue-400" />
@@ -220,7 +220,7 @@ const DataSecurity: React.FC = () => {
                 <div
                   key={index}
                   className="flex items-center space-x-3 p-4 bg-white rounded-xl theme-shadow hover:theme-shadow-md transition-all duration-200 animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <CheckCircle size={16} className="text-green-600 dark:text-green-400 flex-shrink-0" />
                   <span className="theme-text-secondary text-sm">{practice}</span>
@@ -241,16 +241,16 @@ const DataSecurity: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <a
-                href="mailto:security@revmoinfo.uz"
+                href="mailto:revmohelp@gmail.com"
                 className="bg-white text-red-600 px-6 py-3 rounded-xl font-semibold hover:bg-red-50 transition-colors duration-200 transform hover:scale-105"
               >
-                security@revmoinfo.uz
+                revmohelp@gmail.com
               </a>
               <a
-                href="tel:+998711234567"
+                href="tel:+998932001022"
                 className="border-2 border-white text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors duration-200 transform hover:scale-105"
               >
-                +998 71 123 45 67
+                +998 (93) 200 10 22
               </a>
             </div>
           </div>

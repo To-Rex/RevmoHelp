@@ -178,7 +178,7 @@ const FAQ: React.FC = () => {
               <span className="text-teal-800 dark:text-teal-300 text-sm font-medium">Frequently Asked Questions</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Tez-tez Beriladigan <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">Savollar</span>
+              Tez-tez Beriladigan <span className="text-teal-600">Savollar</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               Platformamiz haqida eng ko'p beriladigan savollar va ularning batafsil javoblari. 
@@ -236,7 +236,7 @@ const FAQ: React.FC = () => {
                   <div
                     key={item.id}
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in cursor-pointer"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
                     onClick={() => toggleItem(item.id)}
                   >
                     <div className="flex items-start justify-between mb-4">
@@ -278,7 +278,7 @@ const FAQ: React.FC = () => {
                   <div
                     key={item.id}
                     className="bg-white rounded-xl theme-shadow hover:theme-shadow-lg transition-all duration-300 theme-border border animate-fade-in"
-                    style={{ animationDelay: `${index * 50}ms` }}
+                    style={{ animationDelay: `${index * 50}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
                   >
                     <button
                       onClick={() => toggleItem(item.id)}
@@ -340,7 +340,7 @@ const FAQ: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <a
-                href="mailto:support@revmoinfo.uz"
+                href="mailto:revmohelp@gmail.com"
                 className="flex items-center space-x-2 bg-white text-teal-600 px-6 py-3 rounded-xl font-semibold hover:bg-teal-50 transition-colors duration-200 transform hover:scale-105"
               >
                 <Mail size={20} />

@@ -79,9 +79,9 @@ const QA: React.FC = () => {
       try {
         const cacheKey = `featured_doctors_${i18n.language}`;
         const cached = dataCache.get(cacheKey);
-        if (cached?.doctors) {
-          setTopDoctors(cached.doctors.slice(0, 3));
-          setDoctorRatings(cached.ratings || {});
+        if (cached && typeof cached === 'object' && 'doctors' in cached) {
+          setTopDoctors((cached as any).doctors.slice(0, 3));
+          setDoctorRatings((cached as any).ratings || {});
           return;
         }
         const { data } = await getDoctors(i18n.language, { active: true, verified: true, limit: 3 });
@@ -232,7 +232,7 @@ const QA: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">Professional Medical Q&A</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{t('qaTitle')}</span>
+              <span className="text-primary-500">{t('qaTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               <span className="text-lg font-bold mb-2 block">{t('haveQuestion')}</span>
@@ -255,29 +255,29 @@ const QA: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <div className="bg-white rounded-2xl theme-shadow-lg p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12 mt-8">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <MessageSquare size={24} className="text-white" />
               </div>
               <div className="text-2xl font-bold theme-text mb-1">{stats.totalQuestions.toLocaleString()}</div>
               <div className="theme-text-secondary">{t('totalQuestions')}</div>
             </div>
-            <div className="bg-white rounded-2xl theme-shadow-lg p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <CheckCircle size={24} className="text-white" />
               </div>
               <div className="text-2xl font-bold theme-text mb-1">{stats.totalAnswers.toLocaleString()}</div>
               <div className="theme-text-secondary">{t('totalAnswers')}</div>
             </div>
-            <div className="bg-white rounded-2xl theme-shadow-lg p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Award size={24} className="text-white" />
               </div>
               <div className="text-2xl font-bold theme-text mb-1">{stats.totalDoctors.toLocaleString()}</div>
               <div className="theme-text-secondary">{t('expertDoctors')}</div>
             </div>
-            <div className="bg-white rounded-2xl theme-shadow-lg p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10">
+            <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <TrendingUp size={24} className="text-white" />
               </div>
@@ -289,71 +289,73 @@ const QA: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-8">
-              {/* Search and Filters */}
-              <div className="bg-white rounded-2xl theme-shadow-lg p-6 pr-8 ring-1 ring-gray-200/60 dark:ring-white/10">
-                <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search and Filter */}
+              <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 mb-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <div className="flex flex-col md:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-1">
                     <div className="relative">
-                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
-                      <input
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                      <input style={{ backgroundColor: '#ffffff' }}
                         type="text"
                         placeholder="Savollar bo'yicha qidiring..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
                       />
                     </div>
                   </div>
 
                   {/* Category Filter */}
-                  <div className="lg:w-56">
-                    <select
-                      value={selectedCategory}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="w-full px-4 pr-8 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    >
-                      {categories.map((category) => (
-                        <option key={category.value} value={category.value}>
-                          {category.label} ({category.count})
-                        </option>
-                      ))}
-                    </select>
+                  <div className="md:w-64">
+                    <div className="relative">
+                      <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                      <select style={{ backgroundColor: '#ffffff' }}
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                      >
+                        {categories.map((category) => (
+                          <option key={category.value} value={category.value}>
+                            {category.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Status Filter */}
-                  <div className="lg:w-48">
-                    <select
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="w-full px-4 pr-8 py-4 rounded-xl bg-white theme-text outline-none border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    >
-                      {statuses.map((status) => (
-                        <option key={status.value} value={status.value}>
-                          {status.label} ({status.count})
-                        </option>
-                      ))}
-                    </select>
+                  <div className="md:w-64">
+                    <div className="relative">
+                      <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                      <select style={{ backgroundColor: '#ffffff' }}
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                      >
+                        {statuses.map((status) => (
+                          <option key={status.value} value={status.value}>
+                            {status.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Results Count */}
-              <div className="flex items-center justify-between">
+              <div className="mb-8">
                 <p className="theme-text-secondary">
-                  <span className="font-semibold theme-text">{filteredQuestions.length}</span> ta savol topildi
+                 <span className="font-semibold theme-text">{filteredQuestions.length}</span> ta savol topildi
                 </p>
-                <button onClick={() => setAskOpen(true)} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2 transform hover:scale-105 shadow-md">
-                  <Plus size={18} />
-                  <span>Yangi savol</span>
-                </button>
               </div>
 
               {/* Questions List */}
               <div className="space-y-5">
                 {paginatedQuestions.map((question, index) => (
                   <LanguageAwareLink key={question.id} to={`/questions/${question.slug}`} className="block">
-                    <div className="bg-white rounded-2xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-300 p-6 animate-fade-in transform hover:-translate-y-1 ring-1 ring-gray-200/60 dark:ring-white/10 cursor-pointer" style={{ animationDelay: `${index * 100}ms` }}>
+                    <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 animate-fade-in transform hover:-translate-y-1 cursor-pointer hover:theme-shadow-lg transition-all duration-300 hover-medical" style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <div className="flex items-center space-x-3 mb-3">
@@ -473,7 +475,7 @@ const QA: React.FC = () => {
             {/* Sidebar */}
             <div className="space-y-8">
               {/* Popular Tags */}
-              <div className="bg-white rounded-2xl theme-shadow-lg p-6 ring-1 ring-gray-200/60 dark:ring-white/10">
+              <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-lg font-bold theme-text mb-4">Mashhur Teglar</h3>
                 <div className="flex flex-wrap gap-2">
                   {popularTags.map((tag) => (
@@ -488,7 +490,7 @@ const QA: React.FC = () => {
               </div>
 
               {/* Top Experts */}
-              <div className="bg-white rounded-2xl theme-shadow-lg p-6 ring-1 ring-gray-200/60 dark:ring-white/10">
+              <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-lg font-bold theme-text mb-4">Top Ekspertlar</h3>
                 <div className="space-y-4">
                   {(topDoctors.length ? topDoctors.slice(0,3) : topExperts).map((d: any) => (
@@ -504,7 +506,7 @@ const QA: React.FC = () => {
                         <div className="flex items-center space-x-2 mt-1">
                           <div className="flex items-center space-x-1">
                             <Star size={12} className="text-yellow-500 fill-current" />
-                            <span className="text-xs theme-text-muted">{(doctorRatings[d.id]?.averageRating ?? d.rating ?? 4.9).toFixed ? (doctorRatings[d.id]?.averageRating ?? d.rating ?? 4.9).toFixed(1) : (doctorRatings[d.id]?.averageRating ?? d.rating ?? 4.9)}</span>
+                            <span className="text-xs theme-text-muted">{(doctorRatings[d.id]?.averageRating ?? d.rating ?? 4.9).toFixed(1)}</span>
                           </div>
                         </div>
                       </div>
@@ -530,7 +532,7 @@ const QA: React.FC = () => {
 
       {askOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl ring-1 ring-gray-200/60 dark:ring-white/10 overflow-hidden animate-slide-up">
+          <div className="w-full max-w-2xl bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-gray-50 dark:bg-white/5">
               <div className="flex items-center space-x-3"><HelpCircle size={22} className="text-blue-600" /><h3 className="text-xl font-bold theme-text">{t('askQuestionBtn')}</h3></div>
               <button onClick={() => setAskOpen(false)} className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-white/10 dark:hover:bg-white/15">✕</button>

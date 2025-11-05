@@ -162,10 +162,10 @@ export const checkCategorySlugUniqueness = async (slug: string, excludeCategoryI
 
 // Mock data fallback
 const getMockCategories = (): Category[] => [
-  { id: '1', name: 'Artrit', slug: 'artrit', color: '#3B82F6', created_at: '2024-01-01' },
-  { id: '2', name: 'Artroz', slug: 'artroz', color: '#10B981', created_at: '2024-01-01' },
-  { id: '3', name: 'Jismoniy tarbiya', slug: 'jismoniy-tarbiya', color: '#F59E0B', created_at: '2024-01-01' },
-  { id: '4', name: 'Dorilar', slug: 'dorilar', color: '#EC4899', created_at: '2024-01-01' },
-  { id: '5', name: 'Profilaktika', slug: 'profilaktika', color: '#8B5CF6', created_at: '2024-01-01' },
-  { id: '6', name: 'Diagnostika', slug: 'diagnostika', color: '#06B6D4', created_at: '2024-01-01' }
+  { id: '1', name: 'Artrit', slug: 'artrit', color: '#62B6CB', created_at: '2024-01-01' },
+  { id: '2', name: 'Artroz', slug: 'artroz', color: '#5FA8D3', created_at: '2024-01-01' },
+  { id: '3', name: 'Jismoniy tarbiya', slug: 'jismoniy-tarbiya', color: '#1B4965', created_at: '2024-01-01' },
+  { id: '4', name: 'Dorilar', slug: 'dorilar', color: '#BEE9E8', created_at: '2024-01-01' },
+  { id: '5', name: 'Profilaktika', slug: 'profilaktika', color: '#CAE9FF', created_at: '2024-01-01' },
+  { id: '6', name: 'Diagnostika', slug: 'diagnostika', color: '#62B6CB', created_at: '2024-01-01' }
 ];

@@ -726,7 +726,7 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '1',
         name: 'Artrit',
         slug: 'artrit',
-        color: '#3B82F6',
+        color: '#62B6CB',
         created_at: '2024-01-01'
       },
       tags: ['artrit', 'revmatik kasallik', 'davolash'],
@@ -760,7 +760,7 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '2',
         name: 'Artroz',
         slug: 'artroz',
-        color: '#10B981',
+        color: '#5FA8D3',
         created_at: '2024-01-01'
       },
       tags: ['artroz', 'belgilar', 'profilaktika'],
@@ -793,7 +793,7 @@ const getMockPosts = (language?: string, limit?: number): Post[] => {
         id: '3',
         name: 'Jismoniy tarbiya',
         slug: 'jismoniy-tarbiya',
-        color: '#F59E0B',
+        color: '#1B4965',
         created_at: '2024-01-01'
       },
       tags: ['mashqlar', 'og\'riq', 'reabilitatsiya'],

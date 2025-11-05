@@ -28,7 +28,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
       const cacheKey = `post_comments_count_${posts.map(p => p.id).join(',')}`;
       const cachedComments = localStorage.getItem(cacheKey);
       const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
-      
+
       // Use cache if less than 2 minutes old
       if (cachedComments && cacheTimestamp) {
         const age = Date.now() - parseInt(cacheTimestamp);
@@ -39,29 +39,30 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
           return;
         }
       }
-      
+
       const commentsPromises = posts.map(async (post) => {
         const { data: comments } = await getPostComments(post.id);
         return { postId: post.id, count: comments?.length || 0 };
       });
-      
+
       const commentsResults = await Promise.all(commentsPromises);
       const commentsMap = commentsResults.reduce((acc, { postId, count }) => {
         acc[postId] = count;
         return acc;
       }, {} as Record<string, number>);
-      
+
       setPostComments(commentsMap);
-      
+
       // Cache the results
       localStorage.setItem(cacheKey, JSON.stringify(commentsMap));
       localStorage.setItem(`${cacheKey}_timestamp`, Date.now().toString());
-      
+
       setCommentsLoaded(true);
     } catch (error) {
       console.error('Error loading comments count:', error);
     }
   };
+
   
   // Mock data for demonstration
   const mockPosts: Post[] = [];
@@ -100,7 +101,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
               className="group block"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <article className="bg-white dark:bg-[#3E433B] rounded-3xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-500 hover:-translate-y-2 ring-1 ring-[#CAD8D6] hover:ring-[#94ABA3] border-0 overflow-hidden animate-fade-in group-hover:scale-[1.02] h-full flex flex-col" style={{ backgroundColor: '#ffffff' }}>
+              <article className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in group-hover:scale-[1.02] h-full flex flex-col hover:theme-shadow-lg transition-all duration-500 hover:-translate-y-2 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 {/* Post Media */}
                 <div className="relative overflow-hidden aspect-[16/9]">
                   {post.featured_image_url ? (
@@ -119,12 +120,12 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
                         loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = `https://img.youtube.com/vi/${post.youtube_url.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
+                          target.src = `https://img.youtube.com/vi/${post.youtube_url?.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
                         }}
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-50 to-teal-50 dark:from-blue-900/20 dark:to-teal-900/20 flex items-center justify-center group-hover:from-blue-100 group-hover:to-teal-100 dark:group-hover:from-blue-900/30 dark:group-hover:to-teal-900/30 transition-all duration-500">
+                    <div className="w-full h-full theme-bg-secondary dark:from-blue-900/20 dark:to-teal-900/20 flex items-center justify-center group-hover:from-blue-100 group-hover:to-teal-100 dark:group-hover:from-blue-900/30 dark:group-hover:to-teal-900/30 transition-all duration-500">
                       <div className="text-center">
                         <FileText size={56} className="theme-text-muted mx-auto mb-3 group-hover:scale-110 transition-transform duration-300 opacity-60" />
                         <p className="theme-text-muted text-lg font-medium">Matn Maqolasi</p>
@@ -160,9 +161,9 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
 
                   {/* Reading Time Badge */}
                   <div className="absolute bottom-4 left-4">
-                    <div className="flex items-center space-x-1 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
+                    <div className="flex items-center space-x-1 theme-bg-secondary/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
                       <Clock size={12} className="text-gray-600" />
-                      <span className="text-xs font-medium text-gray-900">
+                      <span className="text-xs font-medium theme-text">
                         {Math.ceil(post.content.length / 1000)} daqiqa
                       </span>
                     </div>
@@ -170,9 +171,9 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
 
                   {/* Views Badge */}
                   <div className="absolute bottom-4 right-4">
-                    <div className="flex items-center space-x-1 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
+                    <div className="flex items-center space-x-1 theme-bg-secondary/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
                       <Eye size={12} className="text-gray-600" />
-                      <span className="text-xs font-bold text-gray-900">
+                      <span className="text-xs font-bold theme-text">
                         {(post.views_count || 0).toLocaleString()}
                       </span>
                     </div>
@@ -180,8 +181,8 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
 
                   {/* Hover Indicator */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <span className="text-gray-900 font-semibold flex items-center space-x-2">
+                    <div className="theme-bg-secondary/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <span className="theme-text font-semibold flex items-center space-x-2">
                         <ArrowRight size={16} />
                         <span>Batafsil o'qish</span>
                       </span>
@@ -255,7 +256,8 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
                         <span className="font-medium">{Math.floor(Math.random() * 50)} yoqdi</span>
                       </div>
                     </div>
-                    
+
+
                     {/* Read More Indicator */}
                     <div className="flex items-center space-x-1 theme-accent group-hover:theme-accent-secondary font-medium transition-colors duration-200">
                       <span className="text-sm">O'qish</span>
@@ -272,7 +274,7 @@ const LatestPosts: React.FC<LatestPostsProps> = ({ posts = [] }) => {
         <div className="text-center">
           <Link
             to="/posts"
-            className="inline-flex items-center space-x-2 theme-accent-bg text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105"
+            className="inline-flex items-center space-x-2 bg-[#62B6CB] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#5FA8D3] transition-colors duration-300 transform hover:scale-105"
           >
             <span>{t('viewAll')}</span>
             <ArrowRight size={20} />

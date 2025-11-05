@@ -177,51 +177,57 @@ const Doctors: React.FC = () => {
         </section>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          {/* Search and Filters */}
-          <div className="bg-white dark:bg-[#3E433B] rounded-2xl theme-shadow-lg ring-1 ring-[#CAD8D6] p-6 mb-12 animate-slide-up" style={{ backgroundColor: '#ffffff' }}>
-            <div className="flex flex-col lg:flex-row gap-6">
+          {/* Search and Filter */}
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 mb-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+            <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
                   <input style={{ backgroundColor: '#ffffff' }}
                     type="text"
                     placeholder={t('searchDoctors')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 ring-1 ring-[#CAD8D6] border-transparent rounded-xl focus:ring-2 focus:ring-[#90978C] focus:border-[#90978C] transition-all duration-200 bg-white dark:bg-[#3E433B] theme-text"
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
                   />
                 </div>
               </div>
 
               {/* Specialty Filter */}
-              <div className="lg:w-64">
-                <select style={{ backgroundColor: '#ffffff' }}
-                  value={selectedSpecialty}
-                  onChange={(e) => setSelectedSpecialty(e.target.value)}
-                  className="w-full px-4 py-4 ring-1 ring-[#CAD8D6] border-transparent rounded-xl focus:ring-2 focus:ring-[#90978C] focus:border-[#90978C] transition-all duration-200 bg-white dark:bg-[#3E433B] theme-text"
-                >
-                  {specialties.map((specialty) => (
-                    <option key={specialty.value} value={specialty.value}>
-                      {specialty.label} ({specialty.count})
-                    </option>
-                  ))}
-                </select>
+              <div className="md:w-64">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                  <select style={{ backgroundColor: '#ffffff' }}
+                    value={selectedSpecialty}
+                    onChange={(e) => setSelectedSpecialty(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                  >
+                    {specialties.map((specialty) => (
+                      <option key={specialty.value} value={specialty.value}>
+                        {specialty.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {/* Experience Filter */}
-              <div className="lg:w-48">
-                <select style={{ backgroundColor: '#ffffff' }}
-                  value={selectedExperience}
-                  onChange={(e) => setSelectedExperience(e.target.value)}
-                  className="w-full px-4 py-4 ring-1 ring-[#CAD8D6] border-transparent rounded-xl focus:ring-2 focus:ring-[#90978C] focus:border-[#90978C] transition-all duration-200 bg-white dark:bg-[#3E433B] theme-text"
-                >
-                  {experienceRanges.map((range) => (
-                    <option key={range.value} value={range.value}>
-                      {range.label} ({range.count})
-                    </option>
-                  ))}
-                </select>
+              <div className="md:w-64">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                  <select style={{ backgroundColor: '#ffffff' }}
+                    value={selectedExperience}
+                    onChange={(e) => setSelectedExperience(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
+                  >
+                    {experienceRanges.map((range) => (
+                      <option key={range.value} value={range.value}>
+                        {range.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -229,7 +235,7 @@ const Doctors: React.FC = () => {
           {/* Results Count */}
           <div className="mb-8">
             <p className="theme-text-secondary">
-              <span className="font-semibold theme-text">{filteredDoctors.length}</span> {t('doctorsFound')}
+             <span className="font-semibold theme-text">{filteredDoctors.length}</span> {t('doctorsFound')}
             </p>
           </div>
 
@@ -243,8 +249,8 @@ const Doctors: React.FC = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div
-                  className="bg-white dark:bg-[#3E433B] rounded-3xl theme-shadow-lg hover:theme-shadow-xl transition-all duration-500 hover:-translate-y-2 ring-1 ring-[#CAD8D6] hover:ring-[#94ABA3] border-0 overflow-hidden animate-fade-in h-full flex flex-col"
-                  style={{ backgroundColor: '#ffffff' }}
+                  className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in h-full flex flex-col hover:theme-shadow-lg transition-all duration-500 hover:-translate-y-2 hover-medical"
+                  style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                 {/* Doctor Photo */}
                 <div className="relative overflow-hidden">
