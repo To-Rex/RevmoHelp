@@ -106,6 +106,7 @@ const DataSecurity: React.FC = () => {
     'Zaiflik boshqaruvi'
   ];
 
+  
   return (
     <div className="theme-bg min-h-screen">
       <SEOHead
