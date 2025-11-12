@@ -15,9 +15,11 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <LanguageAwareLink to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 theme-accent-bg rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
-              </div>
+              <img
+                src="/logo.png"
+                alt="Revmohelp Logo"
+                className="w-8 h-8 rounded-lg object-cover"
+              />
               <span className="text-lg font-bold theme-text">Revmohelp</span>
             </LanguageAwareLink>
             <p className="theme-text-secondary text-sm leading-relaxed">

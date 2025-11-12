@@ -245,7 +245,7 @@ const About: React.FC = () => {
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Icon size={28} className="text-blue-600" />
                     </div>
                     <h3 className="text-lg font-bold theme-text mb-3">{t(value.titleKey)}</h3>
@@ -386,7 +386,7 @@ const About: React.FC = () => {
           </div>
 
           {/* Contact CTA */}
-          <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl p-12 text-center text-white hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          <div className="bg-primary-500 rounded-3xl p-12 text-center text-white hover:shadow-xl transition-all duration-300 transform hover:scale-105">
             <h2 className="text-3xl font-bold mb-4">{t('contactUs')}</h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {t('haveQuestions')}
@@ -409,7 +409,7 @@ const About: React.FC = () => {
                 </span>
               </div>
             </div>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            <button className="bg-white text-primary-500 px-8 py-4 rounded-xl font-semibold hover:bg-accent-50 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
               {t('contactUsBtn')}
             </button>
             <p className="mt-4 text-blue-100">

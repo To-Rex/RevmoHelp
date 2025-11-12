@@ -50,9 +50,11 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <LanguageAwareLink to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Stethoscope size={16} className="text-white" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Revmohelp Logo"
+              className="w-8 h-8 rounded-lg object-cover group-hover:scale-110 transition-transform duration-300"
+            />
             <span className="text-xl font-bold theme-text group-hover:theme-accent transition-colors duration-300">
               Revmohelp
             </span>

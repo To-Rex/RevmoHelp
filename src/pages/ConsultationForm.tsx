@@ -244,136 +244,106 @@ const ConsultationForm: React.FC = () => {
                 {/* Name Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium theme-text-secondary">
+                    <label className="block text-sm font-medium text-gray-700">
                       {t('firstName')} *
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder={t('enterFirstName')}
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('enterFirstName')}
+                    />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium theme-text-secondary">
+                    <label className="block text-sm font-medium text-gray-700">
                       {t('lastName')} *
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder={t('enterLastName')}
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('enterLastName')}
+                    />
                   </div>
                 </div>
 
                 {/* Age and Disease Type */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium theme-text-secondary">
+                    <label className="block text-sm font-medium text-gray-700">
                       {t('age')} *
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Calendar className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                      </div>
-                      <input
-                        type="number"
-                        name="age"
-                        value={formData.age}
-                        onChange={handleInputChange}
-                        required
-                        min="1"
-                        max="120"
-                        className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                        placeholder={t('enterAge')}
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      name="age"
+                      value={formData.age}
+                      onChange={handleInputChange}
+                      required
+                      min="1"
+                      max="120"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      placeholder={t('enterAge')}
+                    />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium theme-text-secondary">
+                    <label className="block text-sm font-medium text-gray-700">
                       {t('diseaseType')} *
                     </label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Stethoscope className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                      </div>
-                      <select
-                        name="diseaseType"
-                        value={formData.diseaseType}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text appearance-none"
-                      >
-                        <option value="">{t('selectDiseaseType')}</option>
-                        {diseaseTypes.map((disease) => (
-                          <option key={disease} value={disease}>
-                            {disease}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <select
+                      name="diseaseType"
+                      value={formData.diseaseType}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
+                    >
+                      <option value="">{t('selectDiseaseType')}</option>
+                      {diseaseTypes.map((disease) => (
+                        <option key={disease} value={disease}>
+                          {disease}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
                 {/* Phone */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium theme-text-secondary">
+                  <label className="block text-sm font-medium text-gray-700">
                     {t('phoneNumber')} *
                   </label>
-                  <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                    </div>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400"
-                      placeholder={t('enterPhone')}
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    placeholder={t('enterPhone')}
+                  />
                 </div>
 
                 {/* Comments */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium theme-text-secondary">
+                  <label className="block text-sm font-medium text-gray-700">
                     {t('comments')}
                   </label>
-                  <div className="relative group">
-                    <div className="absolute top-4 left-4 pointer-events-none">
-                      <FileText className="h-5 w-5 theme-text-muted group-focus-within:theme-accent transition-colors duration-200" />
-                    </div>
-                    <textarea
-                      name="comments"
-                      value={formData.comments}
-                      onChange={handleInputChange}
-                      rows={4}
-                      className="w-full pl-12 pr-4 py-4 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 theme-bg theme-text placeholder-gray-400 resize-none"
-                      placeholder={t('commentsPlaceholder')}
-                    />
-                  </div>
-                  <p className="text-xs theme-text-muted">
+                  <textarea
+                    name="comments"
+                    value={formData.comments}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
+                    placeholder={t('commentsPlaceholder')}
+                  />
+                  <p className="text-xs text-gray-600">
                     {t('commentsHelper')}
                   </p>
                 </div>
