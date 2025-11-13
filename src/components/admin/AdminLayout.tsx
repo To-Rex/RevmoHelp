@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  FileText, 
-  Settings, 
-  BarChart3, 
-  Menu, 
-  X, 
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  Settings,
+  BarChart3,
+  Menu,
+  X,
   Building2,
   FileImage,
   Bell,
@@ -25,9 +25,15 @@ import AdminTopBar from './AdminTopBar';
 
 const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { admin, isAuthenticated, loading, logout } = useAdminAuth();
+
+  // Close sidebar on route change for mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   // Show loading while checking authentication
   if (loading) {
@@ -50,27 +56,29 @@ const AdminLayout: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen theme-bg-secondary flex overflow-hidden">
+    <div className="h-screen theme-bg-secondary flex overflow-hidden">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 lg:hidden bg-black bg-opacity-50"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar Component */}
-      <AdminSidebar 
+      <AdminSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         admin={admin}
         currentPath={location.pathname}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-0 overflow-hidden">
         {/* Top Bar Component */}
-        <AdminTopBar 
+        <AdminTopBar
           onMenuClick={() => setSidebarOpen(true)}
           admin={admin}
           onSignOut={() => {

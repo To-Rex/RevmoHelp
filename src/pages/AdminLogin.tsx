@@ -93,16 +93,15 @@ const AdminLogin: React.FC = () => {
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Header */}
         <div className="text-center animate-fade-in">
-          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-medical relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl blur-lg opacity-50"></div>
+          <div className="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-medical relative">
             <Shield size={36} className="text-white relative z-10" />
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent mb-3">Admin Panel</h2>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">Boshqaruv paneliga kirish</p>
+          <h2 className="text-4xl font-bold text-blue-600 mb-3">Admin Panel</h2>
+          <p className="text-gray-600 text-lg">Boshqaruv paneliga kirish</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 p-8 animate-zoom-in relative">
+        <div className="bg-white rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 p-8 animate-zoom-in relative">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-3xl"></div>
           <div className="relative z-10">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -125,7 +124,7 @@ const AdminLogin: React.FC = () => {
 
             {/* Login Field */}
             <div className="space-y-3">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-semibold text-gray-700">
                 Login
               </label>
               <div className="relative group">
@@ -138,7 +137,7 @@ const AdminLogin: React.FC = () => {
                   value={formData.login}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 shadow-sm hover:shadow-md"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   placeholder="admin"
                   autoComplete="username"
                 />
@@ -147,7 +146,7 @@ const AdminLogin: React.FC = () => {
 
             {/* Password Field */}
             <div className="space-y-3">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-semibold text-gray-700">
                 Parol
               </label>
               <div className="relative group">
@@ -160,7 +159,7 @@ const AdminLogin: React.FC = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-12 pr-12 py-4 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 shadow-sm hover:shadow-md"
+                  className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   placeholder="••••••••"
                   autoComplete="current-password"
                 />
@@ -178,7 +177,7 @@ const AdminLogin: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-4 px-6 border border-transparent text-base font-semibold rounded-2xl text-white bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 hover:from-blue-700 hover:via-teal-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-lg"
+              className="group relative w-full flex justify-center py-4 px-6 border border-transparent text-base font-semibold rounded-2xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-xl shadow-lg"
             >
               {isLoading ? (
                 <div className="flex items-center space-x-2">
@@ -200,7 +199,7 @@ const AdminLogin: React.FC = () => {
         <div className="text-center animate-fade-in delay-300">
           <button
             onClick={() => navigate('/')}
-            className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 text-sm underline hover:no-underline font-medium"
+            className="text-gray-500 hover:text-blue-600 transition-colors duration-200 text-sm underline hover:no-underline font-medium"
           >
             ← Asosiy saytga qaytish
           </button>

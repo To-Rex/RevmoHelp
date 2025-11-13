@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Menu, 
-  Bell,
-  Search,
+import {
+  Menu,
   ChevronDown,
   LogOut,
   User,
@@ -11,6 +9,7 @@ import {
   Settings
 } from 'lucide-react';
 import type { AdminUser } from '../../lib/adminAuth';
+import LanguageSelector from '../common/LanguageSelector';
 
 interface AdminTopBarProps {
   onMenuClick: () => void;
@@ -18,12 +17,29 @@ interface AdminTopBarProps {
   onSignOut: () => void;
 }
 
-const AdminTopBar: React.FC<AdminTopBarProps> = ({ 
-  onMenuClick, 
-  admin, 
-  onSignOut 
+const AdminTopBar: React.FC<AdminTopBarProps> = ({
+  onMenuClick,
+  admin,
+  onSignOut
 }) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [userMenuOpen]);
 
   const handleSignOut = () => {
     onSignOut();
@@ -41,27 +57,12 @@ const AdminTopBar: React.FC<AdminTopBarProps> = ({
           >
             <Menu size={20} />
           </button>
-          
-          {/* Search - Hidden on small screens, visible on medium+ */}
-          <div className="hidden md:block relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={16} />
-            <input
-              type="text"
-              placeholder="Qidirish..."
-              className="pl-10 pr-4 py-2 w-48 lg:w-80 theme-border border rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 theme-bg theme-text text-sm"
-            />
-          </div>
         </div>
 
         {/* Right side */}
         <div className="flex items-center space-x-2 lg:space-x-3">
-          {/* Notifications */}
-          <button className="relative p-2 theme-text-secondary hover:theme-text rounded-xl hover:theme-bg-tertiary transition-all duration-200 transform hover:scale-105">
-            <Bell size={18} />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-3 w-3 flex items-center justify-center">
-              3
-            </span>
-          </button>
+          {/* Language Selector */}
+          <LanguageSelector />
 
           {/* User Menu */}
           <div className="relative">
@@ -84,7 +85,7 @@ const AdminTopBar: React.FC<AdminTopBarProps> = ({
             </button>
 
             {userMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 lg:w-52 theme-bg rounded-xl theme-shadow-lg theme-border border py-2 z-50">
+              <div className="absolute right-0 mt-2 w-48 lg:w-52 theme-bg rounded-xl theme-shadow-lg theme-border border py-2 z-50" ref={menuRef} style={{ backgroundColor: 'white', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
                 <div className="px-4 py-3 theme-border border-b">
                   <div className="text-sm font-semibold theme-text truncate">
                     {admin?.full_name || 'Admin User'}
