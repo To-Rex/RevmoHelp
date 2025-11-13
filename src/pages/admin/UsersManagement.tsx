@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, MessageSquare, Search, Filter } from 'lucide-react';
+import { MessageSquare, Search, Filter } from 'lucide-react';
 import { useAdminAuth } from '../../hooks/useAdminAuth';
-import { createAdmin } from '../../lib/adminAuth';
 import { getAuthUsers } from '../../lib/adminUsers';
 import { getConsultationRequests } from '../../lib/consultationRequests';
 import type { AuthUser } from '../../lib/adminUsers';
@@ -11,7 +10,6 @@ import UsersList from '../../components/admin/UsersList';
 import UsersStats from '../../components/admin/UsersStats';
 import ConsultationRequestsList from '../../components/admin/ConsultationRequestsList';
 import ConsultationRequestsStats from '../../components/admin/ConsultationRequestsStats';
-import CreateAdminModal from '../../components/admin/CreateAdminModal';
 
 const UsersManagement: React.FC = () => {
   const { admin } = useAdminAuth();
@@ -23,7 +21,6 @@ const UsersManagement: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState('all');
   const [consultationSearchTerm, setConsultationSearchTerm] = useState('');
   const [selectedConsultationStatus, setSelectedConsultationStatus] = useState('all');
-  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -121,15 +118,6 @@ const UsersManagement: React.FC = () => {
           <h1 className="text-2xl font-bold theme-text">Foydalanuvchilar Boshqaruvi</h1>
           <p className="theme-text-secondary">Supabase Auth foydalanuvchilarini boshqarish</p>
         </div>
-        {admin?.role === 'admin' && (
-          <button
-            onClick={() => setShowAddAdminModal(true)}
-            className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-          >
-            <Plus size={20} />
-            <span>Admin Qo'shish</span>
-          </button>
-        )}
       </div>
 
       {/* Stats */}
@@ -212,16 +200,6 @@ const UsersManagement: React.FC = () => {
           selectedStatus={selectedConsultationStatus}
         />
       </div>
-      {/* Create Admin Modal */}
-      {showAddAdminModal && (
-        <CreateAdminModal
-          onClose={() => setShowAddAdminModal(false)}
-          onSuccess={() => {
-            setShowAddAdminModal(false);
-            loadData();
-          }}
-        />
-      )}
     </div>
   );
 };

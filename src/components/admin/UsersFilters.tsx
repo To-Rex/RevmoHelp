@@ -50,7 +50,7 @@ const UsersFilters: React.FC<UsersFiltersProps> = ({
               placeholder="Foydalanuvchilarni qidiring..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
             />
           </div>
         </div>
@@ -62,7 +62,7 @@ const UsersFilters: React.FC<UsersFiltersProps> = ({
             <select
               value={selectedRole}
               onChange={(e) => onRoleChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 appearance-none theme-bg theme-text"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none theme-text"
             >
               {roles.map((role) => (
                 <option key={role.value} value={role.value}>
@@ -80,7 +80,7 @@ const UsersFilters: React.FC<UsersFiltersProps> = ({
             <select
               value={selectedProvider}
               onChange={(e) => onProviderChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 appearance-none theme-bg theme-text"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none theme-text"
             >
               {providers.map((provider) => (
                 <option key={provider.value} value={provider.value}>

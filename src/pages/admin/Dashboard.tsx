@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
     setLoading(true);
     try {
       const [postsResult, usersResult, doctorsResult, storiesResult, notificationsResult] = await Promise.all([
-        getPosts('uz'),
+        getPosts('uz', {}),
         getAuthUsers(),
         getDoctors('uz'),
         getPatientStories('uz'),
@@ -156,10 +156,10 @@ const Dashboard: React.FC = () => {
   }
 
   const quickActions = [
-    { name: 'Yangi Maqola', icon: FileText, color: 'bg-blue-600', href: '/admin/posts/create' },
-    { name: 'Foydalanuvchilar', icon: Users, color: 'bg-green-600', href: '/admin/users' },
-    { name: 'Analitika', icon: TrendingUp, color: 'bg-purple-600', href: '/admin/analytics' },
-    { name: 'Bildirishnomalar', icon: MessageSquare, color: 'bg-orange-600', href: '/admin/notifications' },
+    { name: 'Yangi Maqola', icon: FileText, color: 'bg-gradient-to-r from-blue-500 to-cyan-500', href: '/admin/posts/create' },
+    { name: 'Foydalanuvchilar', icon: Users, color: 'bg-gradient-to-r from-emerald-500 to-green-500', href: '/admin/users' },
+    { name: 'Analitika', icon: TrendingUp, color: 'bg-gradient-to-r from-violet-500 to-purple-500', href: '/admin/analytics' },
+    { name: 'Bildirishnomalar', icon: MessageSquare, color: 'bg-gradient-to-r from-amber-500 to-orange-500', href: '/admin/notifications' },
   ];
 
   const getPostTypeIcon = (type: string) => {
