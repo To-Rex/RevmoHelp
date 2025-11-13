@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Shield, MessageSquare, Search, Filter } from 'lucide-react';
+import { Plus, MessageSquare, Search, Filter } from 'lucide-react';
 import { useAdminAuth } from '../../hooks/useAdminAuth';
-import { getAdmins, createAdmin } from '../../lib/adminAuth';
+import { createAdmin } from '../../lib/adminAuth';
 import { getAuthUsers } from '../../lib/adminUsers';
 import { getConsultationRequests } from '../../lib/consultationRequests';
-import type { AdminUser } from '../../lib/adminAuth';
 import type { AuthUser } from '../../lib/adminUsers';
 import type { ConsultationRequest } from '../../lib/consultationRequests';
 import UsersFilters from '../../components/admin/UsersFilters';
@@ -17,7 +16,6 @@ import CreateAdminModal from '../../components/admin/CreateAdminModal';
 const UsersManagement: React.FC = () => {
   const { admin } = useAdminAuth();
   const [authUsers, setAuthUsers] = useState<AuthUser[]>([]);
-  const [admins, setAdmins] = useState<AdminUser[]>([]);
   const [consultationRequests, setConsultationRequests] = useState<ConsultationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,18 +32,13 @@ const UsersManagement: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [authResult, adminsResult, consultationResult] = await Promise.all([
+      const [authResult, consultationResult] = await Promise.all([
         getAuthUsers(),
-        getAdmins(),
         getConsultationRequests()
       ]);
 
       if (authResult.data) {
         setAuthUsers(authResult.data);
-      }
-
-      if (adminsResult.data) {
-        setAdmins(adminsResult.data);
       }
 
       if (consultationResult.data) {
@@ -121,19 +114,19 @@ const UsersManagement: React.FC = () => {
   }
 
   return (
-    <div className="space-y-4 lg:space-y-6 xl:space-y-8">
+    <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl lg:text-2xl font-bold theme-text">Foydalanuvchilar Boshqaruvi</h1>
-          <p className="theme-text-secondary text-sm lg:text-base">Supabase Auth foydalanuvchilarini boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">Foydalanuvchilar Boshqaruvi</h1>
+          <p className="theme-text-secondary">Supabase Auth foydalanuvchilarini boshqarish</p>
         </div>
         {admin?.role === 'admin' && (
           <button
             onClick={() => setShowAddAdminModal(true)}
-            className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
+            className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            <Plus size={18} />
+            <Plus size={20} />
             <span>Admin Qo'shish</span>
           </button>
         )}
@@ -141,44 +134,6 @@ const UsersManagement: React.FC = () => {
 
       {/* Stats */}
       <UsersStats stats={userStats} />
-
-      {/* Admin Panel Users */}
-      {admins.length > 0 && (
-        <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base lg:text-lg font-semibold theme-text flex items-center space-x-2">
-              <Shield size={18} className="text-blue-600" />
-              <span>Admin Panel Foydalanuvchilari</span>
-            </h3>
-            <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
-              {admins.length} ta admin
-            </span>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-            {admins.map((adminUser) => (
-              <div key={adminUser.id} className="flex items-center justify-between p-3 theme-bg-tertiary rounded-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                    <Shield size={16} className="text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold theme-text truncate max-w-24">{adminUser.full_name}</p>
-                    <p className="text-xs theme-text-muted truncate max-w-24">@{adminUser.login}</p>
-                  </div>
-                </div>
-                <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                  adminUser.role === 'admin'
-                    ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
-                    : 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200'
-                }`}>
-                  {adminUser.role}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Filters */}
       <UsersFilters
@@ -226,7 +181,7 @@ const UsersManagement: React.FC = () => {
                   placeholder="Maslahat so'rovlarini qidiring..."
                   value={consultationSearchTerm}
                   onChange={(e) => setConsultationSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                 />
               </div>
             </div>
@@ -238,7 +193,7 @@ const UsersManagement: React.FC = () => {
                 <select
                   value={selectedConsultationStatus}
                   onChange={(e) => setSelectedConsultationStatus(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 appearance-none theme-bg theme-text"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none theme-text"
                 >
                   <option value="all">Barcha holatlar ({consultationStatusCounts.total})</option>
                   <option value="pending">Kutilmoqda ({consultationStatusCounts.pending})</option>

@@ -312,7 +312,7 @@ const AdminsManagement: React.FC = () => {
             placeholder="Adminlarni qidiring..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+            className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
           />
         </div>
       </div>
@@ -347,10 +347,10 @@ const AdminsManagement: React.FC = () => {
               </tr>
             </thead>
             <tbody className="theme-bg divide-y theme-border">
-              {filteredAdmins.map((admin) => {
+              {filteredAdmins.map((admin, index) => {
                 const RoleIcon = getRoleIcon(admin.role);
                 return (
-                  <tr key={admin.id} className="hover:theme-bg-tertiary transition-colors duration-200">
+                  <tr key={admin.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors duration-200 border-b border-gray-200`}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -492,7 +492,7 @@ const AdminsManagement: React.FC = () => {
                   value={formData.login}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                   placeholder="admin_login"
                 />
               </div>
@@ -506,7 +506,7 @@ const AdminsManagement: React.FC = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 pr-10 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                     placeholder="••••••••"
                   />
                   <button
@@ -527,7 +527,7 @@ const AdminsManagement: React.FC = () => {
                   value={formData.full_name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                   placeholder="Admin ismi"
                 />
               </div>
@@ -539,7 +539,7 @@ const AdminsManagement: React.FC = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                   placeholder="+998 90 123 45 67"
                 />
               </div>
@@ -550,7 +550,7 @@ const AdminsManagement: React.FC = () => {
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none"
                 >
                   <option value="moderator">Moderator</option>
                   <option value="admin">Admin</option>
@@ -618,7 +618,7 @@ const AdminsManagement: React.FC = () => {
                   value={formData.login}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                 />
               </div>
 
@@ -632,7 +632,7 @@ const AdminsManagement: React.FC = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 pr-10 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                     placeholder="Yangi parol"
                   />
                   <button
@@ -653,7 +653,7 @@ const AdminsManagement: React.FC = () => {
                   value={formData.full_name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                 />
               </div>
 
@@ -664,7 +664,7 @@ const AdminsManagement: React.FC = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                 />
               </div>
 
@@ -675,7 +675,7 @@ const AdminsManagement: React.FC = () => {
                   value={formData.role}
                   onChange={handleInputChange}
                   disabled={editingAdmin?.id === currentAdmin?.id}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text disabled:opacity-50"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none disabled:opacity-50"
                 >
                   <option value="moderator">Moderator</option>
                   <option value="admin">Admin</option>

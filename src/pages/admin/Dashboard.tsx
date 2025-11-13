@@ -230,14 +230,14 @@ const Dashboard: React.FC = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6 transition-all duration-200">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 lg:p-3 rounded-xl bg-blue-50 dark:bg-blue-900/20">
-              <Users size={20} className="lg:size-22 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Users size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
             <div className="flex items-center space-x-1">
-              <ArrowUpRight size={14} className="text-green-500" />
-              <span className="text-xs lg:text-sm font-medium text-green-600 dark:text-green-400">
+              <ArrowUpRight size={14} className="text-secondary-500" />
+              <span className="text-xs lg:text-sm font-medium text-secondary-600 dark:text-secondary-400">
                 +{stats.userGrowth}%
               </span>
             </div>
@@ -252,14 +252,14 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6 transition-all duration-200">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 lg:p-3 rounded-xl bg-green-50 dark:bg-green-900/20">
-              <FileText size={20} className="lg:size-22 text-green-600 dark:text-green-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <FileText size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
             <div className="flex items-center space-x-1">
-              <ArrowUpRight size={14} className="text-green-500" />
-              <span className="text-xs lg:text-sm font-medium text-green-600 dark:text-green-400">
+              <ArrowUpRight size={14} className="text-secondary-500" />
+              <span className="text-xs lg:text-sm font-medium text-secondary-600 dark:text-secondary-400">
                 +{stats.postGrowth}%
               </span>
             </div>
@@ -274,14 +274,14 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6 transition-all duration-200">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 lg:p-3 rounded-xl bg-purple-50 dark:bg-purple-900/20">
-              <Eye size={20} className="lg:size-22 text-purple-600 dark:text-purple-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Eye size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
             <div className="flex items-center space-x-1">
-              <ArrowUpRight size={14} className="text-green-500" />
-              <span className="text-xs lg:text-sm font-medium text-green-600 dark:text-green-400">
+              <ArrowUpRight size={14} className="text-secondary-500" />
+              <span className="text-xs lg:text-sm font-medium text-secondary-600 dark:text-secondary-400">
                 +{stats.viewGrowth}%
               </span>
             </div>
@@ -296,14 +296,14 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6 transition-all duration-200">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 lg:p-3 rounded-xl bg-orange-50 dark:bg-orange-900/20">
-              <Stethoscope size={20} className="lg:size-22 text-orange-600 dark:text-orange-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Stethoscope size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
             <div className="flex items-center space-x-1">
-              <ArrowUpRight size={14} className="text-green-500" />
-              <span className="text-xs lg:text-sm font-medium text-green-600 dark:text-green-400">
+              <ArrowUpRight size={14} className="text-secondary-500" />
+              <span className="text-xs lg:text-sm font-medium text-secondary-600 dark:text-secondary-400">
                 +{stats.doctorGrowth}%
               </span>
             </div>
@@ -320,7 +320,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6">
+      <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
         <h2 className="text-lg lg:text-xl font-bold theme-text mb-4 lg:mb-6">Tezkor Amallar</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {quickActions.map((action) => {
@@ -329,7 +329,7 @@ const Dashboard: React.FC = () => {
               <Link
                 key={action.name}
                 to={action.href}
-                className={`${action.color} text-white p-4 lg:p-5 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block`}
+                className={`${action.color} text-white p-4 lg:p-5 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-105 block`}
               >
                 <Icon size={20} className="lg:size-22 mb-2 lg:mb-3 mx-auto" />
                 <div className="text-xs lg:text-sm font-medium text-center">{action.name}</div>
@@ -342,11 +342,11 @@ const Dashboard: React.FC = () => {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Recent Posts */}
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border">
+        <div className="theme-bg rounded-2xl theme-border border">
           <div className="p-4 lg:p-6 theme-border border-b">
             <div className="flex items-center justify-between">
               <h2 className="text-lg lg:text-xl font-bold theme-text">So'nggi Maqolalar</h2>
-              <Link 
+              <Link
                 to="/admin/posts"
                 className="text-xs lg:text-sm theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium"
               >
@@ -359,7 +359,7 @@ const Dashboard: React.FC = () => {
               {recentPosts.length > 0 ? recentPosts.map((post) => {
                 const PostIcon = getPostTypeIcon(post.type);
                 return (
-                  <div key={post.id} className="flex flex-col lg:flex-row lg:items-start lg:justify-between p-4 theme-bg-tertiary rounded-xl hover:theme-shadow-md transition-all duration-200 space-y-2 lg:space-y-0">
+                  <div key={post.id} className="flex flex-col lg:flex-row lg:items-start lg:justify-between p-4 theme-bg-tertiary rounded-xl transition-all duration-200 space-y-2 lg:space-y-0">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-2">
                         <PostIcon size={16} className={`${getPostTypeColor(post.type)}`} />
@@ -402,11 +402,11 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Users */}
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border">
+        <div className="theme-bg rounded-2xl theme-border border">
           <div className="p-4 lg:p-6 theme-border border-b">
             <div className="flex items-center justify-between">
               <h2 className="text-lg lg:text-xl font-bold theme-text">So'nggi Foydalanuvchilar</h2>
-              <Link 
+              <Link
                 to="/admin/users"
                 className="text-xs lg:text-sm theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium"
               >
@@ -417,9 +417,9 @@ const Dashboard: React.FC = () => {
           <div className="p-4 lg:p-6">
             <div className="space-y-4">
               {recentUsers.length > 0 ? recentUsers.map((user) => (
-                <div key={user.id} className="flex items-center justify-between p-4 theme-bg-tertiary rounded-xl hover:theme-shadow-md transition-all duration-200">
+                <div key={user.id} className="flex items-center justify-between p-4 theme-bg-tertiary rounded-xl transition-all duration-200">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-blue-100 to-teal-100 dark:from-blue-900/50 dark:to-teal-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-sm font-semibold theme-accent">{user.avatar}</span>
                     </div>
                     <div className="min-w-0">
@@ -461,7 +461,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Activity Feed */}
-      <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border">
+      <div className="theme-bg rounded-2xl theme-border border">
         <div className="p-4 lg:p-6 theme-border border-b">
           <div className="flex items-center space-x-2">
             <Activity size={18} className="lg:size-20 theme-accent" />
@@ -495,31 +495,31 @@ const Dashboard: React.FC = () => {
 
       {/* System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base lg:text-lg font-semibold theme-text">Tizim Holati</h3>
-            <CheckCircle size={18} className="text-green-500" />
+            <CheckCircle size={18} className="text-secondary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm theme-text-secondary">Server</span>
-              <span className="text-sm font-medium text-green-600 dark:text-green-400">Onlayn</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">Onlayn</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm theme-text-secondary">Ma'lumotlar bazasi</span>
-              <span className="text-sm font-medium text-green-600 dark:text-green-400">Ulangan</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">Ulangan</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm theme-text-secondary">Xotira</span>
-              <span className="text-sm font-medium text-green-600 dark:text-green-400">78% ishlatilgan</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">78% ishlatilgan</span>
             </div>
           </div>
         </div>
 
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base lg:text-lg font-semibold theme-text">Samaradorlik</h3>
-            <TrendingUp size={18} className="text-blue-500" />
+            <TrendingUp size={18} className="text-primary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -537,10 +537,10 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-4 lg:p-6">
+        <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base lg:text-lg font-semibold theme-text">Kontent</h3>
-            <Heart size={18} className="text-red-500" />
+            <Heart size={18} className="text-secondary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
