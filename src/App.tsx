@@ -54,6 +54,8 @@ import DoctorCreatePost from './pages/DoctorCreatePost';
 import PublicLayout from './components/layouts/PublicLayout';
 import Diseases from './pages/Diseases';
 import DiseaseDetail from './pages/DiseaseDetail';
+import TelegramLogin from './pages/TelegramLogin';
+import TelegramVerify from './pages/TelegramVerify';
 import './lib/i18n';
 
 // Language Route Wrapper Component
@@ -337,7 +339,9 @@ function App() {
               <Route path="patient-stories/:id" element={<PatientStoryDetail />} />
               <Route path="diseases" element={<Diseases />} />
               <Route path="diseases/:slug" element={<DiseaseDetail />} />
-              
+              <Route path="telegram-login" element={<TelegramLogin />} />
+              <Route path="telegram-verify" element={<TelegramVerify />} />
+
               {/* Russian routes */}
               <Route path="ru" element={<Home />} />
               <Route path="ru/posts" element={<Posts />} />
@@ -368,7 +372,9 @@ function App() {
               <Route path="ru/patient-stories/:id" element={<PatientStoryDetail />} />
               <Route path="ru/diseases" element={<Diseases />} />
               <Route path="ru/diseases/:slug" element={<DiseaseDetail />} />
-              
+              <Route path="ru/telegram-login" element={<TelegramLogin />} />
+              <Route path="ru/telegram-verify" element={<TelegramVerify />} />
+
               {/* English routes */}
               <Route path="en" element={<Home />} />
               <Route path="en/posts" element={<Posts />} />
@@ -399,6 +405,8 @@ function App() {
               <Route path="en/patient-stories/:id" element={<PatientStoryDetail />} />
               <Route path="en/diseases" element={<Diseases />} />
               <Route path="en/diseases/:slug" element={<DiseaseDetail />} />
+              <Route path="en/telegram-login" element={<TelegramLogin />} />
+              <Route path="en/telegram-verify" element={<TelegramVerify />} />
             </Route>
           </Routes>
         </LanguageRouteWrapper>

@@ -449,9 +449,31 @@ const resources = {
         errorGoogleSignUp: "Google orqali ro'yxatdan o'tish xatoligi",
         errorGeneral: "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
         successMessage: "Ro'yxatdan o'tish muvaffaqiyatli! Email orqali tasdiqlang va kirish mumkin."
+        },
+ 
+        // Telegram Login
+        telegramLogin: {
+          header: 'Telegram Kirish',
+          title: 'Telegram bilan kirish',
+          description: 'Telegram autentifikatsiyasini davom ettirish uchun telefon raqamingizni kiriting.',
+          phoneLabel: 'Telefon raqami',
+          phonePlaceholder: 'Telefon raqamingizni kiriting',
+          continueButton: 'Davom etish'
+        },
+ 
+        // Telegram Verify
+        telegramVerify: {
+          header: 'Telegram Tasdiqlash',
+          title: 'Telegramni Tasdiqlash',
+          description: 'Telegramdan kelgan kodni kiriting',
+          codeLabel: 'Tasdiqlash kodi',
+          codePlaceholder: 'Kodni kiriting',
+          verifyButton: 'Tasdiqlash',
+          openBotButton: 'Telegram botdan tasdiqlash kodini olish',
+          openBotDescription: 'Botni ochish uchun bosing va tasdiqlash kodini oling'
+        }
       }
-    }
-  },
+    },
   ru: {
     translation: {
       // Navigation
@@ -900,6 +922,28 @@ const resources = {
         errorGoogleSignUp: "Ошибка регистрации через Google",
         errorGeneral: "Произошла ошибка. Попробуйте еще раз.",
         successMessage: "Регистрация успешна! Подтвердите email и войдите в систему."
+      },
+
+      // Telegram Login
+      telegramLogin: {
+        header: 'Вход через Telegram',
+        title: 'Войти через Telegram',
+        description: 'Введите ваш номер телефона для продолжения аутентификации через Telegram.',
+        phoneLabel: 'Номер телефона',
+        phonePlaceholder: 'Введите номер телефона',
+        continueButton: 'Продолжить'
+      },
+
+      // Telegram Verify
+      telegramVerify: {
+        header: 'Подтверждение Telegram',
+        title: 'Подтверждение Telegram',
+        description: 'Введите код, полученный в Telegram',
+        codeLabel: 'Код подтверждения',
+        codePlaceholder: 'Введите код',
+        verifyButton: 'Подтвердить',
+        openBotButton: 'Получить код подтверждения от Telegram бота',
+        openBotDescription: 'Нажмите, чтобы открыть бота и получить код подтверждения'
       }
     }
   },
@@ -1350,6 +1394,28 @@ const resources = {
         errorGoogleSignUp: "Google sign-up error",
         errorGeneral: "An error occurred. Please try again.",
         successMessage: "Registration successful! Confirm your email and login."
+      },
+
+      // Telegram Login
+      telegramLogin: {
+        header: 'Telegram Login',
+        title: 'Login with Telegram',
+        description: 'Enter your phone number to continue with Telegram authentication.',
+        phoneLabel: 'Phone Number',
+        phonePlaceholder: 'Enter your phone number',
+        continueButton: 'Continue'
+      },
+
+      // Telegram Verify
+      telegramVerify: {
+        header: 'Telegram Verification',
+        title: 'Telegram Verification',
+        description: 'Enter the code received from Telegram',
+        codeLabel: 'Verification Code',
+        codePlaceholder: 'Enter the code',
+        verifyButton: 'Verify',
+        openBotButton: 'Get verification code from Telegram bot',
+        openBotDescription: 'Click to open the bot and receive your verification code'
       }
     }
   }
