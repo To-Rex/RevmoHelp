@@ -148,15 +148,7 @@ const FAQ: React.FC = () => {
   };
 
   const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'general': return 'bg-blue-100 text-blue-600';
-      case 'account': return 'bg-green-100 text-green-600';
-      case 'medical': return 'bg-red-100 text-red-600';
-      case 'doctors': return 'bg-purple-100 text-purple-600';
-      case 'security': return 'bg-orange-100 text-orange-600';
-      case 'technical': return 'bg-teal-100 text-teal-600';
-      default: return 'bg-gray-100 text-gray-600';
-    }
+    return 'bg-primary-100 text-white';
   };
 
   return (
@@ -171,17 +163,17 @@ const FAQ: React.FC = () => {
       <div className="min-h-screen theme-bg">
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-teal-600/10 to-blue-600/10 dark:from-teal-400/5 dark:to-blue-400/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary-600/10 to-primary-600/10 dark:from-secondary-400/5 dark:to-primary-400/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-teal-100 dark:bg-teal-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
-              <HelpCircle size={16} className="text-teal-600 dark:text-teal-400" />
-              <span className="text-teal-800 dark:text-teal-300 text-sm font-medium">Frequently Asked Questions</span>
+            <div className="inline-flex items-center space-x-2 bg-secondary-100 dark:bg-secondary-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
+              <HelpCircle size={16} className="color-secondary-600 dark:color-secondary-400" />
+              <span className="color-secondary-800 dark:color-secondary-300 text-sm font-medium">Frequently Asked Questions</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Tez-tez Beriladigan <span className="text-teal-600">Savollar</span>
+              Tez-tez Beriladigan <span className="color-secondary-600">Savollar</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
-              Platformamiz haqida eng ko'p beriladigan savollar va ularning batafsil javoblari. 
+              Platformamiz haqida eng ko'p beriladigan savollar va ularning batafsil javoblari.
               Kerakli javobni topa olmagan bo'lsangiz, biz bilan bog'laning.
             </p>
           </div>
@@ -200,7 +192,7 @@ const FAQ: React.FC = () => {
                     placeholder="Savollar bo'yicha qidiring..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white text-gray-900"
+                    className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900"
                   />
                 </div>
               </div>
@@ -210,7 +202,7 @@ const FAQ: React.FC = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full pl-4 pr-12 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white text-gray-900"
+                  className="w-full pl-4 pr-12 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900"
                 >
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -290,7 +282,7 @@ const FAQ: React.FC = () => {
                         </div>
                         <h3 className="text-lg font-semibold theme-text">{item.question}</h3>
                         {item.popular && (
-                          <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium rounded-full">
+                          <span className="px-2 py-1 bg-highlight-100 dark:bg-highlight-900 color-highlight-800 dark:color-highlight-200 text-xs font-medium rounded-full">
                             Mashhur
                           </span>
                         )}
@@ -329,19 +321,19 @@ const FAQ: React.FC = () => {
           )}
 
           {/* Contact Support */}
-          <div className="bg-gradient-to-r from-teal-600 to-blue-600 rounded-3xl p-8 text-white text-center animate-zoom-in delay-800">
+          <div className="bg-primary-600 rounded-3xl p-8 text-white text-center animate-zoom-in delay-800">
             <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse-medical">
               <MessageSquare size={32} className="text-white" />
             </div>
             <h2 className="text-2xl font-bold mb-4">Javob Topa Olmadingizmi?</h2>
-            <p className="text-teal-100 mb-8 max-w-2xl mx-auto">
-              Agar sizning savolingizga javob topa olmagan bo'lsangiz, biz bilan bog'laning. 
+            <p className="text-white mb-8 max-w-2xl mx-auto">
+              Agar sizning savolingizga javob topa olmagan bo'lsangiz, biz bilan bog'laning.
               Bizning yordam xizmati 24/7 ishlaydi va sizga yordam berishga tayyor.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <a
                 href="mailto:revmohelp@gmail.com"
-                className="flex items-center space-x-2 bg-white text-teal-600 px-6 py-3 rounded-xl font-semibold hover:bg-teal-50 transition-colors duration-200 transform hover:scale-105"
+                className="flex items-center space-x-2 bg-white color-primary-600 px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 transform hover:scale-105"
               >
                 <Mail size={20} />
                 <span>Email Yuborish</span>

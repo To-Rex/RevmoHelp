@@ -212,9 +212,7 @@ const Login: React.FC = () => {
             {/* Header */}
             <div className="text-center animate-fade-in mb-6">
               <Link to="/" className="inline-flex items-center space-x-3 mb-6 group">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-teal-600 rounded-xl flex items-center justify-center animate-pulse-medical group-hover:animate-heartbeat transition-all duration-300 transform group-hover:scale-110">
-                  <Stethoscope size={20} className="text-white animate-stethoscope" />
-                </div>
+                <img src="/logo.png" alt="Revmohelp Logo" className="w-10 h-10 rounded-xl animate-pulse-medical group-hover:animate-heartbeat transition-all duration-300 transform group-hover:scale-110" />
                 <span className="text-xl font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmohelp</span>
               </Link>
 

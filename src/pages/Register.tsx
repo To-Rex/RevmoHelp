@@ -213,9 +213,7 @@ const Register: React.FC = () => {
           {/* Header */}
           <div className="text-center animate-fade-in mb-6">
             <Link to="/" className="inline-flex items-center space-x-3 mb-8 group">
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-600 to-blue-600 rounded-xl flex items-center justify-center animate-pulse-medical group-hover:animate-heartbeat transition-all duration-300 transform group-hover:scale-110">
-                <Stethoscope size={20} className="text-white animate-stethoscope" />
-              </div>
+              <img src="/logo.png" alt="Revmohelp Logo" className="w-10 h-10 rounded-xl animate-pulse-medical group-hover:animate-heartbeat transition-all duration-300 transform group-hover:scale-110" />
               <span className="text-xl font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmohelp</span>
             </Link>
             
@@ -319,7 +317,7 @@ const Register: React.FC = () => {
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                      className="w-full px-3 py-2 h-10 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     >
                       <option value="patient">{t('registerPage.rolePatient')}</option>
                       <option value="doctor">{t('registerPage.roleDoctor')}</option>

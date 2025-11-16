@@ -26,37 +26,37 @@ const Privacy: React.FC = () => {
       icon: Database,
       title: 'Ma\'lumotlar To\'plash',
       content: 'Biz faqat zarur bo\'lgan shaxsiy ma\'lumotlaringizni to\'playmiz: ism, email, telefon raqam va tibbiy tarixingiz (agar siz ruxsat bersangiz). Bu ma\'lumotlar sizga yaxshiroq xizmat ko\'rsatish uchun ishlatiladi.',
-      color: 'bg-blue-100 text-blue-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Lock,
       title: 'Ma\'lumotlar Himoyasi',
       content: 'Barcha shaxsiy ma\'lumotlaringiz zamonaviy shifrlash texnologiyalari bilan himoyalangan. Biz SSL sertifikati va 256-bit shifrlashdan foydalanamiz. Ma\'lumotlaringiz xavfsiz serverlarimizda saqlanadi.',
-      color: 'bg-green-100 text-green-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: UserCheck,
       title: 'Ma\'lumotlardan Foydalanish',
       content: 'Sizning ma\'lumotlaringiz faqat tibbiy xizmatlar ko\'rsatish, maslahat berish va platformani yaxshilash uchun ishlatiladi. Biz hech qachon ma\'lumotlaringizni uchinchi shaxslarga sotmaymiz.',
-      color: 'bg-purple-100 text-purple-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Eye,
       title: 'Ma\'lumotlarga Kirish',
       content: 'Siz istalgan vaqtda o\'z ma\'lumotlaringizni ko\'rish, o\'zgartirish yoki o\'chirish huquqiga egasiz. Profil sahifangizda barcha ma\'lumotlaringizni boshqarishingiz mumkin.',
-      color: 'bg-orange-100 text-orange-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Server,
       title: 'Ma\'lumotlar Saqlash',
       content: 'Ma\'lumotlaringiz O\'zbekiston hududi ichidagi xavfsiz serverlarimizda saqlanadi. Biz xalqaro ma\'lumotlar himoyasi standartlariga amal qilamiz va muntazam xavfsizlik tekshiruvlarini o\'tkazamiz.',
-      color: 'bg-teal-100 text-teal-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Key,
       title: 'Cookie va Kuzatuv',
       content: 'Biz faqat zarur cookie-lardan foydalanamiz: autentifikatsiya, til sozlamalari va tema. Reklama yoki kuzatuv cookie-lari ishlatmaymiz. Siz cookie sozlamalarini nazorat qilishingiz mumkin.',
-      color: 'bg-red-100 text-red-600'
+      color: 'bg-primary-100 text-white'
     }
   ];
 
@@ -89,9 +89,9 @@ const Privacy: React.FC = () => {
         <section className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-teal-600/10 dark:from-blue-400/5 dark:to-teal-400/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
-              <Shield size={16} className="text-blue-600 dark:text-blue-400" />
-              <span className="text-blue-800 dark:text-blue-300 text-sm font-medium">Privacy & Security</span>
+            <div className="inline-flex items-center space-x-2 bg-primary-100 dark:bg-primary-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
+              <Shield size={16} className="text-white dark:text-primary-400" />
+              <span className="text-white dark:text-primary-300 text-sm font-medium">Privacy & Security</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
               <span className="text-primary-500">Maxfiylik</span> Siyosati
@@ -102,15 +102,15 @@ const Privacy: React.FC = () => {
             </p>
             <div className="flex items-center justify-center space-x-8 text-sm theme-text-tertiary animate-fade-in delay-300">
               <div className="flex items-center space-x-2">
-                <Lock size={16} className="text-green-600" />
+                <Lock size={16} className="text-primary-600" />
                 <span>256-bit shifrlash</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Shield size={16} className="text-blue-600" />
+                <Shield size={16} className="text-primary-600" />
                 <span>GDPR muvofiq</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle size={16} className="text-teal-600" />
+                <CheckCircle size={16} className="text-primary-600" />
                 <span>Xavfsiz saqlash</span>
               </div>
             </div>
@@ -134,7 +134,7 @@ const Privacy: React.FC = () => {
                 <div
                   key={index}
                   className="bg-white rounded-2xl theme-shadow-lg theme-border border p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in hover-medical"
-                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
+                  style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className={`w-16 h-16 ${section.color} rounded-2xl flex items-center justify-center mb-6 animate-pulse-medical`}>
                     <Icon size={28} />
@@ -147,10 +147,10 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Your Rights */}
-          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600" style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 mb-16 animate-slide-up delay-600" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <UserCheck size={32} className="text-purple-600 dark:text-purple-400" />
+              <div className="w-16 h-16 bg-gradient-to-r from-primary-100 to-secondary-100 dark:from-primary-900/50 dark:to-secondary-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <UserCheck size={32} className="text-white dark:text-primary-400" />
               </div>
               <h2 className="text-2xl font-bold theme-text mb-4">Sizning Huquqlaringiz</h2>
               <p className="theme-text-secondary max-w-2xl mx-auto">
@@ -163,9 +163,9 @@ const Privacy: React.FC = () => {
                 <div
                   key={index}
                   className="flex items-center space-x-3 p-4 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-200 animate-fade-in"
-                  style={{ animationDelay: `${(index + 6) * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
+                  style={{ animationDelay: `${(index + 6) * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
-                  <CheckCircle size={20} className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                  <CheckCircle size={20} className="text-white dark:text-primary-400 flex-shrink-0" />
                   <span className="theme-text-secondary">{right}</span>
                 </div>
               ))}
@@ -173,13 +173,13 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Important Notice */}
-          <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-2xl p-8 mb-16 border-l-4 border-orange-500 animate-slide-up delay-800">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8 mb-16 border-l-4 border-primary-500 animate-slide-up delay-800">
             <div className="flex items-start space-x-4">
-              <AlertTriangle size={24} className="text-orange-600 dark:text-orange-400 flex-shrink-0 mt-1" />
+              <AlertTriangle size={24} className="text-primary-600 dark:text-primary-400 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-lg font-bold text-orange-900 dark:text-orange-200 mb-2">Muhim Eslatma</h3>
-                <p className="text-orange-800 dark:text-orange-300 leading-relaxed">
-                  Ushbu platforma tibbiy ma'lumot berish maqsadida yaratilgan. Bu yerda berilgan ma'lumotlar 
+                <h3 className="text-lg font-bold text-primary-900 dark:text-primary-200 mb-2">Muhim Eslatma</h3>
+                <p className="text-primary-800 dark:text-primary-300 leading-relaxed">
+                  Ushbu platforma tibbiy ma'lumot berish maqsadida yaratilgan. Bu yerda berilgan ma'lumotlar
                   shifokor maslahati o'rnini bosa olmaydi. Har qanday tibbiy muammo uchun mutaxassis shifokorga murojaat qiling.
                 </p>
               </div>
@@ -187,7 +187,7 @@ const Privacy: React.FC = () => {
           </div>
 
           {/* Contact for Privacy */}
-          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000" style={{ boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8 animate-zoom-in delay-1000" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold theme-text mb-4">Maxfiylik Bo'yicha Savollar</h2>
               <p className="theme-text-secondary">
@@ -202,10 +202,10 @@ const Privacy: React.FC = () => {
                   <div
                     key={index}
                     className="text-center p-6 theme-bg-secondary rounded-xl hover:theme-shadow-md transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
-                    style={{ animationDelay: `${(index + 10) * 100}ms`, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}
+                    style={{ animationDelay: `${(index + 10) * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <Icon size={20} className="text-blue-600 dark:text-blue-400" />
+                    <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <Icon size={20} className="text-white dark:text-primary-400" />
                     </div>
                     <h4 className="font-semibold theme-text mb-2">{contact.label}</h4>
                     <p className="theme-text-secondary text-sm">{contact.value}</p>

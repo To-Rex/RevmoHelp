@@ -2,12 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Award, 
-  Users, 
-  Heart, 
-  Shield, 
-  Target, 
+import {
+  Award,
+  Users,
+  Heart,
+  Shield,
+  Target,
   Globe,
   CheckCircle,
   Star,
@@ -21,14 +21,19 @@ import {
 import SEOHead from '../components/common/SEOHead';
 import { getPartners } from '../lib/partners';
 import type { Partner } from '../lib/partners';
+import { getDoctors } from '../lib/doctors';
+import type { Doctor } from '../lib/doctors';
 
 const About: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [partnersLoading, setPartnersLoading] = useState(true);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [doctorsLoading, setDoctorsLoading] = useState(true);
 
   useEffect(() => {
     loadPartners();
+    loadDoctors();
   }, []);
 
   const loadPartners = async () => {
@@ -41,6 +46,19 @@ const About: React.FC = () => {
       console.error('Error loading partners:', error);
     } finally {
       setPartnersLoading(false);
+    }
+  };
+
+  const loadDoctors = async () => {
+    try {
+      const { data } = await getDoctors(i18n.language, { active: true, limit: 4 });
+      if (data) {
+        setDoctors(data);
+      }
+    } catch (error) {
+      console.error('Error loading doctors:', error);
+    } finally {
+      setDoctorsLoading(false);
     }
   };
 
@@ -74,32 +92,6 @@ const About: React.FC = () => {
     }
   ];
 
-  const team = [
-    {
-      name: 'Dr. Aziza Karimova',
-      roleKey: 'chiefRheumatologist',
-      image: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=400',
-      descriptionKey: 'internationalCertificate'
-    },
-    {
-      name: 'Dr. Bobur Toshmatov',
-      roleKey: 'orthopedistTraumatologist',
-      image: 'https://images.pexels.com/photos/6098828/pexels-photo-6098828.jpeg?auto=compress&cs=tinysrgb&w=400',
-      descriptionKey: 'surgerySpecialist'
-    },
-    {
-      name: 'Dr. Nilufar Abdullayeva',
-      roleKey: 'rehabilitationSpecialist',
-      image: 'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=400',
-      descriptionKey: 'physicalTherapyExpert'
-    },
-    {
-      name: 'Dr. Sardor Rahimov',
-      roleKey: 'internalMedicineSpecialist',
-      image: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg?auto=compress&cs=tinysrgb&w=400',
-      descriptionKey: 'cardiologyExpert'
-    }
-  ];
 
   const achievements = [
     {
@@ -148,7 +140,7 @@ const About: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">About Revmoinfo</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="text-primary-500">{t('aboutTitle')}</span>
+              <span className="text-secondary">{t('aboutTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               {t('aboutSubtitle')}
@@ -265,25 +257,32 @@ const About: React.FC = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {team.map((member, index) => (
+              {doctors.map((doctor, index) => (
                 <div
-                  key={index}
+                  key={doctor.id}
                   className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
                   <div className="relative">
                     <img
-                      src={member.image}
-                      alt={member.name}
+                      src={doctor.avatar_url || `https://images.pexels.com/photos/559829/pexels-photo-559829.jpeg?auto=compress&cs=tinysrgb&w=400`}
+                      alt={doctor.full_name}
                       className="w-full h-64 object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-lg font-bold theme-text mb-1">{member.name}</h3>
-                    <p className="text-blue-600 font-semibold mb-3">{t(member.roleKey)}</p>
-                    <p className="theme-text-secondary text-sm">
-                      15 {t('yearsExperience')}, {t(member.descriptionKey)}
+                    <h3 className="text-lg font-bold theme-text mb-1">
+                      <Link
+                        to={`/doctors/${doctor.id}`}
+                        className="hover:theme-accent transition-colors duration-200"
+                      >
+                        {doctor.full_name}
+                      </Link>
+                    </h3>
+                    <p className="text-blue-600 font-semibold mb-3">{doctor.specialization}</p>
+                    <p className="theme-text-secondary text-sm line-clamp-2">
+                      {doctor.experience_years} {t('yearsExperience')}, {doctor.bio}
                     </p>
                     <div className="flex items-center mt-4">
                       {[1, 2, 3, 4, 5].map((star) => (

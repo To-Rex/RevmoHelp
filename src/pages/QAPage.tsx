@@ -139,7 +139,7 @@ const QAPage: React.FC = () => {
     <div className="min-h-screen theme-bg">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-blue-50 dark:from-gray-900 dark:to-gray-800"></div>
+        <div className="absolute inset-0 bg-secondary-50 dark:bg-gray-900"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">

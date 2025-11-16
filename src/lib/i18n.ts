@@ -464,14 +464,14 @@ const resources = {
       partnership: 'Партнерство',
       login: 'Войти',
       register: 'Регистрация',
-      logout: '��ыйти',
+      logout: 'Выйти',
       profile: 'Профиль',
       
       // Common
       loading: 'Загрузка...',
       error: 'Ошибка',
       success: 'Успех',
-      save: 'Сохра��ить',
+      save: 'Сохранить',
       cancel: 'Отмена',
       delete: 'Удалить',
       edit: 'Редактировать',
@@ -501,7 +501,7 @@ const resources = {
       // Posts
       postsTitle: 'Медицинские Статьи',
       postsSubtitle: 'Последние статьи и советы по ревматическим заболеваниям',
-      searchPosts: 'П��иск статей...',
+      searchPosts: 'Поиск статей...',
       allCategories: 'Все категории',
       postsFound: 'статей найдено',
       
@@ -520,15 +520,16 @@ const resources = {
       professionalMedicalTeam: 'Профессиональная Медицинская Команда',
       certifiedSpecialists: 'Сертифицированные Специалисты',
       consultation24_7: 'Консультация 24/7',
-      onlineConsultation: 'Онлайн Консуль��ация',
+      onlineConsultation: 'Онлайн Консультация',
       viewAllDoctors: 'Посмотреть всех врачей',
       
       // Q&A
-      qaTitle: '��опросы и Ответы',
+      qaTitle: 'Вопросы и ответы',
       haveQuestion: 'Есть вопрос?',
-      getFreeAdvice: 'Получит�� бесплатную консультацию от профессиональных врачей',
+      getFreeAdvice: 'Получите бесплатную консультацию от профессиональных врачей',
       meetDoctors: 'Познакомьтесь с врачами',
       totalQuestions: 'Всего вопросов',
+    
       totalAnswers: 'Всего ответов',
       expertDoctors: 'Врачи-эксперты',
       responseRate: 'Процент ответов',
@@ -570,7 +571,7 @@ const resources = {
       
       // About
       aboutTitle: 'О Нас',
-      aboutSubtitle: 'Revmohelp - ведущая информационная платформа п�� ревматическим заболеваниям в Узбекистане',
+      aboutSubtitle: 'Revmohelp - ведущая информационная платформа по ревматическим заболеваниям в Узбекистане',
       aboutDescription: 'Мы служим мостом между пациентами и врачами',
       totalUsers: 'Всего пользователей',
       totalDoctors: 'Всего врачей',
@@ -630,7 +631,7 @@ const resources = {
           emailTitle: 'Эл. почта',
           phoneTitle: 'Телефон',
           addressTitle: 'Адрес',
-          hoursTitle: 'Часы раб��ты',
+          hoursTitle: 'Часы работы',
           email1: 'revmohelp@gmail.com',
           email2: 'revmohelp@gmail.com',
           phone1: '+998 (93) 200 10 22',
@@ -654,7 +655,7 @@ const resources = {
           phonePlaceholder: '+998 90 123 45 67',
           subjectPlaceholder: 'Тема сообщения',
           messagePlaceholder: 'Опишите ваше сообщение подробно...',
-          submit: 'Отправить сообщен��е',
+          submit: 'Отправить сообщение',
           submitting: 'Отправка...',
           successTitle: 'Сообщение отправлено!',
           successDesc: 'Ваше сообщение успешно отправлено. Мы ответим в ближайшее время.',
@@ -677,8 +678,8 @@ const resources = {
           mapAddressLine: 'Юнусабадский район, ул. Амира Темура, 108, Ташкент'
         },
         departments: {
-          general: { name: 'Общие вопросы', email: 'info@revmohelp.uz', description: 'Общая информаци�� о нашей платформе' },
-          medical: { name: 'Медицинская консу��ьтация', email: 'medical@revmohelp.uz', description: 'Связь с врачами' },
+          general: { name: 'Общие вопросы', email: 'info@revmohelp.uz', description: 'Общая информация о нашей платформе' },
+          medical: { name: 'Медицинская консультация', email: 'medical@revmohelp.uz', description: 'Связь с врачами' },
           technical: { name: 'Техническая поддержка', email: 'support@revmohelp.uz', description: 'Технические проблемы и помощь' },
           partnership: { name: 'Сотрудничество', email: 'partnership@revmohelp.uz', description: 'Бизнес-сотрудничество и предложения' }
         },
@@ -736,7 +737,7 @@ const resources = {
 
       // Auth
       loginRequired: 'Требуется вход',
-      loginRequiredDesc: 'Для просмотра этой стра��ицы необходимо войти в систему',
+      loginRequiredDesc: 'Для просмотра этой страницы необходимо войти в систему',
       loginToSystem: 'Войти в систему',
       
       // Footer
@@ -780,7 +781,7 @@ const resources = {
       quickContact: 'Быстрая Связь',
       professionalTeam: 'Профессиональная Команда',
       membershipSubmitted: 'Заявка на Членство Отправлена!',
-      membershipSubmittedDesc: '��аша заявка на членство принята. Наша команда свяжется с вами в течение 24 ��асов.',
+      membershipSubmittedDesc: 'Ваша заявка на членство принята. Наша команда свяжется с вами в течение 24 часов.',
       phoneContact: 'Связь по телефону',
       membershipInfo: 'Информация о членстве',
       membershipForm: 'Форма Членства',
@@ -799,7 +800,7 @@ const resources = {
       commentsPlaceholder: 'Опишите симптомы заболевания, уровень боли, историю предыдущего лечения и другую важную информацию...',
       commentsHelper: 'Дополнительная информация поможет врачам дать правильную консультацию',
       submitMembership: 'Отправить Заявку на Членство',
-      freeMembershipDesc: 'Членство на платформе абсолютно бесплатное и б��з обязательств',
+      freeMembershipDesc: 'Членство на платформе абсолютно бесплатное и без обязательств',
       professionalTeamDesc: 'Медицинские специалисты с опытом работы 15+ лет',
       quickContactDesc: 'Наша команда свяжется с вами в течение 24 часов',
       trustedMembers: 'Наши Доверенные Члены',

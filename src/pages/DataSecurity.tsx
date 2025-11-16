@@ -29,42 +29,42 @@ const DataSecurity: React.FC = () => {
       title: 'SSL/TLS Shifrlash',
       description: 'Barcha ma\'lumotlar 256-bit SSL shifrlash bilan himoyalangan',
       level: 'Yuqori',
-      color: 'bg-green-100 text-green-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Server,
       title: 'Xavfsiz Serverlar',
       description: 'Ma\'lumotlar ISO 27001 sertifikatlangan data markazlarda saqlanadi',
       level: 'Maksimal',
-      color: 'bg-blue-100 text-blue-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Key,
       title: 'Ikki Bosqichli Autentifikatsiya',
       description: 'Qo\'shimcha himoya qatlami sifatida 2FA mavjud',
       level: 'Tavsiya etiladi',
-      color: 'bg-purple-100 text-purple-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Database,
       title: 'Ma\'lumotlar Zaxirasi',
       description: 'Kunlik avtomatik zaxira nusxalar yaratiladi',
       level: 'Avtomatik',
-      color: 'bg-orange-100 text-orange-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Eye,
       title: 'Kirish Nazorati',
       description: 'Barcha kirish urinishlari kuzatiladi va loglanadi',
       level: 'Doimiy',
-      color: 'bg-teal-100 text-teal-600'
+      color: 'bg-primary-100 text-white'
     },
     {
       icon: Wifi,
       title: 'Tarmoq Himoyasi',
       description: 'Firewall va DDoS himoyasi faol',
       level: '24/7',
-      color: 'bg-red-100 text-red-600'
+      color: 'bg-primary-100 text-white'
     }
   ];
 
@@ -121,12 +121,12 @@ const DataSecurity: React.FC = () => {
         <section className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-green-600/10 to-blue-600/10 dark:from-green-400/5 dark:to-blue-400/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-green-100 dark:bg-green-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
-              <Lock size={16} className="text-green-600 dark:text-green-400" />
-              <span className="text-green-800 dark:text-green-300 text-sm font-medium">Data Security</span>
+            <div className="inline-flex items-center space-x-2 bg-primary-100 dark:bg-primary-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
+              <Lock size={16} className="text-white dark:text-primary-400" />
+              <span className="text-white dark:text-primary-300 text-sm font-medium">Data Security</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Ma'lumotlar <span className="text-green-600">Xavfsizligi</span>
+              Ma'lumotlar <span className="text-primary-600">Xavfsizligi</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
               Sizning tibbiy ma'lumotlaringiz eng yuqori xavfsizlik standartlari bilan himoyalanadi. 
@@ -160,14 +160,10 @@ const DataSecurity: React.FC = () => {
                     <h3 className="text-lg font-bold theme-text mb-2">{measure.title}</h3>
                     <p className="theme-text-secondary text-sm mb-3 leading-relaxed">{measure.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                        measure.level === 'Maksimal' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' :
-                        measure.level === 'Yuqori' ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200' :
-                        'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                      }`}>
+                      <span className={`px-3 py-1 text-xs font-medium rounded-full bg-primary-100 dark:bg-primary-900 text-white dark:text-primary-200`}>
                         {measure.level}
                       </span>
-                      <CheckCircle size={16} className="text-green-600 dark:text-green-400" />
+                      <CheckCircle size={16} className="text-primary-600 dark:text-primary-400" />
                     </div>
                   </div>
                 );
@@ -193,12 +189,12 @@ const DataSecurity: React.FC = () => {
                     className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 text-center hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
                     style={{ animationDelay: `${index * 150}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                   >
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-teal-100 dark:from-blue-900/50 dark:to-teal-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <Icon size={28} className="text-blue-600 dark:text-blue-400" />
+                    <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Icon size={28} className="text-white dark:text-primary-400" />
                     </div>
                     <h3 className="text-lg font-bold theme-text mb-2">{cert.name}</h3>
                     <p className="theme-text-secondary text-sm mb-3">{cert.description}</p>
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-white dark:text-primary-200 text-xs font-medium rounded-full">
                       {cert.status}
                     </span>
                   </div>
@@ -223,7 +219,7 @@ const DataSecurity: React.FC = () => {
                   className="flex items-center space-x-3 p-4 bg-white rounded-xl theme-shadow hover:theme-shadow-md transition-all duration-200 animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms`, boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 >
-                  <CheckCircle size={16} className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                  <CheckCircle size={16} className="text-primary-600 dark:text-primary-400 flex-shrink-0" />
                   <span className="theme-text-secondary text-sm">{practice}</span>
                 </div>
               ))}

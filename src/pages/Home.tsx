@@ -68,7 +68,7 @@ const Home: React.FC = () => {
       <main className="theme-bg">
         <HeroSection />
         <DiseasesSection />
-        <LatestPosts posts={posts} />
+        {posts.length > 0 && <LatestPosts posts={posts} />}
         <FeaturedDoctors />
       </main>
     </div>

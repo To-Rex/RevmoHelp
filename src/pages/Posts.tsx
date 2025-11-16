@@ -513,7 +513,7 @@ const Posts: React.FC = () => {
 
           {/* No Results */}
           {filteredPosts.length === 0 && (
-            <div className="text-center py-16">
+            <div className="text-center py-40">
               <div className="theme-text-muted mb-4">
                 <Search size={48} className="mx-auto" />
               </div>

@@ -27,10 +27,10 @@ export interface AuthUser {
 export const getAuthUsers = async (): Promise<{ data: AuthUser[] | null; error: any }> => {
   try {
     console.log('👥 Loading users from Supabase Auth...');
-    
-    if (!isSupabaseAvailable() || !supabaseAdmin) {
-      console.log('⚠️ Supabase Admin not available, using mock data');
-      return { data: getMockAuthUsers(), error: null };
+
+    if (!supabaseAdmin) {
+      console.log('⚠️ Supabase Admin not available');
+      return { data: null, error: { message: 'Supabase Admin not available' } };
     }
 
     // Use admin client to get all users
@@ -38,15 +38,14 @@ export const getAuthUsers = async (): Promise<{ data: AuthUser[] | null; error: 
 
     if (error) {
       console.log('❌ Supabase Auth error:', error);
-      console.log('🔄 Falling back to mock data');
-      return { data: getMockAuthUsers(), error: null };
+      return { data: null, error };
     }
 
     console.log('✅ Auth users loaded from Supabase:', data.users.length);
     return { data: data.users as AuthUser[], error: null };
   } catch (error) {
-    console.warn('👥 Error fetching auth users from Supabase, using mock data:', error);
-    return { data: getMockAuthUsers(), error: null };
+    console.warn('👥 Error fetching auth users from Supabase:', error);
+    return { data: null, error };
   }
 };
 
@@ -54,10 +53,10 @@ export const getAuthUsers = async (): Promise<{ data: AuthUser[] | null; error: 
 export const getUserProfiles = async (): Promise<{ data: User[] | null; error: any }> => {
   try {
     console.log('👤 Loading user profiles from database...');
-    
+
     if (!isSupabaseAvailable() || !supabaseAdmin) {
-      console.log('⚠️ Supabase not available, using mock data');
-      return { data: getMockUserProfiles(), error: null };
+      console.log('⚠️ Supabase not available');
+      return { data: null, error: { message: 'Supabase not available' } };
     }
 
     const { data, error } = await supabaseAdmin
@@ -67,15 +66,14 @@ export const getUserProfiles = async (): Promise<{ data: User[] | null; error: a
 
     if (error) {
       console.log('❌ Supabase profiles error:', error);
-      console.log('🔄 Falling back to mock data');
-      return { data: getMockUserProfiles(), error: null };
+      return { data: null, error };
     }
 
     console.log('✅ User profiles loaded from Supabase:', data.length);
     return { data, error: null };
   } catch (error) {
-    console.warn('👤 Error fetching user profiles from Supabase, using mock data:', error);
-    return { data: getMockUserProfiles(), error: null };
+    console.warn('👤 Error fetching user profiles from Supabase:', error);
+    return { data: null, error };
   }
 };
 
@@ -127,88 +125,3 @@ export const updateUserMetadata = async (
     return { error };
   }
 };
-
-// Mock data fallback
-const getMockAuthUsers = (): AuthUser[] => [
-  {
-    id: 'auth-1',
-    email: 'aziza.karimova@revmohelp.uz',
-    phone: '+998901234567',
-    email_confirmed_at: '2024-01-01T00:00:00Z',
-    last_sign_in_at: '2024-01-15T10:00:00Z',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
-    user_metadata: {
-      full_name: 'Dr. Aziza Karimova',
-      role: 'doctor',
-      phone: '+998901234567'
-    },
-    app_metadata: {
-      provider: 'email',
-      providers: ['email']
-    }
-  },
-  {
-    id: 'auth-2',
-    email: 'akmal.karimov@gmail.com',
-    email_confirmed_at: '2024-01-10T00:00:00Z',
-    last_sign_in_at: '2024-01-14T15:30:00Z',
-    created_at: '2024-01-10T00:00:00Z',
-    updated_at: '2024-01-14T15:30:00Z',
-    user_metadata: {
-      full_name: 'Akmal Karimov',
-      role: 'patient',
-      phone: '+998901234569'
-    },
-    app_metadata: {
-      provider: 'google',
-      providers: ['google']
-    }
-  },
-  {
-    id: 'auth-3',
-    email: 'nodira.abdullayeva@gmail.com',
-    email_confirmed_at: '2024-01-12T00:00:00Z',
-    last_sign_in_at: '2024-01-13T09:20:00Z',
-    created_at: '2024-01-12T00:00:00Z',
-    updated_at: '2024-01-13T09:20:00Z',
-    user_metadata: {
-      full_name: 'Nodira Abdullayeva',
-      role: 'patient'
-    },
-    app_metadata: {
-      provider: 'email',
-      providers: ['email']
-    }
-  }
-];
-
-const getMockUserProfiles = (): User[] => [
-  {
-    id: 'auth-1',
-    email: 'aziza.karimova@revmohelp.uz',
-    full_name: 'Dr. Aziza Karimova',
-    phone: '+998901234567',
-    role: 'doctor',
-    avatar_url: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=100',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: 'auth-2',
-    email: 'akmal.karimov@gmail.com',
-    full_name: 'Akmal Karimov',
-    phone: '+998901234569',
-    role: 'patient',
-    created_at: '2024-01-10T00:00:00Z',
-    updated_at: '2024-01-14T15:30:00Z'
-  },
-  {
-    id: 'auth-3',
-    email: 'nodira.abdullayeva@gmail.com',
-    full_name: 'Nodira Abdullayeva',
-    role: 'patient',
-    created_at: '2024-01-12T00:00:00Z',
-    updated_at: '2024-01-13T09:20:00Z'
-  }
-];

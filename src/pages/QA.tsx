@@ -232,7 +232,7 @@ const QA: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">Professional Medical Q&A</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6">
-              <span className="text-primary-500">{t('qaTitle')}</span>
+              <span className="text-secondary">{t('qaTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
               <span className="text-lg font-bold mb-2 block">{t('haveQuestion')}</span>
@@ -372,11 +372,11 @@ const QA: React.FC = () => {
                             </span>
                           </div>
 
-                          <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-200 cursor-pointer">
+                          <h3 className="text-xl font-bold text-secondary mb-3 hover:text-blue-600 transition-colors duration-200 cursor-pointer">
                             {question.title}
                           </h3>
 
-                          <p className="theme-text-secondary leading-relaxed mb-4 line-clamp-2">
+                          <p className="theme-text leading-relaxed mb-4 line-clamp-2">
                             {question.content}
                           </p>
 
@@ -385,7 +385,8 @@ const QA: React.FC = () => {
                             {question.tags.map((tag) => (
                               <span
                                 key={tag}
-                                className="px-2 py-1 bg-[#CAD8D6] text-[#3E433B] dark:bg-red dark:text-black text-sm rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200 cursor-pointer"
+                                style={{ backgroundColor: 'var(--color-primary-600)', color: 'white' }}
+                                className="px-2 py-1 text-sm rounded-md hover:opacity-90 transition-colors duration-200 cursor-pointer"
                               >
                                 #{tag}
                               </span>
@@ -481,7 +482,8 @@ const QA: React.FC = () => {
                   {popularTags.map((tag) => (
                     <button
                       key={tag}
-                      className="px-3 py-1 bg-[#CAD8D6] text-[#3E433B] dark:bg-red dark:text-black text-xs rounded-full font-medium border-0 hover:opacity-90 transition-colors duration-200"
+                      style={{ backgroundColor: 'var(--color-primary-600)', color: 'white' }}
+                      className="px-3 py-1 text-xs rounded-full font-medium border-0 hover:opacity-90 transition-colors duration-200"
                     >
                       #{tag}
                     </button>
@@ -494,7 +496,7 @@ const QA: React.FC = () => {
                 <h3 className="text-lg font-bold theme-text mb-4">Top Ekspertlar</h3>
                 <div className="space-y-4">
                   {(topDoctors.length ? topDoctors.slice(0,3) : topExperts).map((d: any) => (
-                    <div key={d.id} className="flex items-center space-x-3 p-3 bg-white dark:bg-white rounded-xl border border-black hover:theme-shadow-md transition-all duration-200">
+                    <div key={d.id} className="flex items-center space-x-3 p-4 bg-white dark:bg-white rounded-xl hover:theme-shadow-md transition-all duration-200 mb-3 border-b border-gray-200 last:border-b-0">
                       <img
                         src={d.avatar_url || d.avatar}
                         alt={d.full_name || d.name}
@@ -516,12 +518,12 @@ const QA: React.FC = () => {
               </div>
 
               {/* Ask Question CTA */}
-              <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-6 text-white">
+              <div className="bg-primary-600 rounded-2xl p-6 text-white">
                 <h3 className="text-lg font-bold mb-2">Savolingiz bormi?</h3>
                 <p className="text-blue-100 mb-4">
                   Professional shifokorlardan bepul maslahat oling
                 </p>
-                <button onClick={() => setAskOpen(true)} className="w-full bg-white text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors duration-200 transform hover:scale-105">
+                <button onClick={() => setAskOpen(true)} className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 transform hover:scale-105">
                   Savol berish
                 </button>
               </div>

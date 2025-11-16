@@ -21,7 +21,6 @@ const supabaseUrl = 'https://dymidqlahywrbfxykhha.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5bWlkcWxhaHl3cmJmeHlraGhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5ODU3MjUsImV4cCI6MjA3NzU2MTcyNX0.Dv-wrgPrQeFpUA5cRZdsi0wAxnuWy9HiEkhoC8MMfY8';
 const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5bWlkcWxhaHl3cmJmeHlraGhhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTk4NTcyNSwiZXhwIjoyMDc3NTYxNzI1fQ.8qBIVFyqGqcof_d1NQ4r2cmwm3JHnoo5Zfgr62YvoLI';
 
-
 const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
 console.log('🔧 Supabase configured (env present):', isSupabaseConfigured);
@@ -52,8 +51,8 @@ export const supabase = isSupabaseConfigured && typeof window !== 'undefined'
   ? createClient(supabaseUrl!, supabaseAnonKey!)
   : null;
 
-// Create admin client with service role for admin operations (only on server if key present)
-export const supabaseAdmin = isSupabaseConfigured && typeof window === 'undefined' && supabaseServiceKey
+// Create admin client with service role for admin operations (client-side with service key as requested)
+export const supabaseAdmin = isSupabaseConfigured && supabaseServiceKey
   ? createClient(supabaseUrl!, supabaseServiceKey)
   : null;
 

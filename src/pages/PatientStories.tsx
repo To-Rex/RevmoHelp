@@ -375,7 +375,7 @@ const PatientStories: React.FC = () => {
 
           {/* No Stories */}
           {filteredStories.length === 0 && !loading && (
-            <div className="text-center py-16 animate-fade-in">
+            <div className="text-center py-40 animate-fade-in">
               <div className="theme-text-muted mb-4">
                 <Heart size={48} className="mx-auto" />
               </div>
@@ -389,7 +389,7 @@ const PatientStories: React.FC = () => {
           )}
 
           {/* Call to Action */}
-          <div className="mt-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-12 text-white text-center animate-zoom-in" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+          <div className="mt-16 bg-primary-500 rounded-3xl p-12 text-center text-white hover:shadow-xl transition-all duration-300 transform hover:scale-105">
             <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-pulse-medical">
               <Heart size={36} className="text-white" />
             </div>
