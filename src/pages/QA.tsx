@@ -29,7 +29,7 @@ import type { Question, Answer } from '../types';
 import type { Doctor } from '../lib/doctors';
 import { getDoctors } from '../lib/doctors';
 import { getDoctorRatingStats } from '../lib/doctorReviews';
-import { dataCache } from '../lib/cache';
+import { dataCache } from '../lib/cacheUtils';
 
 const QA: React.FC = () => {
   const { t, i18n } = useTranslation();

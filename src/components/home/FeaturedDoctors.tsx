@@ -5,7 +5,7 @@ import { ArrowRight, Star, MapPin, Calendar, Award } from 'lucide-react';
 import { getDoctors } from '../../lib/doctors';
 import { getDoctorRatingStats } from '../../lib/doctorReviews';
 import { getDoctorReviews } from '../../lib/doctorReviews';
-import { dataCache } from '../../lib/cache';
+import { dataCache } from '../../lib/cacheUtils';
 import type { Doctor } from '../../lib/doctors';
 
 interface FeaturedDoctorsProps {

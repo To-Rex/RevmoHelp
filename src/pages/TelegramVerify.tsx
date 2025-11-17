@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, CheckCircle, Send } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SEOHead from '../components/common/SEOHead';
+import { supabase, isSupabaseAvailable } from '../lib/supabase';
 
 const TelegramVerify: React.FC = () => {
   const { t } = useTranslation();
@@ -49,10 +50,83 @@ const TelegramVerify: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(data.message || 'Verification successful!');
-        setTimeout(() => {
+        const { access_token, refresh_token } = data;
+        if (!access_token || !refresh_token) {
+          setErrorMessage('Invalid response: missing tokens');
+          return;
+        }
+
+        if (!isSupabaseAvailable() || !supabase) {
+          setErrorMessage('Authentication service unavailable');
+          return;
+        }
+
+        try {
+          const { error } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          });
+
+          if (error) {
+            console.error('Session set error:', error);
+            setErrorMessage('Failed to establish session. Please try again.');
+            return;
+          }
+
+          // Get the user to extract display name for Telegram users
+          const { data: { user }, error: userError } = await supabase.auth.getUser();
+          if (userError) {
+            console.error('Failed to get user:', userError);
+            // Continue anyway, don't block login
+          } else if (user) {
+            // Extract display name from metadata
+            const rawMeta = (user as any).raw_user_meta_data || {};
+            const userMeta = user.user_metadata || {};
+            let displayName = '';
+
+            // Check various fields for display name
+            if (rawMeta.name) {
+              displayName = rawMeta.name;
+            } else if (rawMeta.display_name) {
+              displayName = rawMeta.display_name;
+            } else if (rawMeta.first_name && rawMeta.last_name) {
+              displayName = `${rawMeta.first_name} ${rawMeta.last_name}`;
+            } else if (rawMeta.first_name) {
+              displayName = rawMeta.first_name;
+            } else if (rawMeta.last_name) {
+              displayName = rawMeta.last_name;
+            } else if (userMeta.name) {
+              displayName = userMeta.name;
+            } else if (userMeta.display_name) {
+              displayName = userMeta.display_name;
+            } else if (userMeta.first_name && userMeta.last_name) {
+              displayName = `${userMeta.first_name} ${userMeta.last_name}`;
+            } else if (userMeta.first_name) {
+              displayName = userMeta.first_name;
+            } else if (userMeta.last_name) {
+              displayName = userMeta.last_name;
+            }
+
+            if (displayName && !user.user_metadata?.full_name) {
+              // Update user metadata with full_name and phone
+              const { error: updateError } = await supabase.auth.updateUser({
+                data: { full_name: displayName, phone: location.state?.phone }
+              });
+              if (updateError) {
+                console.error('Failed to update user metadata:', updateError);
+              } else {
+                console.log('Updated user metadata with full_name:', displayName, 'and phone:', location.state?.phone);
+                await supabase.auth.refreshSession();
+              }
+            }
+          }
+
+          setSuccessMessage('Verification successful! Redirecting to home...');
           navigate('/');
-        }, 2000);
+        } catch (sessionError) {
+          console.error('Session establishment error:', sessionError);
+          setErrorMessage('Failed to establish session. Please try again.');
+        }
       } else {
         setErrorMessage(data.message || 'Verification failed. Please try again.');
       }

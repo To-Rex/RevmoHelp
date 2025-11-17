@@ -1,5 +1,5 @@
 import { supabase, isSupabaseAvailable } from './supabase';
-import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cache';
+import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cacheUtils';
 
 export interface Disease {
   id: string;

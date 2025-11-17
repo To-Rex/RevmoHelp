@@ -29,7 +29,7 @@ const TelegramLogin: React.FC = () => {
       console.log('Response data:', data);
 
       if (response.ok && data.session_id && data.telegram_url) {
-        navigate('/telegram-verify', { state: { session_id: data.session_id, telegram_url: data.telegram_url } });
+        navigate('/telegram-verify', { state: { session_id: data.session_id, telegram_url: data.telegram_url, phone: sanitizedPhone } });
       } else {
         alert('Error: ' + (data.message || 'Unknown error'));
       }

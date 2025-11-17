@@ -13,7 +13,7 @@ import type { Post } from '../types';
 const Profile: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, authProvider, signOut } = useAuth();
   const { notifications, unreadCount } = useNotifications();
   const [activeTab, setActiveTab] = useState('profile');
   const [doctorProfile, setDoctorProfile] = useState<DoctorProfile | null>(null);

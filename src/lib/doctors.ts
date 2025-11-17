@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase';
 import { getAllDoctorProfiles } from './doctorProfiles';
-import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cache';
+import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cacheUtils';
 import type { DoctorProfile } from './doctorProfiles';
 
 export interface Doctor {

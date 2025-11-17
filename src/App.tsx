@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -11,51 +11,51 @@ import { preloadCriticalData } from './lib/cache';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import AdminLayout from './components/admin/AdminLayout';
-import AdminLogin from './pages/AdminLogin';
-import Home from './pages/Home';
-import Posts from './pages/Posts';
-import Dashboard from './pages/admin/Dashboard';
-import UsersManagement from './pages/admin/UsersManagement';
-import PostsManagement from './pages/admin/PostsManagement';
-import CreatePost from './pages/admin/CreatePost';
-import DoctorsManagement from './pages/admin/DoctorsManagement';
-import AdminsManagement from './pages/admin/AdminsManagement';
-import StaticPagesManagement from './pages/admin/StaticPagesManagement';
-import PartnersManagement from './pages/admin/PartnersManagement';
-import PatientStoriesManagement from './pages/admin/PatientStoriesManagement';
-import Analytics from './pages/admin/Analytics';
-import DiseasesManagement from './pages/admin/DiseasesManagement';
-import Doctors from './pages/Doctors';
-import DoctorProfile from './pages/DoctorProfile';
-import QA from './pages/QA';
-import QuestionDetail from './pages/QuestionDetail';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Partnership from './pages/Partnership';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import PostDetail from './pages/PostDetail';
-import Privacy from './pages/Privacy';
-import DataSecurity from './pages/DataSecurity';
-import Terms from './pages/Terms';
-import FAQ from './pages/FAQ';
-import PartnerDetail from './pages/PartnerDetail';
-import PatientStories from './pages/PatientStories';
-import PatientStoryDetail from './pages/PatientStoryDetail';
-import NotificationsManagement from './pages/admin/NotificationsManagement';
-import Settings from './pages/admin/Settings';
-import ConsultationForm from './pages/ConsultationForm';
-import DoctorRegistration from './pages/DoctorRegistration';
-import DoctorDashboard from './pages/DoctorDashboard';
-import DoctorProfileEdit from './pages/DoctorProfileEdit';
-import DoctorPosts from './pages/DoctorPosts';
-import DoctorCreatePost from './pages/DoctorCreatePost';
-import PublicLayout from './components/layouts/PublicLayout';
-import Diseases from './pages/Diseases';
-import DiseaseDetail from './pages/DiseaseDetail';
-import TelegramLogin from './pages/TelegramLogin';
-import TelegramVerify from './pages/TelegramVerify';
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const Home = lazy(() => import('./pages/Home'));
+const Posts = lazy(() => import('./pages/Posts'));
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'));
+const UsersManagement = lazy(() => import('./pages/admin/UsersManagement'));
+const PostsManagement = lazy(() => import('./pages/admin/PostsManagement'));
+const CreatePost = lazy(() => import('./pages/admin/CreatePost'));
+const DoctorsManagement = lazy(() => import('./pages/admin/DoctorsManagement'));
+const AdminsManagement = lazy(() => import('./pages/admin/AdminsManagement'));
+const StaticPagesManagement = lazy(() => import('./pages/admin/StaticPagesManagement'));
+const PartnersManagement = lazy(() => import('./pages/admin/PartnersManagement'));
+const PatientStoriesManagement = lazy(() => import('./pages/admin/PatientStoriesManagement'));
+const Analytics = lazy(() => import('./pages/admin/Analytics'));
+const DiseasesManagement = lazy(() => import('./pages/admin/DiseasesManagement'));
+const Doctors = lazy(() => import('./pages/Doctors'));
+const DoctorProfile = lazy(() => import('./pages/DoctorProfile'));
+const QA = lazy(() => import('./pages/QA'));
+const QuestionDetail = lazy(() => import('./pages/QuestionDetail'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Partnership = lazy(() => import('./pages/Partnership'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const PostDetail = lazy(() => import('./pages/PostDetail'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const DataSecurity = lazy(() => import('./pages/DataSecurity'));
+const Terms = lazy(() => import('./pages/Terms'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const PartnerDetail = lazy(() => import('./pages/PartnerDetail'));
+const PatientStories = lazy(() => import('./pages/PatientStories'));
+const PatientStoryDetail = lazy(() => import('./pages/PatientStoryDetail'));
+const NotificationsManagement = lazy(() => import('./pages/admin/NotificationsManagement'));
+const Settings = lazy(() => import('./pages/admin/Settings'));
+const ConsultationForm = lazy(() => import('./pages/ConsultationForm'));
+const DoctorRegistration = lazy(() => import('./pages/DoctorRegistration'));
+const DoctorDashboard = lazy(() => import('./pages/DoctorDashboard'));
+const DoctorProfileEdit = lazy(() => import('./pages/DoctorProfileEdit'));
+const DoctorPosts = lazy(() => import('./pages/DoctorPosts'));
+const DoctorCreatePost = lazy(() => import('./pages/DoctorCreatePost'));
+const PublicLayout = lazy(() => import('./components/layouts/PublicLayout'));
+const Diseases = lazy(() => import('./pages/Diseases'));
+const DiseaseDetail = lazy(() => import('./pages/DiseaseDetail'));
+const TelegramLogin = lazy(() => import('./pages/TelegramLogin'));
+const TelegramVerify = lazy(() => import('./pages/TelegramVerify'));
 import './lib/i18n';
 
 // Language Route Wrapper Component
@@ -284,7 +284,8 @@ function App() {
       <Router>
         <ScrollToTop />
         <LanguageRouteWrapper>
-          <Routes>
+          <Suspense fallback={<div className="min-h-screen theme-bg flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div><p className="theme-text-muted">Yuklanmoqda...</p></div>}>
+            <Routes>
             {/* Auth Callback Route */}
             <Route path="/auth/callback" element={<AuthCallback />} />
 
@@ -408,7 +409,8 @@ function App() {
               <Route path="en/telegram-login" element={<TelegramLogin />} />
               <Route path="en/telegram-verify" element={<TelegramVerify />} />
             </Route>
-          </Routes>
+            </Routes>
+          </Suspense>
         </LanguageRouteWrapper>
       </Router>
     </HelmetProvider>

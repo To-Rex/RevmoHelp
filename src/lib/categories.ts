@@ -1,5 +1,5 @@
 import { supabase, isSupabaseAvailable } from './supabase';
-import { staticCache, withCache, cacheKeys, invalidateRelatedCache } from './cache';
+import { staticCache, withCache, cacheKeys, invalidateRelatedCache } from './cacheUtils';
 
 export interface Category {
   id: string;

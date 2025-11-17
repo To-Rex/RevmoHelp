@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase, signOut as supabaseSignOut, isSupabaseAvailable, setSupabaseConnectionHealth } from '../lib/supabase';
-import { userCache } from '../lib/cache';
+import { userCache } from '../lib/cacheUtils';
 import type { User as AuthUser } from '@supabase/supabase-js';
 import type { User } from '../types';
 
@@ -9,6 +9,7 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
   const [authProvider, setAuthProvider] = useState<string | null>(null);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
     const getSession = async () => {
@@ -57,7 +58,7 @@ export const useAuth = () => {
         } else if (session?.user) {
           console.log('🔍 Session user metadata:', session.user.user_metadata);
           console.log('🔍 Session app metadata:', session.user.app_metadata);
-          
+
           // Create user object from session
           const userData: User = {
             id: session.user.id,
@@ -70,23 +71,25 @@ export const useAuth = () => {
             updated_at: session.user.updated_at || session.user.created_at,
           };
           setUser(userData);
-          
+          setSession(session);
+
           // Cache user data
           userCache.set('current_user', userData, 10 * 60 * 1000); // 10 minutes
-          
+
           // Cache user data
           userCache.set('current_user', userData, 10 * 60 * 1000); // 10 minutes
-          
+
           // Determine auth provider
           const provider = session.user.app_metadata?.provider || 'email';
           setAuthProvider(provider);
-          
+
           console.log('✅ useAuth: User session loaded:', userData.email);
           console.log('🔍 Auth provider:', provider);
         } else {
           console.log('❌ useAuth: No session found');
           setUser(null);
           setAuthProvider(null);
+          setSession(null);
         }
       } catch (err) {
         console.error('Session loading error:', err);
@@ -114,7 +117,7 @@ export const useAuth = () => {
           
           if (session?.user) {
             console.log('🔍 Auth state change user metadata:', session.user.user_metadata);
-            
+
             const userData: User = {
               id: session.user.id,
               email: session.user.email || '',
@@ -126,17 +129,19 @@ export const useAuth = () => {
               updated_at: session.user.updated_at || session.user.created_at,
             };
             setUser(userData);
-            
+            setSession(session);
+
             // Determine auth provider
             const provider = session.user.app_metadata?.provider || 'email';
             setAuthProvider(provider);
-            
+
             console.log('✅ useAuth: User set from state change:', userData.email);
             console.log('🔍 Full user data:', userData);
           } else {
             setUser(null);
             setAuthProvider(null);
-            
+            setSession(null);
+
             // Clear user cache
             userCache.delete('current_user');
             console.log('❌ useAuth: User cleared from state change');
@@ -168,6 +173,7 @@ export const useAuth = () => {
 
   return {
     user,
+    session,
     authProvider,
     loading,
     initialized,

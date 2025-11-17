@@ -29,9 +29,14 @@ const Header: React.FC = () => {
   }, [isUserMenuOpen]);
 
   const { t, i18n } = useTranslation();
-  const { user, signOut } = useAuth();
+  const { user, session, signOut } = useAuth();
+  if (user) {
+    console.log({ user_metadata: session?.user?.user_metadata, provider: session?.user?.app_metadata?.provider });
+  }
   const navigate = useNavigate();
   const location = useLocation();
+
+  const displayContact = session?.user?.app_metadata?.provider === 'phone' ? session?.user?.phone : user?.email;
 
   const handleSignOut = async () => {
     await signOut();
@@ -153,7 +158,9 @@ const Header: React.FC = () => {
                   <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl theme-border border py-2" ref={menuRef} style={{ backgroundColor: 'white', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
                     <div className="px-4 py-3 theme-border border-b">
                       <div className="text-sm font-semibold theme-text">{user.full_name}</div>
-                      <div className="text-xs theme-text-muted">{user.email}</div>
+                      <div className="text-xs theme-text-muted">
+                        {displayContact}
+                      </div>
                     </div>
                     <LanguageAwareLink
                       to="/profile"

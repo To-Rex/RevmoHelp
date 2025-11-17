@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import { isSupabaseAvailable } from './supabase';
 import { getCategories } from './categories';
-import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cache';
+import { dataCache, withCache, cacheKeys, invalidateRelatedCache } from './cacheUtils';
 import type { Post, PostTranslation } from '../types';
 
 export interface CreatePostData {
