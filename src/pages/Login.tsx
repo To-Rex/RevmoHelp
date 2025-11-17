@@ -407,7 +407,7 @@ const Login: React.FC = () => {
                 </svg>
               </div>
               <span className="text-gray-700 text-sm group-hover:text-blue-600 transition-colors duration-200">
-                Login with Telegram
+                {t('loginPage.telegramSignIn')}
               </span>
             </button>
 
