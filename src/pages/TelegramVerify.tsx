@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SEOHead from '../components/common/SEOHead';
@@ -13,16 +13,24 @@ const TelegramVerify: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [timeLeft, setTimeLeft] = useState(120);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const sessionId = location.state?.session_id;
-  const telegramUrl = location.state?.telegram_url;
+  const [sessionId, setSessionId] = useState(location.state?.session_id || '');
+  const [telegramUrl, setTelegramUrl] = useState(location.state?.telegram_url || '');
 
   useEffect(() => {
     if (!sessionId) {
       setErrorMessage('Session ID not found. Please go back and try logging in again.');
     }
   }, [sessionId]);
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const interval = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timeLeft]);
 
   const verifyOtp = async (otp: string) => {
     if (!sessionId) {
@@ -138,6 +146,40 @@ const TelegramVerify: React.FC = () => {
     }
   };
 
+  const resendCode = async () => {
+    if (!location.state?.phone) {
+      setErrorMessage('Phone number not found. Please go back and try logging in again.');
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://revmohelp.up.railway.app/auth/phone', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ phone: location.state.phone }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.session_id && data.telegram_url) {
+        setSessionId(data.session_id);
+        setTelegramUrl(data.telegram_url);
+        setTimeLeft(120);
+      } else {
+        setErrorMessage(data.message || 'Failed to resend code');
+      }
+    } catch (error) {
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (code.every(digit => digit !== '')) {
       const otp = code.join('');
@@ -177,19 +219,20 @@ const TelegramVerify: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-sm w-full space-y-4">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-sm w-full">
           {/* Verification Card */}
           <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-6 animate-zoom-in delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             {/* Header */}
             <div className="text-center animate-fade-in mb-6">
-              <div className="inline-flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center animate-pulse-medical">
-                  <CheckCircle size={24} className="text-white" />
+              <div className="flex flex-col items-center space-y-3 mb-6">
+                <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center animate-pulse-medical">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+                    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </div>
-                <span className="text-xl font-bold theme-text">{t('telegramVerify.header')}</span>
               </div>
-
               <h2 className="text-2xl font-bold theme-text mb-2 animate-slide-up">
                 {t('telegramVerify.title')}
               </h2>
@@ -241,11 +284,22 @@ const TelegramVerify: React.FC = () => {
                       }
                     }}
                     className="w-12 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 text-center"
-                    placeholder="0"
+                    placeholder="•"
                     disabled={loading}
                   />
                 ))}
               </div>
+
+              {/* Timer / Resend Code */}
+              {timeLeft > 0 ? (
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-600">Resend code in {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</p>
+                </div>
+              ) : (
+                <div className="mt-4 text-center">
+                  <button onClick={resendCode} className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200">Resend Code</button>
+                </div>
+              )}
 
               {/* Open Bot Card */}
               {telegramUrl && (
@@ -295,6 +349,19 @@ const TelegramVerify: React.FC = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Back Button */}
+          <div className="max-w-sm w-full mt-4 text-center">
+            <div className="text-center">
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200"
+              >
+                <ArrowLeft size={20} />
+                <span>Orqaga qaytish</span>
+              </button>
             </div>
           </div>
         </div>

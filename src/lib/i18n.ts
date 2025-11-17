@@ -463,10 +463,9 @@ const resources = {
           continueButton: 'Davom etish'
         },
  
-        // Telegram Verify
         telegramVerify: {
           header: 'Telegram Tasdiqlash',
-          title: 'Telegramni Tasdiqlash',
+          title: 'Raqamni tasdiqlash',
           description: 'Telegramdan kelgan kodni kiriting',
           codeLabel: 'Tasdiqlash kodi',
           codePlaceholder: 'Kodni kiriting',
