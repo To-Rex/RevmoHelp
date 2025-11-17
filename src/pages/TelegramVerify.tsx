@@ -21,7 +21,7 @@ const TelegramVerify: React.FC = () => {
 
   useEffect(() => {
     if (!sessionId) {
-      setErrorMessage('Session ID not found. Please go back and try logging in again.');
+      setErrorMessage(t('telegramVerify.sessionIdNotFound'));
     }
   }, [sessionId]);
 
@@ -34,7 +34,7 @@ const TelegramVerify: React.FC = () => {
 
   const verifyOtp = async (otp: string) => {
     if (!sessionId) {
-      setErrorMessage('Session ID not found. Please try logging in again.');
+      setErrorMessage(t('telegramVerify.sessionIdNotFound'));
       return;
     }
 
@@ -60,12 +60,12 @@ const TelegramVerify: React.FC = () => {
       if (response.ok) {
         const { access_token, refresh_token } = data;
         if (!access_token || !refresh_token) {
-          setErrorMessage('Invalid response: missing tokens');
+          setErrorMessage(t('telegramVerify.invalidResponse'));
           return;
         }
 
         if (!isSupabaseAvailable() || !supabase) {
-          setErrorMessage('Authentication service unavailable');
+          setErrorMessage(t('telegramVerify.authServiceUnavailable'));
           return;
         }
 
@@ -77,7 +77,7 @@ const TelegramVerify: React.FC = () => {
 
           if (error) {
             console.error('Session set error:', error);
-            setErrorMessage('Failed to establish session. Please try again.');
+            setErrorMessage(t('telegramVerify.sessionSetError'));
             return;
           }
 
@@ -133,14 +133,14 @@ const TelegramVerify: React.FC = () => {
           navigate('/');
         } catch (sessionError) {
           console.error('Session establishment error:', sessionError);
-          setErrorMessage('Failed to establish session. Please try again.');
+          setErrorMessage(t('telegramVerify.sessionSetError'));
         }
       } else {
-        setErrorMessage(data.message || 'Verification failed. Please try again.');
+        setErrorMessage(data.message || t('telegramVerify.verificationFailed'));
       }
     } catch (error) {
       console.error('OTP verification error:', error);
-      setErrorMessage('Network error. Please check your connection and try again.');
+      setErrorMessage(t('telegramVerify.networkError'));
     } finally {
       setLoading(false);
     }
@@ -148,7 +148,7 @@ const TelegramVerify: React.FC = () => {
 
   const resendCode = async () => {
     if (!location.state?.phone) {
-      setErrorMessage('Phone number not found. Please go back and try logging in again.');
+      setErrorMessage(t('telegramVerify.phoneNotFound'));
       return;
     }
 
@@ -171,10 +171,10 @@ const TelegramVerify: React.FC = () => {
         setTelegramUrl(data.telegram_url);
         setTimeLeft(120);
       } else {
-        setErrorMessage(data.message || 'Failed to resend code');
+        setErrorMessage(data.message || t('telegramVerify.resendFailed'));
       }
     } catch (error) {
-      setErrorMessage('Network error. Please check your connection and try again.');
+      setErrorMessage(t('telegramVerify.networkError'));
     } finally {
       setLoading(false);
     }
@@ -293,11 +293,11 @@ const TelegramVerify: React.FC = () => {
               {/* Timer / Resend Code */}
               {timeLeft > 0 ? (
                 <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-600">Resend code in {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</p>
+                  <p className="text-sm text-gray-600">{t('telegramVerify.resendCodeIn')} {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</p>
                 </div>
               ) : (
                 <div className="mt-4 text-center">
-                  <button onClick={resendCode} className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200">Resend Code</button>
+                  <button onClick={resendCode} className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200">{t('telegramVerify.resendCode')}</button>
                 </div>
               )}
 
@@ -328,7 +328,7 @@ const TelegramVerify: React.FC = () => {
                 <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    <span className="text-blue-700 text-sm">Verifying code...</span>
+                    <span className="text-blue-700 text-sm">{t('telegramVerify.verifyingCode')}</span>
                   </div>
                 </div>
               )}
@@ -360,7 +360,7 @@ const TelegramVerify: React.FC = () => {
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200"
               >
                 <ArrowLeft size={20} />
-                <span>Orqaga qaytish</span>
+                <span>{t('telegramVerify.backButton')}</span>
               </button>
             </div>
           </div>

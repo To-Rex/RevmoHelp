@@ -460,9 +460,13 @@ const resources = {
           description: 'Telegram autentifikatsiyasini davom ettirish uchun telefon raqamingizni kiriting.',
           phoneLabel: 'Telefon raqami',
           phonePlaceholder: 'Telefon raqamingizni kiriting',
-          continueButton: 'Davom etish'
+          continueButton: 'Davom etish',
+          countryCodeLabel: 'Davlat kodi',
+          selectCountry: 'Davlatni tanlang',
+          phoneNumberLabel: 'Telefon raqami',
+          backButton: 'Orqaga qaytish'
         },
- 
+
         telegramVerify: {
           header: 'Telegram Tasdiqlash',
           title: 'Raqamni tasdiqlash',
@@ -471,7 +475,19 @@ const resources = {
           codePlaceholder: 'Kodni kiriting',
           verifyButton: 'Tasdiqlash',
           openBotButton: 'Telegram botdan tasdiqlash kodini olish',
-          openBotDescription: 'Botni ochish uchun bosing va tasdiqlash kodini oling'
+          openBotDescription: 'Botni ochish uchun bosing va tasdiqlash kodini oling',
+          resendCodeIn: 'Kodni qayta yuborish',
+          resendCode: 'Kodni qayta yuborish',
+          verifyingCode: 'Kod tekshirilmoqda...',
+          backButton: 'Orqaga qaytish',
+          sessionIdNotFound: 'Session ID topilmadi. Iltimos, orqaga qayting va qaytadan kiring.',
+          invalidResponse: 'Noto\'g\'ri javob: tokenlar yo\'q',
+          authServiceUnavailable: 'Autentifikatsiya xizmati mavjud emas',
+          sessionSetError: 'Sessiya o\'rnatishda xatolik. Qaytadan urinib ko\'ring.',
+          verificationFailed: 'Tasdiqlash muvaffaqiyatsiz tugadi. Qaytadan urinib ko\'ring.',
+          networkError: 'Tarmoq xatoligi. Iltimos, ulanishingizni tekshiring va qaytadan urinib ko\'ring.',
+          phoneNotFound: 'Telefon raqami topilmadi. Iltimos, orqaga qayting va qaytadan kiring.',
+          resendFailed: 'Kodni qayta yuborish muvaffaqiyatsiz tugadi'
         }
       }
     },
@@ -934,7 +950,11 @@ const resources = {
         description: 'Введите ваш номер телефона для продолжения аутентификации через Telegram.',
         phoneLabel: 'Номер телефона',
         phonePlaceholder: 'Введите номер телефона',
-        continueButton: 'Продолжить'
+        continueButton: 'Продолжить',
+        countryCodeLabel: 'Код страны',
+        selectCountry: 'Выберите страну',
+        phoneNumberLabel: 'Номер телефона',
+        backButton: 'Назад'
       },
 
       // Telegram Verify
@@ -946,7 +966,19 @@ const resources = {
         codePlaceholder: 'Введите код',
         verifyButton: 'Подтвердить',
         openBotButton: 'Получить код подтверждения от Telegram бота',
-        openBotDescription: 'Нажмите, чтобы открыть бота и получить код подтверждения'
+        openBotDescription: 'Нажмите, чтобы открыть бота и получить код подтверждения',
+        resendCodeIn: 'Отправить код повторно через',
+        resendCode: 'Отправить код повторно',
+        verifyingCode: 'Проверка кода...',
+        backButton: 'Назад',
+        sessionIdNotFound: 'ID сессии не найден. Пожалуйста, вернитесь назад и попробуйте войти снова.',
+        invalidResponse: 'Неверный ответ: отсутствуют токены',
+        authServiceUnavailable: 'Служба аутентификации недоступна',
+        sessionSetError: 'Не удалось установить сессию. Попробуйте еще раз.',
+        verificationFailed: 'Проверка не удалась. Попробуйте еще раз.',
+        networkError: 'Ошибка сети. Пожалуйста, проверьте подключение и попробуйте еще раз.',
+        phoneNotFound: 'Номер телефона не найден. Пожалуйста, вернитесь назад и попробуйте войти снова.',
+        resendFailed: 'Не удалось отправить код повторно'
       }
     }
   },
@@ -1408,7 +1440,11 @@ const resources = {
         description: 'Enter your phone number to continue with Telegram authentication.',
         phoneLabel: 'Phone Number',
         phonePlaceholder: 'Enter your phone number',
-        continueButton: 'Continue'
+        continueButton: 'Continue',
+        countryCodeLabel: 'Country Code',
+        selectCountry: 'Select Country',
+        phoneNumberLabel: 'Phone Number',
+        backButton: 'Back'
       },
 
       // Telegram Verify
@@ -1420,7 +1456,19 @@ const resources = {
         codePlaceholder: 'Enter the code',
         verifyButton: 'Verify',
         openBotButton: 'Get verification code from Telegram bot',
-        openBotDescription: 'Click to open the bot and receive your verification code'
+        openBotDescription: 'Click to open the bot and receive your verification code',
+        resendCodeIn: 'Resend code in',
+        resendCode: 'Resend Code',
+        verifyingCode: 'Verifying code...',
+        backButton: 'Back',
+        sessionIdNotFound: 'Session ID not found. Please go back and try logging in again.',
+        invalidResponse: 'Invalid response: missing tokens',
+        authServiceUnavailable: 'Authentication service unavailable',
+        sessionSetError: 'Failed to establish session. Please try again.',
+        verificationFailed: 'Verification failed. Please try again.',
+        networkError: 'Network error. Please check your connection and try again.',
+        phoneNotFound: 'Phone number not found. Please go back and try logging in again.',
+        resendFailed: 'Failed to resend code'
       }
     }
   }
