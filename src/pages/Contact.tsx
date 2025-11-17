@@ -121,7 +121,7 @@ const Contact: React.FC = () => {
         title={t('contact')}
         description={t('contactPage.seoDescription')}
         keywords={t('contactPage.seoKeywords')}
-        url="https://revmoinfo.uz/contact"
+        url="https://revmohelp.uz/contact"
       />
 
       <div className="min-h-screen theme-bg">

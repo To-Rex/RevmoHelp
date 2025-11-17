@@ -141,7 +141,7 @@ const PartnerDetail: React.FC = () => {
         title={`${partner.name} - Hamkor`}
         description={partner.description || `${partner.name} - Revmoinfo hamkori`}
         keywords={`${partner.name}, hamkor, ${getTypeLabel(partner.partnership_type)}`}
-        url={`https://revmoinfo.uz/partners/${partner.slug}`}
+        url={`https://revmohelp.uz/partners/${partner.slug}`}
       />
 
       <div className="min-h-screen theme-bg">

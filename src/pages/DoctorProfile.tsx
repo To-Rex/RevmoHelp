@@ -256,7 +256,7 @@ const DoctorProfile: React.FC = () => {
         title={`${doctor.full_name} - ${doctor.specialization}`}
         description={doctor.bio}
         keywords={`${doctor.full_name}, ${doctor.specialization}, shifokor, revmatolog`}
-        url={`https://revmoinfo.uz/doctors/${doctor.id}`}
+        url={`https://revmohelp.uz/doctors/${doctor.id}`}
       />
 
       <div className="min-h-screen theme-bg">

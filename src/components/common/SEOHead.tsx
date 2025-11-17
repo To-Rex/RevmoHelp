@@ -24,7 +24,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   description = 'Bemor va shifokorlar uchun professional tibbiy ma\'lumot va yo\'riqnoma platformasi. Revmatik kasalliklar haqida eng so\'nggi ma\'lumotlar va maslahatlar.',
   keywords = 'revmatik kasalliklar, shifokor, bemor, tibbiy ma\'lumot, revmatologiya, salomatlik',
   image = 'https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  url = 'https://revmoinfo.uz',
+  url = 'https://revmohelp.uz',
   type = 'website',
   article,
 }) => {

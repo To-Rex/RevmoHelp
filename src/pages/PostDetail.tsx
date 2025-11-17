@@ -312,7 +312,7 @@ const PostDetail: React.FC = () => {
         description={post.meta_description || post.excerpt}
         keywords={post.tags.join(', ')}
         image={post.featured_image_url}
-        url={`https://revmoinfo.uz/posts/${post.slug}`}
+        url={`https://revmohelp.uz/posts/${post.slug}`}
         type="article"
         article={{
           author: post.author?.full_name,

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home Page -->
+  <url>
+    <loc>https://revmohelp.uz/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://revmohelp.uz/about</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/about</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/about</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://revmohelp.uz/contact</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/contact</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/contact</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Diseases Page -->
+  <url>
+    <loc>https://revmohelp.uz/diseases</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/diseases</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/diseases</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Doctors Page -->
+  <url>
+    <loc>https://revmohelp.uz/doctors</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/doctors</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/doctors</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Posts Page -->
+  <url>
+    <loc>https://revmohelp.uz/posts</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/posts</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/posts</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- QA Page -->
+  <url>
+    <loc>https://revmohelp.uz/qa</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/qa</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/qa</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Patient Stories Page -->
+  <url>
+    <loc>https://revmohelp.uz/patient-stories</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/patient-stories</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/patient-stories</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Partnership Page -->
+  <url>
+    <loc>https://revmohelp.uz/partnership</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/partnership</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/partnership</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- FAQ Page -->
+  <url>
+    <loc>https://revmohelp.uz/faq</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/faq</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/faq</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://revmohelp.uz/privacy</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/privacy</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/privacy</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Terms of Use -->
+  <url>
+    <loc>https://revmohelp.uz/terms</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/terms</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/terms</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Data Security -->
+  <url>
+    <loc>https://revmohelp.uz/data-security</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/ru/data-security</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://revmohelp.uz/en/data-security</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

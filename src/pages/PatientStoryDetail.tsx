@@ -140,7 +140,7 @@ const PatientStoryDetail: React.FC = () => {
         title={`${story.patient_name} - Bemor Tarixi`}
         description={story.story_content}
         keywords={`${story.patient_name}, ${story.diagnosis}, bemor tarixi, shifo topish`}
-        url={`https://revmoinfo.uz/patient-stories/${story.id}`}
+        url={`https://revmohelp.uz/patient-stories/${story.id}`}
         type="article"
         article={{
           author: story.doctor_name,

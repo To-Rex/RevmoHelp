@@ -115,7 +115,7 @@ const DiseaseDetail: React.FC = () => {
         title={disease.meta_title || disease.name}
         description={disease.meta_description || disease.description}
         keywords={`${disease.name}, revmatik kasallik, belgilar, davolash, profilaktika`}
-        url={`https://revmoinfo.uz/diseases/${disease.slug}`}
+        url={`https://revmohelp.uz/diseases/${disease.slug}`}
         type="article"
         article={{
           author: 'Revmoinfo Medical Team',
