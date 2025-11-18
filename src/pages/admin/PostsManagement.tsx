@@ -22,6 +22,7 @@ const PostsManagement: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [blockLoading, setBlockLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [triggerCreateCategory, setTriggerCreateCategory] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -68,6 +69,9 @@ const PostsManagement: React.FC = () => {
     { id: 'posts', label: 'Maqolalar', icon: FileText },
     { id: 'categories', label: 'Kategoriyalar', icon: Tag }
   ];
+
+  const pageTitle = activeTab === 'posts' ? 'Maqolalar Boshqaruvi' : 'Kategoriyalar';
+  const pageSubtitle = activeTab === 'posts' ? 'Maqolalarni yaratish va boshqarish' : 'Maqola kategoriyalarini boshqarish';
 
   const handleDelete = async (postId: string) => {
     if (!confirm('Bu maqolani o\'chirishni xohlaysizmi?')) return;
@@ -151,16 +155,41 @@ const PostsManagement: React.FC = () => {
     <div className="space-y-4 lg:space-y-6 xl:space-y-8">
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-        <div>
-          <h1 className="text-xl lg:text-2xl font-bold theme-text">Maqolalar Boshqaruvi</h1>
-          <p className="theme-text-secondary text-sm lg:text-base">Maqolalarni yaratish va boshqarish</p>
+        <div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-6">
+          <div>
+            <h1 className="text-xl lg:text-2xl font-bold theme-text">{pageTitle}</h1>
+            <p className="theme-text-secondary text-sm lg:text-base">{pageSubtitle}</p>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex justify-center lg:justify-start">
+            <div className="inline-flex rounded-lg theme-bg-secondary p-1">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center space-x-2 px-4 lg:px-6 py-2 lg:py-3 font-semibold transition-all duration-200 whitespace-nowrap rounded-md text-sm ${
+                      activeTab === tab.id
+                        ? 'theme-accent-bg text-white shadow-sm'
+                        : 'theme-text-secondary hover:theme-accent'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        
+
         {/* Message */}
         {message.text && (
           <div className={`p-4 rounded-xl flex items-center space-x-2 animate-slide-down ${
-            message.type === 'success' 
-              ? 'bg-green-50 border border-green-200' 
+            message.type === 'success'
+              ? 'bg-green-50 border border-green-200'
               : 'bg-red-50 border border-red-200'
           }`}>
             {message.type === 'success' ? (
@@ -173,7 +202,7 @@ const PostsManagement: React.FC = () => {
             </span>
           </div>
         )}
-        
+
         {activeTab === 'posts' && (
           <Link
             to="/admin/posts/create"
@@ -183,36 +212,27 @@ const PostsManagement: React.FC = () => {
             <span>Yangi Maqola</span>
           </Link>
         )}
-      </div>
 
-      {/* Tabs */}
-      <div className="theme-bg rounded-lg theme-shadow theme-border border">
-        <div className="flex overflow-x-auto">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 lg:px-6 py-3 font-semibold transition-colors duration-200 whitespace-nowrap border-b-2 text-sm ${
-                  activeTab === tab.id
-                    ? 'theme-accent border-blue-600 bg-blue-50 dark:bg-blue-900/20'
-                    : 'theme-text-secondary hover:theme-accent border-transparent hover:bg-gray-50 dark:hover:bg-gray-800'
-                }`}
-              >
-                <Icon size={16} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        {activeTab === 'categories' && (
+          <button
+            onClick={() => setTriggerCreateCategory(true)}
+            className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
+          >
+            <Plus size={18} />
+            <span>Yangi Kategoriya</span>
+          </button>
+        )}
       </div>
 
       {/* Tab Content */}
       <div className="mt-6">
         {activeTab === 'categories' && (
-          <CategoriesManagement onCategoriesChange={handleCategoriesChange} />
-        )}
+           <CategoriesManagement
+             onCategoriesChange={handleCategoriesChange}
+             triggerCreateModal={triggerCreateCategory}
+             onModalClosed={() => setTriggerCreateCategory(false)}
+           />
+         )}
         
         {activeTab === 'posts' && (
           <div className="space-y-6">

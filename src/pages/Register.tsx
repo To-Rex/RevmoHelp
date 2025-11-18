@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -35,6 +35,24 @@ const Register: React.FC = () => {
     agreeToTerms: false,
     agreeToPrivacy: false
   });
+
+  // Load saved data on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('registerFormData');
+    const savedStep = localStorage.getItem('registerStep');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+    if (savedStep) {
+      setStep(parseInt(savedStep));
+    }
+  }, []);
+
+  // Save data on changes
+  useEffect(() => {
+    localStorage.setItem('registerFormData', JSON.stringify(formData));
+    localStorage.setItem('registerStep', step.toString());
+  }, [formData, step]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -122,8 +140,11 @@ const Register: React.FC = () => {
           setError(error.message);
         }
       } else {
-        navigate('/login', { 
-          state: { 
+        // Clear saved data on successful registration
+        localStorage.removeItem('registerFormData');
+        localStorage.removeItem('registerStep');
+        navigate('/login', {
+          state: {
             message: t('registerPage.successMessage'),
             email: formData.email
           }
@@ -426,7 +447,7 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 py-2 px-4 border-2 theme-border text-sm font-medium rounded-lg theme-text-secondary hover:theme-bg-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 transform hover:scale-105"
+                    className="flex-1 py-2 px-4 border-2 theme-border text-xs font-medium rounded-lg theme-text-secondary hover:theme-bg-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 transform hover:scale-105 whitespace-nowrap"
                   >
                     {t('registerPage.backButton')}
                   </button>
@@ -435,7 +456,7 @@ const Register: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`group relative ${step === 2 ? 'flex-1' : 'w-full'} flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg`}
+                  className={`group relative ${step === 2 ? 'flex-1' : 'w-full'} flex justify-center py-2 px-4 border border-transparent text-xs font-medium rounded-lg text-white bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-lg`}
                 >
                   {isLoading ? (
                     <div className="flex items-center space-x-2">
@@ -444,7 +465,7 @@ const Register: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2">
-                      <span>{step === 1 ? t('registerPage.nextButton') : t('registerPage.registerButton')}</span>
+                      <span className="whitespace-nowrap">{step === 1 ? t('registerPage.nextButton') : t('registerPage.registerButton')}</span>
                       <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
                     </div>
                   )}

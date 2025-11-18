@@ -23,9 +23,11 @@ import type { Category, CreateCategoryData } from '../../lib/categories';
 
 interface CategoriesManagementProps {
   onCategoriesChange?: () => void;
+  triggerCreateModal?: boolean;
+  onModalClosed?: () => void;
 }
 
-const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategoriesChange }) => {
+const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategoriesChange, triggerCreateModal, onModalClosed }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -51,6 +53,13 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
   useEffect(() => {
     loadCategories();
   }, []);
+
+  useEffect(() => {
+    if (triggerCreateModal) {
+      setShowCreateModal(true);
+      onModalClosed?.();
+    }
+  }, [triggerCreateModal, onModalClosed]);
 
   const loadCategories = async () => {
     setLoading(true);
@@ -236,20 +245,6 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold theme-text">Kategoriyalar</h3>
-          <p className="theme-text-secondary text-sm">Maqola kategoriyalarini boshqarish</p>
-        </div>
-        <button
-          onClick={openCreateModal}
-          className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-        >
-          <Plus size={18} />
-          <span>Yangi Kategoriya</span>
-        </button>
-      </div>
 
       {/* Message */}
       {message.text && (

@@ -105,10 +105,10 @@ const CreatePost: React.FC = () => {
 
   const loadPost = async () => {
     if (!id) return;
-    
+
     setLoading(true);
     try {
-      const { data: post } = await getPostById(id);
+      const { data: post } = await getPostById(id, 'uz');
       
       if (post) {
         setFormData({
@@ -198,6 +198,107 @@ const CreatePost: React.FC = () => {
       setFormData(prev => ({ ...prev, excerpt }));
     }
   }, [formData.content]);
+
+  // Auto-fill meta_title and meta_description for uz
+  useEffect(() => {
+    if (formData.title) {
+      setFormData(prev => ({ ...prev, meta_title: formData.title }));
+    }
+  }, [formData.title]);
+
+  useEffect(() => {
+    if (formData.excerpt) {
+      setFormData(prev => ({ ...prev, meta_description: formData.excerpt }));
+    }
+  }, [formData.excerpt]);
+
+  // Auto-fill meta for ru
+  useEffect(() => {
+    if (formData.translations.ru.title) {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          ru: { ...prev.translations.ru, meta_title: formData.translations.ru.title }
+        }
+      }));
+    }
+  }, [formData.translations.ru.title]);
+
+  useEffect(() => {
+    if (formData.translations.ru.excerpt) {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          ru: { ...prev.translations.ru, meta_description: formData.translations.ru.excerpt }
+        }
+      }));
+    }
+  }, [formData.translations.ru.excerpt]);
+
+  // Auto-fill meta for en
+  useEffect(() => {
+    if (formData.translations.en.title) {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          en: { ...prev.translations.en, meta_title: formData.translations.en.title }
+        }
+      }));
+    }
+  }, [formData.translations.en.title]);
+
+  useEffect(() => {
+    if (formData.translations.en.excerpt) {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          en: { ...prev.translations.en, meta_description: formData.translations.en.excerpt }
+        }
+      }));
+    }
+  }, [formData.translations.en.excerpt]);
+
+  // Auto-generate slug for ru
+  useEffect(() => {
+    if (formData.translations.ru.title && !isEditing) {
+      const slug = formData.translations.ru.title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          ru: { ...prev.translations.ru, slug }
+        }
+      }));
+    }
+  }, [formData.translations.ru.title, isEditing]);
+
+  // Auto-generate slug for en
+  useEffect(() => {
+    if (formData.translations.en.title && !isEditing) {
+      const slug = formData.translations.en.title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations,
+          en: { ...prev.translations.en, slug }
+        }
+      }));
+    }
+  }, [formData.translations.en.title, isEditing]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
