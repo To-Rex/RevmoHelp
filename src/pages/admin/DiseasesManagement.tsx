@@ -277,6 +277,48 @@ const DiseasesManagement: React.FC = () => {
   };
 
   const openEditModal = (disease: Disease) => {
+    // Convert translations array to object format
+    const translations: { [key: string]: any } = {
+      ru: {
+        name: '',
+        description: '',
+        symptoms: [],
+        treatment_methods: [],
+        prevention_tips: [],
+        meta_title: '',
+        meta_description: '',
+        slug: ''
+      },
+      en: {
+        name: '',
+        description: '',
+        symptoms: [],
+        treatment_methods: [],
+        prevention_tips: [],
+        meta_title: '',
+        meta_description: '',
+        slug: ''
+      }
+    };
+
+    // Populate translations from disease.translations array
+    if (disease.translations) {
+      disease.translations.forEach((translation: any) => {
+        if (translation.language === 'ru' || translation.language === 'en') {
+          translations[translation.language] = {
+            name: translation.name || '',
+            description: translation.description || '',
+            symptoms: translation.symptoms || [],
+            treatment_methods: translation.treatment_methods || [],
+            prevention_tips: translation.prevention_tips || [],
+            meta_title: translation.meta_title || '',
+            meta_description: translation.meta_description || '',
+            slug: translation.slug || ''
+          };
+        }
+      });
+    }
+
     setFormData({
       name: disease.name,
       slug: disease.slug,
@@ -290,34 +332,13 @@ const DiseasesManagement: React.FC = () => {
       active: disease.active,
       featured: disease.featured,
       order_index: disease.order_index,
-      translations: {
-        ru: {
-          name: '',
-          description: '',
-          symptoms: [],
-          treatment_methods: [],
-          prevention_tips: [],
-          meta_title: '',
-          meta_description: '',
-          slug: ''
-        },
-        en: {
-          name: '',
-          description: '',
-          symptoms: [],
-          treatment_methods: [],
-          prevention_tips: [],
-          meta_title: '',
-          meta_description: '',
-          slug: ''
-        }
-      }
+      translations
     });
-    
+
     if (disease.featured_image_url) {
       setImagePreview(disease.featured_image_url);
     }
-    
+
     setEditingDisease(disease);
     setShowEditModal(true);
   };
@@ -1093,9 +1114,309 @@ const DiseasesManagement: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleUpdate}>
-              {/* Same form content as create modal */}
-              <div className="flex space-x-3 pt-6">
+            <form onSubmit={handleUpdate} className="space-y-6">
+              {message.text && (
+                <div className={`p-3 rounded-lg flex items-center space-x-2 ${
+                  message.type === 'success'
+                    ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                    : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
+                }`}>
+                  {message.type === 'success' ? (
+                    <CheckCircle size={16} className="text-green-600 dark:text-green-400" />
+                  ) : (
+                    <AlertCircle size={16} className="text-red-600 dark:text-red-400" />
+                  )}
+                  <span className={`text-sm ${message.type === 'success' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+                    {message.text}
+                  </span>
+                </div>
+              )}
+
+              {/* Language Tabs */}
+              <div className="flex items-center justify-between">
+                <h4 className="text-lg font-semibold theme-text">Kasallik Ma'lumotlari</h4>
+                <div className="flex space-x-1 bg-gray-50 rounded-lg p-1 overflow-x-auto">
+                  {[
+                    { code: 'uz', label: 'O\'zbek', flag: '🇺🇿', bgClass: 'bg-nav-500', textClass: 'text-white' },
+                    { code: 'ru', label: 'Русский', flag: '🇷🇺', bgClass: 'bg-primary-500', textClass: 'text-white' },
+                    { code: 'en', label: 'English', flag: '🇺🇸', bgClass: 'bg-highlight-500', textClass: 'text-gray-800' }
+                  ].map((lang) => (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      onClick={() => setActiveLanguageTab(lang.code as 'uz' | 'ru' | 'en')}
+                      className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 whitespace-nowrap ${
+                        activeLanguageTab === lang.code
+                          ? lang.bgClass + ' ' + lang.textClass + ' shadow-sm'
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <span>{lang.flag}</span>
+                      <span className="hidden sm:inline">{lang.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Basic Information */}
+              <div>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">
+                  Kasallik nomi ({languages.find(l => l.code === activeLanguageTab)?.label}) *
+                </label>
+                {activeLanguageTab === 'uz' ? (
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    required
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                    placeholder="Kasallik nomi"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.translations?.[activeLanguageTab]?.name || ''}
+                    onChange={handleTranslationChange}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                    placeholder="Kasallik nomi"
+                  />
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">
+                  Tavsif ({languages.find(l => l.code === activeLanguageTab)?.label}) *
+                </label>
+                {activeLanguageTab === 'uz' ? (
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    required
+                    rows={4}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida batafsil ma'lumot"
+                  />
+                ) : (
+                  <textarea
+                    name="description"
+                    value={formData.translations?.[activeLanguageTab]?.description || ''}
+                    onChange={handleTranslationChange}
+                    rows={4}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida batafsil ma'lumot"
+                  />
+                )}
+              </div>
+
+              {/* Media Upload */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">
+                    Kasallik rasmi
+                  </label>
+                  {imagePreview ? (
+                    <div className="relative">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 theme-border border-dashed rounded-lg cursor-pointer theme-bg-tertiary hover:theme-bg-quaternary transition-colors duration-200">
+                      <Upload className="w-6 h-6 mb-2 theme-text-muted" />
+                      <p className="text-xs theme-text-secondary">Rasm yuklash</p>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">
+                    YouTube Video URL
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    value={formData.youtube_url || ''}
+                    onChange={(e) => handleInputChange('youtube_url', e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                  />
+                </div>
+              </div>
+
+              {/* Medical Details */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Symptoms */}
+                <div>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">
+                    Kasallik Belgilari
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        placeholder="Yangi belgi"
+                        value={newSymptom}
+                        onChange={(e) => setNewSymptom(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSymptom())}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={addSymptom}
+                        className="px-3 py-2 theme-accent-bg text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {formData.symptoms.map((symptom, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm"
+                        >
+                          <span>{symptom}</span>
+                          <button
+                            type="button"
+                            onClick={() => removeSymptom(symptom)}
+                            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Treatment Methods */}
+                <div>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">
+                    Davolash Usullari
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        placeholder="Davolash usuli"
+                        value={newTreatment}
+                        onChange={(e) => setNewTreatment(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTreatment())}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={addTreatment}
+                        className="px-3 py-2 theme-accent-bg text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {formData.treatment_methods.map((treatment, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-lg text-sm"
+                        >
+                          <span>{treatment}</span>
+                          <button
+                            type="button"
+                            onClick={() => removeTreatment(treatment)}
+                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Prevention Tips */}
+                <div>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">
+                    Profilaktika
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        placeholder="Profilaktika maslahati"
+                        value={newPrevention}
+                        onChange={(e) => setNewPrevention(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addPrevention())}
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={addPrevention}
+                        className="px-3 py-2 theme-accent-bg text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {formData.prevention_tips.map((tip, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg text-sm"
+                        >
+                          <span>{tip}</span>
+                          <button
+                            type="button"
+                            onClick={() => removePrevention(tip)}
+                            className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              {/* Publish Settings */}
+              <div className="flex items-center space-x-6">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.active}
+                    onChange={(e) => handleInputChange('active', e.target.checked)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm theme-text-secondary">Faol</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.featured}
+                    onChange={(e) => handleInputChange('featured', e.target.checked)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm theme-text-secondary">Asosiy kasallik</span>
+                </label>
+              </div>
+
+              <div className="flex space-x-3 pt-4">
                 <button
                   type="button"
                   onClick={closeModals}

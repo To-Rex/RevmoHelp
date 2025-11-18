@@ -46,6 +46,7 @@ export interface CreateDiseaseData {
   treatment_methods: string[];
   prevention_tips: string[];
   featured_image?: File;
+  featured_image_url?: string;
   youtube_url?: string;
   meta_title?: string;
   meta_description?: string;
@@ -302,10 +303,11 @@ export const createDisease = async (diseaseData: CreateDiseaseData): Promise<{ d
   try {
     if (!supabase) {
       // Mock creation
+      const { translations, featured_image, ...mockData } = diseaseData;
       const newDisease: Disease = {
         id: Date.now().toString(),
-        ...diseaseData,
-        featured_image_url: diseaseData.featured_image ? URL.createObjectURL(diseaseData.featured_image) : undefined,
+        ...mockData,
+        featured_image_url: featured_image ? URL.createObjectURL(featured_image) : undefined,
         active: diseaseData.active ?? true,
         featured: diseaseData.featured ?? false,
         order_index: diseaseData.order_index ?? 0,
@@ -390,10 +392,11 @@ export const createDisease = async (diseaseData: CreateDiseaseData): Promise<{ d
     } catch (supabaseError) {
       console.log('❌ Supabase connection failed during creation:', supabaseError);
       // Mock creation as fallback
+      const { translations, featured_image, ...mockData } = diseaseData;
       const newDisease: Disease = {
         id: Date.now().toString(),
-        ...diseaseData,
-        featured_image_url: diseaseData.featured_image ? URL.createObjectURL(diseaseData.featured_image) : undefined,
+        ...mockData,
+        featured_image_url: featured_image ? URL.createObjectURL(featured_image) : undefined,
         active: diseaseData.active ?? true,
         featured: diseaseData.featured ?? false,
         order_index: diseaseData.order_index ?? 0,
@@ -411,7 +414,8 @@ export const createDisease = async (diseaseData: CreateDiseaseData): Promise<{ d
 export const updateDisease = async (diseaseData: UpdateDiseaseData): Promise<{ data: Disease | null; error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
-      return { data: null, error: { message: 'Supabase not available' } };
+      // Mock update - return success for demo
+      return { data: diseaseData as Disease, error: null };
     }
 
     const { id, featured_image, translations, ...updateData } = diseaseData;
@@ -475,7 +479,8 @@ export const updateDisease = async (diseaseData: UpdateDiseaseData): Promise<{ d
 export const deleteDisease = async (diseaseId: string): Promise<{ error: any }> => {
   try {
     if (!isSupabaseAvailable() || !supabase) {
-      return { error: { message: 'Supabase not available' } };
+      // Mock delete - return success for demo
+      return { error: null };
     }
 
     const { error } = await supabase
