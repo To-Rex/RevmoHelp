@@ -128,7 +128,7 @@ const DiseaseDetail: React.FC = () => {
 
       <div className="min-h-screen theme-bg">
         {/* Header */}
-        <div className="theme-bg theme-shadow theme-border border-b">
+        <div className="theme-bg theme-shadow-lg theme-border border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <Link
               to="/diseases"
@@ -142,9 +142,9 @@ const DiseaseDetail: React.FC = () => {
 
         {/* Disease Hero */}
         <section className="relative py-16 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 to-blue-600/5 dark:from-red-400/3 dark:to-blue-400/3"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-teal-600/5 dark:from-blue-400/3 dark:to-teal-400/3"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in">
+            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Disease Media */}
                 <div className="relative h-96 lg:h-full">
@@ -172,7 +172,7 @@ const DiseaseDetail: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-red-50 to-blue-50 dark:from-red-900/20 dark:to-blue-900/20 flex items-center justify-center">
+                    <div className="w-full h-full bg-gradient-to-br from-primary-50 to-highlight-50 dark:from-primary-900/20 dark:to-highlight-900/20 flex items-center justify-center">
                       <div className="text-center">
                         <Activity size={64} className="theme-text-muted mx-auto mb-4 opacity-60" />
                         <p className="theme-text-muted text-xl font-medium">{getContentTypeLabel(disease)}</p>
@@ -233,16 +233,16 @@ const DiseaseDetail: React.FC = () => {
 
                   {/* Quick Stats */}
                   <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="p-4 theme-bg-secondary rounded-xl">
-                      <div className="text-2xl font-bold text-red-600 mb-1">{disease.symptoms?.length || 0}</div>
+                    <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                      <div className="text-2xl font-bold theme-text mb-1">{disease.symptoms?.length || 0}</div>
                       <div className="text-sm theme-text-secondary">Belgilar</div>
                     </div>
-                    <div className="p-4 theme-bg-secondary rounded-xl">
-                      <div className="text-2xl font-bold text-blue-600 mb-1">{disease.treatment_methods?.length || 0}</div>
+                    <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                      <div className="text-2xl font-bold theme-text mb-1">{disease.treatment_methods?.length || 0}</div>
                       <div className="text-sm theme-text-secondary">Davolash</div>
                     </div>
-                    <div className="p-4 theme-bg-secondary rounded-xl">
-                      <div className="text-2xl font-bold text-green-600 mb-1">{disease.prevention_tips?.length || 0}</div>
+                    <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                      <div className="text-2xl font-bold theme-text mb-1">{disease.prevention_tips?.length || 0}</div>
                       <div className="text-sm theme-text-secondary">Profilaktika</div>
                     </div>
                   </div>
@@ -259,16 +259,16 @@ const DiseaseDetail: React.FC = () => {
             <div className="lg:col-span-2 space-y-8">
               {/* Symptoms */}
               {disease.symptoms && disease.symptoms.length > 0 && (
-                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up">
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-2xl flex items-center justify-center">
-                      <AlertCircle size={24} className="text-red-600 dark:text-red-400" />
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <AlertCircle size={24} className="text-primary-600" />
                     </div>
                     <h2 className="text-2xl font-bold theme-text">Kasallik Belgilari</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {disease.symptoms.map((symptom, idx) => (
-                      <div key={idx} className="flex items-center space-x-3 p-4 theme-bg-secondary theme-text rounded-xl theme-border border">
+                      <div key={idx} className="flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                         <div className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0"></div>
                         <span className="font-medium">{symptom}</span>
                       </div>
@@ -279,17 +279,17 @@ const DiseaseDetail: React.FC = () => {
 
               {/* Treatment Methods */}
               {disease.treatment_methods && disease.treatment_methods.length > 0 && (
-                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-200">
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center">
-                      <Stethoscope size={24} className="text-blue-600 dark:text-blue-400" />
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <Stethoscope size={24} className="text-primary-600" />
                     </div>
                     <h2 className="text-2xl font-bold theme-text">Davolash Usullari</h2>
                   </div>
                   <div className="space-y-4">
                     {disease.treatment_methods.map((method, idx) => (
-                      <div key={idx} className="flex items-center space-x-4 p-4 theme-bg-secondary theme-text rounded-xl theme-border border">
-                        <CheckCircle size={20} className="text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                      <div key={idx} className="flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                        <CheckCircle size={20} className="text-primary-600 flex-shrink-0" />
                         <span className="font-semibold text-lg">{method}</span>
                       </div>
                     ))}
@@ -299,17 +299,17 @@ const DiseaseDetail: React.FC = () => {
 
               {/* Prevention Tips */}
               {disease.prevention_tips && disease.prevention_tips.length > 0 && (
-                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-400">
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-2xl flex items-center justify-center">
-                      <Shield size={24} className="text-green-600 dark:text-green-400" />
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <Shield size={24} className="text-primary-600" />
                     </div>
                     <h2 className="text-2xl font-bold theme-text">Profilaktika Choralari</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {disease.prevention_tips.map((tip, idx) => (
-                      <div key={idx} className="flex items-center space-x-3 p-4 theme-bg-secondary theme-text rounded-xl theme-border border">
-                        <Target size={18} className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                      <div key={idx} className="flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                        <Target size={18} className="text-primary-600 flex-shrink-0" />
                         <span className="font-medium">{tip}</span>
                       </div>
                     ))}
@@ -319,7 +319,7 @@ const DiseaseDetail: React.FC = () => {
 
               {/* YouTube Video */}
               {disease.youtube_url && (
-                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-600">
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-600" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   <div className="flex items-center space-x-3 mb-6">
                     <div className="w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-2xl flex items-center justify-center">
                       <Video size={24} className="text-red-600 dark:text-red-400" />
@@ -341,26 +341,26 @@ const DiseaseDetail: React.FC = () => {
             {/* Sidebar */}
             <div className="space-y-8">
               {/* Disease Summary */}
-              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left">
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 mt-8 animate-slide-left" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-xl font-bold theme-text mb-6">Kasallik Xulasasi</h3>
                 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 theme-bg-secondary rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <span className="theme-text-secondary font-medium">Belgilar soni</span>
                     <span className="font-bold theme-text text-lg">{disease.symptoms?.length || 0}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between p-4 theme-bg-secondary rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <span className="theme-text-secondary font-medium">Davolash usullari</span>
                     <span className="font-bold theme-text text-lg">{disease.treatment_methods?.length || 0}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between p-4 theme-bg-secondary rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <span className="theme-text-secondary font-medium">Profilaktika</span>
                     <span className="font-bold theme-text text-lg">{disease.prevention_tips?.length || 0}</span>
                   </div>
                   
-                  <div className="flex items-center justify-between p-4 theme-bg-secondary rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <span className="theme-text-secondary font-medium">Kontent turi</span>
                     <div className="flex items-center space-x-2">
                       <ContentIcon size={16} className="theme-accent" />
@@ -371,13 +371,13 @@ const DiseaseDetail: React.FC = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left delay-200">
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-xl font-bold theme-text mb-6">Tezkor Amallar</h3>
                 
                 <div className="space-y-3">
                   <Link
                     to="/consultation"
-                    className="w-full flex items-center space-x-3 p-4 theme-bg-secondary theme-text rounded-xl hover:theme-bg-tertiary transition-colors duration-200 theme-border border"
+                    className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <Stethoscope size={18} className="text-blue-600" />
                     <span className="font-medium">Bepul maslahat olish</span>
@@ -385,7 +385,7 @@ const DiseaseDetail: React.FC = () => {
                   
                   <Link
                     to="/doctors"
-                    className="w-full flex items-center space-x-3 p-4 theme-bg-secondary theme-text rounded-xl hover:theme-bg-tertiary transition-colors duration-200 theme-border border"
+                    className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <Users size={18} className="text-green-600" />
                     <span className="font-medium">Shifokorlar bilan tanishing</span>
@@ -393,7 +393,7 @@ const DiseaseDetail: React.FC = () => {
                   
                   <Link
                     to="/posts"
-                    className="w-full flex items-center space-x-3 p-4 theme-bg-secondary theme-text rounded-xl hover:theme-bg-tertiary transition-colors duration-200 theme-border border"
+                    className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <BookOpen size={18} className="text-purple-600" />
                     <span className="font-medium">Tegishli maqolalar</span>
@@ -402,14 +402,14 @@ const DiseaseDetail: React.FC = () => {
               </div>
 
               {/* Share */}
-              <div className="bg-gradient-to-r from-red-600 to-blue-600 rounded-3xl p-6 text-white animate-slide-left delay-400">
+              <div className="bg-primary-600 rounded-2xl theme-shadow-lg p-6 text-white animate-slide-left delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-lg font-bold mb-2">Ma'lumotni Ulashing</h3>
-                <p className="text-red-100 mb-4 text-sm">
+                <p className="text-blue-100 mb-4 text-sm">
                   Bu kasallik haqida ma'lumotni boshqalar bilan ulashing
                 </p>
                 <button
                   onClick={handleShare}
-                  className="w-full bg-white text-red-600 py-3 rounded-xl font-semibold hover:bg-red-50 transition-colors duration-200 flex items-center justify-center space-x-2"
+                  className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Share2 size={18} />
                   <span>Ulashish</span>
