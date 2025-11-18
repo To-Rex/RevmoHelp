@@ -227,7 +227,7 @@ const QA: React.FC = () => {
         <section className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-teal-600/10 dark:from-blue-400/5 dark:to-teal-400/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 rounded-full px-4 py-2 mb-6">
+            <div className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900/50 rounded-full px-4 py-2 mb-6">
               <HelpCircle size={16} className="text-blue-600" />
               <span className="text-blue-800 text-sm font-medium">Professional Medical Q&A</span>
             </div>

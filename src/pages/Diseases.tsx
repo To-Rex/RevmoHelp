@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  Search, 
-  Filter, 
-  Activity, 
-  ArrowRight, 
-  Heart, 
-  Stethoscope, 
+import {
+  Search,
+  Filter,
+  Activity,
+  ArrowRight,
+  Heart,
+  Stethoscope,
   AlertCircle,
   Eye,
   BookOpen,
@@ -19,7 +19,10 @@ import {
   Play,
   FileText,
   Image as ImageIcon,
-  Video
+  Video,
+  Users,
+  Clock,
+  MessageCircle
 } from 'lucide-react';
 import SEOHead from '../components/common/SEOHead';
 import { getDiseases } from '../lib/diseases';
@@ -123,11 +126,11 @@ const Diseases: React.FC = () => {
       <div className="min-h-screen theme-bg">
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-teal-600/10 dark:from-blue-400/5 dark:to-teal-400/5"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-800/10 to-teal-600/10 dark:from-blue-400/5 dark:to-teal-400/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900/50 rounded-full px-4 py-2 mb-6 animate-fade-in">
-              <Activity size={16} className="text-blue-600 dark:text-blue-400" />
-              <span className="text-blue-800 dark:text-blue-300 text-sm font-medium">Medical Conditions</span>
+            <div className="inline-flex items-center space-x-2 theme-bg-secondary backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in theme-shadow-lg theme-border border">
+              <Activity size={16} className="theme-bg-secondary dark:text-blue-800" />
+              <span className="text-blue-800 text-sm font-medium">Medical Conditions</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
               Revmatik Kasalliklar
@@ -209,7 +212,7 @@ const Diseases: React.FC = () => {
                 <LanguageAwareLink
                   key={disease.id}
                   to={`/diseases/${disease.slug}`}
-                  className="group block h-full"
+                  className="group block h-full min-h-[350px]"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="bg-white rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in h-full flex flex-col hover:theme-shadow-lg transition-all duration-500 hover:-translate-y-2 hover-medical">
@@ -239,8 +242,8 @@ const Diseases: React.FC = () => {
                           </div>
                         </div>
                       ) : (
-                        <div className={`w-full h-64 bg-gradient-to-br ${gradientColor} opacity-20 flex items-center justify-center group-hover:opacity-30 transition-all duration-300`}>
-                          <DiseaseIcon size={64} className="text-white opacity-80" />
+                        <div className="relative h-64 bg-blue-50 dark:bg-blue-900/20 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                          <DiseaseIcon size={DiseaseIcon === Activity ? 32 : 48} className="theme-accent" />
                         </div>
                       )}
                       
@@ -268,22 +271,22 @@ const Diseases: React.FC = () => {
                         {disease.name}
                       </h3>
                       
-                      <p className="theme-text-secondary text-sm mb-4 line-clamp-3 leading-relaxed">
+                      <p className="theme-text-secondary text-sm mb-4 line-clamp-3 leading-relaxed min-h-[3.75rem]">
                         {disease.description}
                       </p>
 
                       {/* Quick Stats */}
                       <div className="flex items-center justify-center space-x-4 text-xs theme-text-muted mb-4">
                         <div className="flex items-center space-x-1">
-                          <AlertCircle size={12} />
+                          <Users size={14} />
                           <span>{disease.symptoms?.length || 0} belgi</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <Stethoscope size={12} />
+                          <Clock size={14} />
                           <span>{disease.treatment_methods?.length || 0} usul</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <Shield size={12} />
+                          <MessageCircle size={14} />
                           <span>{disease.prevention_tips?.length || 0} maslahat</span>
                         </div>
                       </div>
@@ -322,7 +325,7 @@ const Diseases: React.FC = () => {
           {/* Medical Notice */}
           <div className="mt-16 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl animate-fade-in delay-1000">
             <div className="flex items-center space-x-3 text-black dark:text-black">
-              <Shield size={20} className="flex-shrink-0" />
+              <Shield size={10} className="flex-shrink-0" />
               <div>
                 <h4 className="font-semibold mb-1">Tibbiy Ogohlantirish</h4>
                 <p className="text-sm">

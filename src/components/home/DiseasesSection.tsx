@@ -94,7 +94,7 @@ const DiseasesSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center space-x-2 theme-bg-secondary backdrop-blur-sm rounded-full px-6 py-3 mb-6 theme-shadow-lg theme-border border">
+          <div className="inline-flex items-center space-x-2 bg-blue-100 rounded-full px-4 py-2 mb-6">
             <Activity size={18} className="theme-accent" />
             <span className="theme-accent text-sm font-medium">{t('medicalConditions')}</span>
           </div>
