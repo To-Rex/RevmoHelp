@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Plus, CreditCard as Edit, Trash2, Eye, Calendar, User, Image, Video, FileText, Play, TrendingUp, Clock, Tag, Globe, Settings, AlertCircle, CheckCircle } from 'lucide-react';
+import { Search, Filter, Plus, CreditCard as Edit, Trash2, Eye, Calendar, User, Image, Video, FileText, Play, TrendingUp, Clock, Tag, Globe, Settings, AlertCircle, CheckCircle, ChevronDown } from 'lucide-react';
 import { Ban, Unlock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getPosts, deletePost, updatePost } from '../../lib/posts';
@@ -23,9 +23,25 @@ const PostsManagement: React.FC = () => {
   const [blockLoading, setBlockLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [triggerCreateCategory, setTriggerCreateCategory] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [authorDropdownOpen, setAuthorDropdownOpen] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [blockStatusDropdownOpen, setBlockStatusDropdownOpen] = useState(false);
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setCategoryDropdownOpen(false);
+      setAuthorDropdownOpen(false);
+      setStatusDropdownOpen(false);
+      setBlockStatusDropdownOpen(false);
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
   const loadData = async () => {
@@ -143,6 +159,32 @@ const PostsManagement: React.FC = () => {
     });
   };
 
+  const getSelectedCategoryName = () => {
+    if (selectedCategory === 'all') return 'Barcha kategoriyalar';
+    const cat = categories.find(c => c.id === selectedCategory);
+    return cat ? cat.name : 'Barcha kategoriyalar';
+  };
+
+  const getSelectedAuthorName = () => {
+    if (selectedAuthor === 'all') return 'Barcha mualliflar';
+    const auth = authors.find(a => a.id === selectedAuthor);
+    return auth ? `${auth.full_name} (${auth.role === 'doctor' ? 'Shifokor' : 'Admin'})` : 'Barcha mualliflar';
+  };
+
+  const getSelectedStatusName = () => {
+    if (selectedStatus === 'all') return 'Barcha holatlar';
+    if (selectedStatus === 'published') return 'Nashr etilgan';
+    if (selectedStatus === 'draft') return 'Qoralama';
+    return 'Barcha holatlar';
+  };
+
+  const getSelectedBlockStatusName = () => {
+    if (selectedBlockStatus === 'all') return 'Barcha maqolalar';
+    if (selectedBlockStatus === 'active') return 'Faol maqolalar';
+    if (selectedBlockStatus === 'blocked') return 'Bloklangan maqolalar';
+    return 'Barcha maqolalar';
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -154,15 +196,15 @@ const PostsManagement: React.FC = () => {
   return (
     <div className="space-y-4 lg:space-y-6 xl:space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-        <div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-6">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl lg:text-2xl font-bold theme-text">{pageTitle}</h1>
             <p className="theme-text-secondary text-sm lg:text-base">{pageSubtitle}</p>
           </div>
 
           {/* Tabs */}
-          <div className="flex justify-center lg:justify-start">
+          <div className="flex justify-center flex-1">
             <div className="inline-flex rounded-lg theme-bg-secondary p-1">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
@@ -183,11 +225,33 @@ const PostsManagement: React.FC = () => {
               })}
             </div>
           </div>
+
+          <div>
+            {activeTab === 'posts' && (
+              <Link
+                to="/admin/posts/create"
+                className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
+              >
+                <Plus size={18} />
+                <span>Yangi Maqola</span>
+              </Link>
+            )}
+
+            {activeTab === 'categories' && (
+              <button
+                onClick={() => setTriggerCreateCategory(true)}
+                className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
+              >
+                <Plus size={18} />
+                <span>Yangi Kategoriya</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Message */}
         {message.text && (
-          <div className={`p-4 rounded-xl flex items-center space-x-2 animate-slide-down ${
+          <div className={`p-4 rounded-xl flex items-center space-x-2 animate-slide-down max-w-md mx-auto ${
             message.type === 'success'
               ? 'bg-green-50 border border-green-200'
               : 'bg-red-50 border border-red-200'
@@ -201,26 +265,6 @@ const PostsManagement: React.FC = () => {
               {message.text}
             </span>
           </div>
-        )}
-
-        {activeTab === 'posts' && (
-          <Link
-            to="/admin/posts/create"
-            className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
-          >
-            <Plus size={18} />
-            <span>Yangi Maqola</span>
-          </Link>
-        )}
-
-        {activeTab === 'categories' && (
-          <button
-            onClick={() => setTriggerCreateCategory(true)}
-            className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
-          >
-            <Plus size={18} />
-            <span>Yangi Kategoriya</span>
-          </button>
         )}
       </div>
 
@@ -268,67 +312,135 @@ const PostsManagement: React.FC = () => {
                       placeholder="Maqolalarni qidiring..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 lg:py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                      className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
                     />
                   </div>
                 </div>
 
                 {/* Category Filter */}
-                <div className="lg:w-48">
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-3 lg:px-4 py-2 lg:py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                <div className="lg:w-48 relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setAuthorDropdownOpen(false); setStatusDropdownOpen(false); setBlockStatusDropdownOpen(false); setCategoryDropdownOpen(!categoryDropdownOpen); }}
+                    className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
                   >
-                    <option value="all">Barcha kategoriyalar</option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                    <span>{getSelectedCategoryName()}</span>
+                    <ChevronDown className={`theme-text-muted transition-transform ${categoryDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+                  {categoryDropdownOpen && (
+                    <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+                      <div
+                        onClick={() => { setSelectedCategory('all'); setCategoryDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Barcha kategoriyalar
+                      </div>
+                      {categories.map((category) => (
+                        <div
+                          key={category.id}
+                          onClick={() => { setSelectedCategory(category.id); setCategoryDropdownOpen(false); }}
+                          className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                        >
+                          {category.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Author Filter */}
-                <div className="lg:w-56">
-                  <select
-                    value={selectedAuthor}
-                    onChange={(e) => setSelectedAuthor(e.target.value)}
-                    className="w-full px-3 lg:px-4 py-2 lg:py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                <div className="lg:w-56 relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setCategoryDropdownOpen(false); setStatusDropdownOpen(false); setBlockStatusDropdownOpen(false); setAuthorDropdownOpen(!authorDropdownOpen); }}
+                    className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
                   >
-                    <option value="all">Barcha mualliflar</option>
-                    {authors.map((author) => (
-                      <option key={author.id} value={author.id}>
-                        {author.full_name} ({author.role === 'doctor' ? 'Shifokor' : 'Admin'})
-                      </option>
-                    ))}
-                  </select>
+                    <span>{getSelectedAuthorName()}</span>
+                    <ChevronDown className={`theme-text-muted transition-transform ${authorDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+                  {authorDropdownOpen && (
+                    <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+                      <div
+                        onClick={() => { setSelectedAuthor('all'); setAuthorDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Barcha mualliflar
+                      </div>
+                      {authors.map((author) => (
+                        <div
+                          key={author.id}
+                          onClick={() => { setSelectedAuthor(author.id); setAuthorDropdownOpen(false); }}
+                          className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                        >
+                          {author.full_name} ({author.role === 'doctor' ? 'Shifokor' : 'Admin'})
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Status Filter */}
-                <div className="lg:w-48">
-                  <select
-                    value={selectedStatus}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="w-full px-3 lg:px-4 py-2 lg:py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                <div className="lg:w-48 relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setCategoryDropdownOpen(false); setAuthorDropdownOpen(false); setBlockStatusDropdownOpen(false); setStatusDropdownOpen(!statusDropdownOpen); }}
+                    className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
                   >
-                    <option value="all">Barcha holatlar</option>
-                    <option value="published">Nashr etilgan</option>
-                    <option value="draft">Qoralama</option>
-                  </select>
+                    <span>{getSelectedStatusName()}</span>
+                    <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+                  {statusDropdownOpen && (
+                    <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <div
+                        onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Barcha holatlar
+                      </div>
+                      <div
+                        onClick={() => { setSelectedStatus('published'); setStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Nashr etilgan
+                      </div>
+                      <div
+                        onClick={() => { setSelectedStatus('draft'); setStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Qoralama
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Block Status Filter */}
-                <div className="lg:w-48">
-                  <select
-                    value={selectedBlockStatus}
-                    onChange={(e) => setSelectedBlockStatus(e.target.value)}
-                    className="w-full px-3 lg:px-4 py-2 lg:py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                <div className="lg:w-48 relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setCategoryDropdownOpen(false); setAuthorDropdownOpen(false); setStatusDropdownOpen(false); setBlockStatusDropdownOpen(!blockStatusDropdownOpen); }}
+                    className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
                   >
-                    <option value="all">Barcha maqolalar</option>
-                    <option value="active">Faol maqolalar</option>
-                    <option value="blocked">Bloklangan maqolalar</option>
-                  </select>
+                    <span>{getSelectedBlockStatusName()}</span>
+                    <ChevronDown className={`theme-text-muted transition-transform ${blockStatusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                  </button>
+                  {blockStatusDropdownOpen && (
+                    <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <div
+                        onClick={() => { setSelectedBlockStatus('all'); setBlockStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Barcha maqolalar
+                      </div>
+                      <div
+                        onClick={() => { setSelectedBlockStatus('active'); setBlockStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Faol maqolalar
+                      </div>
+                      <div
+                        onClick={() => { setSelectedBlockStatus('blocked'); setBlockStatusDropdownOpen(false); }}
+                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                      >
+                        Bloklangan maqolalar
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -129,7 +129,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
           placeholder="Maqola sarlavhasini kiriting"
           value={formData.title}
           onChange={(e) => onInputChange('title', e.target.value)}
-          className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-lg font-medium"
+          className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text text-lg font-medium"
         />
       </div>
 
@@ -215,7 +215,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                 placeholder="https://www.youtube.com/watch?v=..."
                 value={formData.youtube_url || ''}
                 onChange={(e) => onInputChange('youtube_url', e.target.value)}
-                className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text"
               />
             </div>
           )}
@@ -229,11 +229,11 @@ const PostEditor: React.FC<PostEditorProps> = ({
           <label className="block text-sm font-medium theme-text-secondary">
             Maqola Matni
           </label>
-          <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 overflow-x-auto">
+          <div className="flex space-x-1 bg-gray-50 rounded-lg p-1 overflow-x-auto">
             {[
-              { code: 'uz', label: 'O\'zbek', flag: '🇺🇿' },
-              { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-              { code: 'en', label: 'English', flag: '🇺🇸' }
+              { code: 'uz', label: 'O\'zbek', flag: '🇺🇿', bgClass: 'bg-nav-500', textClass: 'text-white' },
+              { code: 'ru', label: 'Русский', flag: '🇷🇺', bgClass: 'bg-primary-500', textClass: 'text-white' },
+              { code: 'en', label: 'English', flag: '🇺🇸', bgClass: 'bg-highlight-500', textClass: 'text-gray-800' }
             ].map((lang) => (
               <button
                 key={lang.code}
@@ -241,8 +241,8 @@ const PostEditor: React.FC<PostEditorProps> = ({
                 onClick={() => setActiveLanguageTab(lang.code as 'uz' | 'ru' | 'en')}
                 className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 whitespace-nowrap ${
                   activeLanguageTab === lang.code
-                    ? 'bg-white dark:bg-gray-700 theme-text shadow-sm'
-                    : 'theme-text-secondary hover:theme-text'
+                    ? lang.bgClass + ' ' + lang.textClass + ' shadow-sm'
+                    : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 <span>{lang.flag}</span>
@@ -322,7 +322,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
               placeholder="Maqola sarlavhasi (O'zbek)"
               value={formData.title}
               onChange={(e) => onInputChange('title', e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text font-semibold"
             />
             <textarea
               id="content-editor-uz"
@@ -330,7 +330,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
               placeholder="Tibbiy maqola matnini shu yerga yozing... (O'zbek tilida)"
               value={formData.content}
               onChange={(e) => onInputChange('content', e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-vertical"
             />
             <div className="text-sm theme-text-muted">
               {formData.content.length} belgi
@@ -351,7 +351,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                   ru: { ...prev.translations.ru, title: e.target.value }
                 }
               }))}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text font-semibold"
             />
             <textarea
               id="content-editor-ru"
@@ -365,7 +365,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                   ru: { ...prev.translations.ru, content: e.target.value }
                 }
               }))}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-vertical"
             />
             <div className="text-sm theme-text-muted">
               {formData.translations.ru.content.length} символов
@@ -386,7 +386,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                   en: { ...prev.translations.en, title: e.target.value }
                 }
               }))}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text font-semibold"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text font-semibold"
             />
             <textarea
               id="content-editor-en"
@@ -400,7 +400,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                   en: { ...prev.translations.en, content: e.target.value }
                 }
               }))}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-vertical"
             />
             <div className="text-sm theme-text-muted">
               {formData.translations.en.content.length} characters
@@ -421,7 +421,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
             placeholder="Maqolaning qisqacha mazmuni (avtomatik yaratiladi)"
             value={formData.excerpt}
             onChange={(e) => onInputChange('excerpt', e.target.value)}
-            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-none"
           />
         )}
 
@@ -437,7 +437,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                 ru: { ...prev.translations.ru, excerpt: e.target.value }
               }
             }))}
-            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-none"
           />
         )}
 
@@ -453,7 +453,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
                 en: { ...prev.translations.en, excerpt: e.target.value }
               }
             }))}
-            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+            className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text resize-none"
           />
         )}
       </div>
@@ -463,23 +463,23 @@ const PostEditor: React.FC<PostEditorProps> = ({
       <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
         <h3 className="text-lg font-semibold theme-text mb-4">Tarjima Holati</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="text-center p-4 theme-bg-secondary rounded-xl">
+          <div className="text-center p-4 bg-gray-50 rounded-xl">
             <div className="text-2xl mb-2">🇺🇿</div>
-            <div className="text-sm font-medium theme-text">O'zbek</div>
+            <div className="text-sm font-medium color-nav-500">O'zbek</div>
             <div className={`text-xs mt-1 ${formData.title && formData.content ? 'text-green-600' : 'theme-text-muted'}`}>
               {formData.title && formData.content ? 'Tayyor' : 'To\'ldirilmagan'}
             </div>
           </div>
-          <div className="text-center p-4 theme-bg-secondary rounded-xl">
+          <div className="text-center p-4 bg-gray-50 rounded-xl">
             <div className="text-2xl mb-2">🇷🇺</div>
-            <div className="text-sm font-medium theme-text">Русский</div>
+            <div className="text-sm font-medium color-primary-500">Русский</div>
             <div className={`text-xs mt-1 ${formData.translations.ru.title && formData.translations.ru.content ? 'text-green-600' : 'theme-text-muted'}`}>
               {formData.translations.ru.title && formData.translations.ru.content ? 'Готово' : 'Не заполнено'}
             </div>
           </div>
-          <div className="text-center p-4 theme-bg-secondary rounded-xl">
+          <div className="text-center p-4 bg-gray-50 rounded-xl">
             <div className="text-2xl mb-2">🇺🇸</div>
-            <div className="text-sm font-medium theme-text">English</div>
+            <div className="text-sm font-medium color-highlight-500">English</div>
             <div className={`text-xs mt-1 ${formData.translations.en.title && formData.translations.en.content ? 'text-green-600' : 'theme-text-muted'}`}>
               {formData.translations.en.title && formData.translations.en.content ? 'Ready' : 'Not filled'}
             </div>

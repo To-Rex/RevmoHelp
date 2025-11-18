@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Stethoscope, 
-  Award, 
-  Eye, 
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Stethoscope,
+  Award,
+  Eye,
   CheckCircle,
   AlertCircle,
   X,
@@ -18,7 +18,8 @@ import {
   Calendar,
   Star,
   Shield,
-  Globe
+  Globe,
+  ChevronDown
 } from 'lucide-react';
 import { 
   getDoctors, 
@@ -30,7 +31,7 @@ import {
 import type { Doctor, CreateDoctorData } from '../../lib/doctors';
 
 import { supabase } from '../../lib/supabase';
-const DoctorsManagement: React.FC = () => {
+const DoctorsManagement = forwardRef<any>((props, ref) => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,6 +45,7 @@ const DoctorsManagement: React.FC = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [activeLanguageTab, setActiveLanguageTab] = useState<'uz' | 'ru' | 'en'>('uz');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState<CreateDoctorData>({
     full_name: '',
@@ -74,6 +76,10 @@ const DoctorsManagement: React.FC = () => {
   useEffect(() => {
     loadDoctors();
   }, []);
+
+  useImperativeHandle(ref, () => ({
+    openCreateModal
+  }));
 
   const loadDoctors = async () => {
     console.log('🔄 Loading doctors in DoctorsManagement component');
@@ -136,6 +142,10 @@ const DoctorsManagement: React.FC = () => {
   };
 
   const resetForm = () => {
+    // Calculate next order index
+    const maxOrderIndex = doctors.length > 0 ? Math.max(...doctors.map(d => d.order_index)) : 0;
+    const nextOrderIndex = maxOrderIndex + 1;
+
     setFormData({
       full_name: '',
       email: '',
@@ -147,7 +157,7 @@ const DoctorsManagement: React.FC = () => {
       certificates: [],
       verified: false,
       active: true,
-      order_index: 0,
+      order_index: nextOrderIndex,
       translations: {
         ru: { bio: '', specialization: '' },
         en: { bio: '', specialization: '' }
@@ -418,22 +428,7 @@ const DoctorsManagement: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-        <div>
-          <h1 className="text-2xl font-bold theme-text">Shifokorlar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Revmoinfo shifokorlarini boshqarish</p>
-        </div>
-        <button
-          onClick={openCreateModal}
-          className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-        >
-          <Plus size={20} />
-          <span>Yangi Shifokor</span>
-        </button>
-      </div>
-
+    <div className="space-y-6" data-legacy-doctors>
       {/* Message */}
       {message.text && (
         <div className={`p-4 rounded-xl flex items-center space-x-2 animate-slide-down ${
@@ -477,35 +472,69 @@ const DoctorsManagement: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="theme-bg rounded-xl theme-shadow theme-border border p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
                 placeholder="Shifokorlarni qidiring..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
               />
             </div>
           </div>
 
           {/* Status Filter */}
-          <div className="lg:w-48">
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+          <div className="lg:w-48 relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setStatusDropdownOpen(!statusDropdownOpen); }}
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <option value="all">Barcha shifokorlar</option>
-              <option value="active">Faol</option>
-              <option value="inactive">Faol emas</option>
-              <option value="verified">Tasdiqlangan</option>
-              <option value="unverified">Tasdiqlanmagan</option>
-            </select>
+              <span>{selectedStatus === 'all' ? 'Barcha shifokorlar' :
+                     selectedStatus === 'active' ? 'Faol' :
+                     selectedStatus === 'inactive' ? 'Faol emas' :
+                     selectedStatus === 'verified' ? 'Tasdiqlangan' :
+                     'Tasdiqlanmagan'}</span>
+              <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+            </button>
+            {statusDropdownOpen && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div
+                  onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Barcha shifokorlar
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('active'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Faol
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('inactive'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Faol emas
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('verified'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Tasdiqlangan
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('unverified'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Tasdiqlanmagan
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -683,7 +712,15 @@ const DoctorsManagement: React.FC = () => {
       {/* Create Doctor Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: { display: 'none' } } as React.CSSProperties}>
+            <style dangerouslySetInnerHTML={{
+              __html: `
+                div::-webkit-scrollbar {
+                  display: none;
+                }
+              `
+            }} />
+            <div style={{ maxHeight: 'calc(90vh - 4rem)', overflowY: 'auto' }}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold theme-text">Yangi Shifokor Qo'shish</h3>
               <button
@@ -713,38 +750,30 @@ const DoctorsManagement: React.FC = () => {
               )}
 
               {/* Language Progress */}
-              <div className="theme-bg-secondary rounded-xl p-4">
-                <h4 className="text-sm font-semibold theme-text mb-3">Tillar bo'yicha holat</h4>
-                <div className="grid grid-cols-3 gap-3">
-                  {languages.map((lang) => {
-                    const status = getCompletionStatus(lang.code);
-                    return (
-                      <div
-                        key={lang.code}
-                        className={`p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                          activeLanguageTab === lang.code
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                            : 'theme-border hover:border-blue-300'
-                        }`}
-                        onClick={() => setActiveLanguageTab(lang.code)}
-                      >
-                        <div className="flex items-center justify-between mb-1">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-lg">{lang.flag}</span>
-                            <span className="font-medium theme-text text-sm">{lang.label}</span>
-                          </div>
-                          <div className={`w-2 h-2 rounded-full ${
-                            status === 'complete' ? 'bg-green-500' :
-                            status === 'partial' ? 'bg-yellow-500' : 'bg-gray-300'
-                          }`}></div>
-                        </div>
-                        <div className="text-xs theme-text-muted">
-                          {status === 'complete' ? 'To\'liq' :
-                           status === 'partial' ? 'Qisman' : 'Bo\'sh'}
-                        </div>
-                      </div>
-                    );
-                  })}
+              <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+                <h3 className="text-lg font-semibold theme-text mb-4">Tarjima Holati</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl mb-2">🇺🇿</div>
+                    <div className="text-sm font-medium color-nav-500">O'zbek</div>
+                    <div className={`text-xs mt-1 ${formData.full_name && formData.specialization && formData.bio ? 'text-green-600' : 'theme-text-muted'}`}>
+                      {formData.full_name && formData.specialization && formData.bio ? 'Tayyor' : 'To\'ldirilmagan'}
+                    </div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl mb-2">🇷🇺</div>
+                    <div className="text-sm font-medium color-primary-500">Русский</div>
+                    <div className={`text-xs mt-1 ${formData.translations?.ru.bio && formData.translations?.ru.specialization ? 'text-green-600' : 'theme-text-muted'}`}>
+                      {formData.translations?.ru.bio && formData.translations?.ru.specialization ? 'Готово' : 'Не заполнено'}
+                    </div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                    <div className="text-2xl mb-2">🇺🇸</div>
+                    <div className="text-sm font-medium color-highlight-500">English</div>
+                    <div className={`text-xs mt-1 ${formData.translations?.en.bio && formData.translations?.en.specialization ? 'text-green-600' : 'theme-text-muted'}`}>
+                      {formData.translations?.en.bio && formData.translations?.en.specialization ? 'Ready' : 'Not filled'}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -758,7 +787,7 @@ const DoctorsManagement: React.FC = () => {
                     value={formData.full_name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     placeholder="Dr. Ism Familiya"
                   />
                 </div>
@@ -809,7 +838,7 @@ const DoctorsManagement: React.FC = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     placeholder="doctor@revmoinfo.uz"
                   />
                 </div>
@@ -821,7 +850,7 @@ const DoctorsManagement: React.FC = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     placeholder="+998 90 123 45 67"
                   />
                 </div>
@@ -836,7 +865,7 @@ const DoctorsManagement: React.FC = () => {
                     required
                     min="0"
                     max="50"
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
@@ -847,22 +876,11 @@ const DoctorsManagement: React.FC = () => {
                     name="avatar_url"
                     value={formData.avatar_url}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     placeholder="https://example.com/photo.jpg"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Tartib raqami</label>
-                  <input
-                    type="number"
-                    name="order_index"
-                    value={formData.order_index}
-                    onChange={handleInputChange}
-                    min="0"
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                  />
-                </div>
               </div>
 
               {/* Language-specific Content */}
@@ -871,16 +889,20 @@ const DoctorsManagement: React.FC = () => {
                   <h4 className="text-lg font-semibold theme-text">
                     Kontent ({languages.find(l => l.code === activeLanguageTab)?.label})
                   </h4>
-                  <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-                    {languages.map((lang) => (
+                  <div className="flex space-x-1 bg-gray-50 rounded-lg p-1 overflow-x-auto">
+                    {[
+                      { code: 'uz', label: "O'zbek", flag: '🇺🇿', bgClass: 'bg-nav-500', textClass: 'text-white' },
+                      { code: 'ru', label: 'Русский', flag: '🇷🇺', bgClass: 'bg-primary-500', textClass: 'text-white' },
+                      { code: 'en', label: 'English', flag: '🇺🇸', bgClass: 'bg-highlight-500', textClass: 'text-gray-800' }
+                    ].map((lang) => (
                       <button
                         key={lang.code}
                         type="button"
-                        onClick={() => setActiveLanguageTab(lang.code)}
-                        className={`px-3 py-1 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-1 ${
+                        onClick={() => setActiveLanguageTab(lang.code as 'uz' | 'ru' | 'en')}
+                        className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 whitespace-nowrap ${
                           activeLanguageTab === lang.code
-                            ? 'bg-white dark:bg-gray-700 theme-text shadow-sm'
-                            : 'theme-text-secondary hover:theme-text'
+                            ? lang.bgClass + ' ' + lang.textClass + ' shadow-sm'
+                            : 'text-gray-600 hover:bg-gray-100'
                         }`}
                       >
                         <span>{lang.flag}</span>
@@ -900,7 +922,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.specialization}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                         placeholder="Revmatologiya"
                       />
                     </div>
@@ -911,7 +933,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.bio}
                         onChange={handleInputChange}
                         rows={4}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                         placeholder="Shifokor haqida batafsil ma'lumot..."
                       />
                     </div>
@@ -927,7 +949,7 @@ const DoctorsManagement: React.FC = () => {
                         name="ru.specialization"
                         value={formData.translations?.ru.specialization || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                         placeholder="Ревматология"
                       />
                     </div>
@@ -938,7 +960,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.translations?.ru.bio || ''}
                         onChange={handleInputChange}
                         rows={4}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                         placeholder="Подробная информация о враче..."
                       />
                     </div>
@@ -954,7 +976,7 @@ const DoctorsManagement: React.FC = () => {
                         name="en.specialization"
                         value={formData.translations?.en.specialization || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                         placeholder="Rheumatology"
                       />
                     </div>
@@ -965,7 +987,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.translations?.en.bio || ''}
                         onChange={handleInputChange}
                         rows={4}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                         placeholder="Detailed information about the doctor..."
                       />
                     </div>
@@ -983,7 +1005,7 @@ const DoctorsManagement: React.FC = () => {
                     value={newCertificate}
                     onChange={(e) => setNewCertificate(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCertificate())}
-                    className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                   <button
                     type="button"
@@ -1053,6 +1075,7 @@ const DoctorsManagement: React.FC = () => {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       )}
@@ -1060,7 +1083,15 @@ const DoctorsManagement: React.FC = () => {
       {/* Edit Doctor Modal */}
       {showEditModal && editingDoctor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitScrollbar: { display: 'none' } } as React.CSSProperties}>
+            <style dangerouslySetInnerHTML={{
+              __html: `
+                div::-webkit-scrollbar {
+                  display: none;
+                }
+              `
+            }} />
+            <div style={{ maxHeight: 'calc(90vh - 4rem)', overflowY: 'auto' }}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold theme-text">Shifokorni Tahrirlash</h3>
               <button
@@ -1135,7 +1166,7 @@ const DoctorsManagement: React.FC = () => {
                     value={formData.full_name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
@@ -1196,7 +1227,7 @@ const DoctorsManagement: React.FC = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
@@ -1210,7 +1241,7 @@ const DoctorsManagement: React.FC = () => {
                     required
                     min="0"
                     max="50"
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
@@ -1221,21 +1252,10 @@ const DoctorsManagement: React.FC = () => {
                     name="avatar_url"
                     value={formData.avatar_url}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Tartib raqami</label>
-                  <input
-                    type="number"
-                    name="order_index"
-                    value={formData.order_index}
-                    onChange={handleInputChange}
-                    min="0"
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                  />
-                </div>
               </div>
 
               {/* Language-specific Content */}
@@ -1273,7 +1293,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.specialization}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                       />
                     </div>
                     <div>
@@ -1283,7 +1303,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.bio}
                         onChange={handleInputChange}
                         rows={4}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                       />
                     </div>
                   </div>
@@ -1298,7 +1318,7 @@ const DoctorsManagement: React.FC = () => {
                         name="ru.specialization"
                         value={formData.translations?.ru.specialization || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                       />
                     </div>
                     <div>
@@ -1308,7 +1328,7 @@ const DoctorsManagement: React.FC = () => {
                         value={formData.translations?.ru.bio || ''}
                         onChange={handleInputChange}
                         rows={4}
-                        className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                       />
                     </div>
                   </div>
@@ -1381,11 +1401,14 @@ const DoctorsManagement: React.FC = () => {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-};
+});
+
+DoctorsManagement.displayName = 'DoctorsManagement';
 
 export default DoctorsManagement;

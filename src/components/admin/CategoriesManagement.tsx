@@ -353,21 +353,8 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   placeholder="Kategoriya nomi"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">URL Slug *</label>
-                <input
-                  type="text"
-                  name="slug"
-                  value={formData.slug}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                  placeholder="url-slug"
                 />
               </div>
 
@@ -378,7 +365,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={2}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                   placeholder="Kategoriya haqida qisqacha"
                 />
               </div>
@@ -468,19 +455,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">URL Slug *</label>
-                <input
-                  type="text"
-                  name="slug"
-                  value={formData.slug}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                 />
               </div>
 
@@ -491,7 +466,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={2}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                 />
               </div>
 

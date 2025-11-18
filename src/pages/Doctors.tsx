@@ -50,7 +50,7 @@ const Doctors: React.FC = () => {
     try {
       console.log('🔍 Loading doctors for public site...');
       
-      const { data, error } = await getDoctors(i18n.language, { allowMock: false, limit: fetchLimit });
+      const { data, error } = await getDoctors(i18n.language, { allowMock: false, limit: fetchLimit, verified: true });
       
       if (data) {
         console.log('✅ Doctors loaded for public site:', data.length);
@@ -121,7 +121,7 @@ const Doctors: React.FC = () => {
     try {
       const newLimit = fetchLimit + 12;
       setFetchLimit(newLimit);
-      const { data } = await getDoctors(i18n.language, { allowMock: false, limit: newLimit });
+      const { data } = await getDoctors(i18n.language, { allowMock: false, limit: newLimit, verified: true });
       if (data) setDoctors(data);
     } finally {
       setLoadingMore(false);

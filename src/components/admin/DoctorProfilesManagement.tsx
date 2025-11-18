@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Filter, 
-  CheckCircle, 
-  XCircle, 
-  Eye, 
+import {
+  Search,
+  Filter,
+  CheckCircle,
+  XCircle,
+  Eye,
   Edit,
   Stethoscope,
   Award,
@@ -15,7 +15,8 @@ import {
   Star,
   Clock,
   User,
-  AlertCircle
+  AlertCircle,
+  ChevronDown
 } from 'lucide-react';
 import { getAllDoctorProfiles, verifyDoctorProfile } from '../../lib/doctorProfiles';
 import type { DoctorProfile } from '../../lib/doctorProfiles';
@@ -27,6 +28,7 @@ const DoctorProfilesManagement: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [verifyLoading, setVerifyLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
   useEffect(() => {
     loadProfiles();
@@ -103,14 +105,6 @@ const DoctorProfilesManagement: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold theme-text">Shifokor Profillari</h1>
-          <p className="theme-text-secondary">Shifokor profillarini tasdiqlash va boshqarish</p>
-        </div>
-      </div>
-
       {/* Message */}
       {message.text && (
         <div className={`p-4 rounded-xl flex items-center space-x-2 animate-slide-down ${
@@ -150,31 +144,62 @@ const DoctorProfilesManagement: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="theme-bg rounded-xl theme-shadow theme-border border p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
+          {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
                 placeholder="Shifokorlarni qidiring..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
               />
             </div>
           </div>
-          <div className="lg:w-48">
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+
+          {/* Status Filter */}
+          <div className="lg:w-48 relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setStatusDropdownOpen(!statusDropdownOpen); }}
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <option value="all">Barcha holatlar</option>
-              <option value="pending">Tasdiq kutilmoqda</option>
-              <option value="verified">Tasdiqlangan</option>
-              <option value="active">Faol</option>
-            </select>
+              <span>{selectedStatus === 'all' ? 'Barcha holatlar' :
+                     selectedStatus === 'pending' ? 'Tasdiq kutilmoqda' :
+                     selectedStatus === 'verified' ? 'Tasdiqlangan' :
+                     'Faol'}</span>
+              <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+            </button>
+            {statusDropdownOpen && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div
+                  onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Barcha holatlar
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('pending'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Tasdiq kutilmoqda
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('verified'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Tasdiqlangan
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('active'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Faol
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

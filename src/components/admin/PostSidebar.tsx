@@ -57,7 +57,7 @@ const PostSidebar: React.FC<PostSidebarProps> = ({
         <select
           value={formData.category_id}
           onChange={(e) => onInputChange('category_id', e.target.value)}
-          className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+          className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text"
         >
           <option value="">Kategoriya tanlang</option>
           {categories.map((category) => (
@@ -80,7 +80,7 @@ const PostSidebar: React.FC<PostSidebarProps> = ({
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-            className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text min-w-0"
+            className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 theme-text min-w-0"
           />
           <button
             type="button"

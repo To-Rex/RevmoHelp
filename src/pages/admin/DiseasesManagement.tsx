@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Activity, 
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Activity,
   Upload,
   Eye,
   Star,
@@ -24,7 +24,8 @@ import {
   Filter,
   TrendingUp,
   Heart,
-  Shield
+  Shield,
+  ChevronDown
 } from 'lucide-react';
 import { 
   getDiseases, 
@@ -49,6 +50,7 @@ const DiseasesManagement: React.FC = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [activeLanguageTab, setActiveLanguageTab] = useState<'uz' | 'ru' | 'en'>('uz');
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState<CreateDiseaseData>({
     name: '',
@@ -104,7 +106,7 @@ const DiseasesManagement: React.FC = () => {
   const loadDiseases = async () => {
     setLoading(true);
     try {
-      const { data } = await getDiseases();
+      const { data } = await getDiseases('uz', {});
       if (data) {
         setDiseases(data);
       }
@@ -167,6 +169,26 @@ const DiseasesManagement: React.FC = () => {
     }
   }, [formData.name, editingDisease]);
 
+  // Auto-generate meta title from name
+  useEffect(() => {
+    if (formData.name && !editingDisease) {
+      const metaTitle = formData.name.length > 60
+        ? formData.name.substring(0, 57) + '...'
+        : formData.name;
+      setFormData(prev => ({ ...prev, meta_title: metaTitle }));
+    }
+  }, [formData.name, editingDisease]);
+
+  // Auto-generate meta description from description
+  useEffect(() => {
+    if (formData.description && !editingDisease) {
+      const metaDesc = formData.description.length > 160
+        ? formData.description.substring(0, 157) + '...'
+        : formData.description;
+      setFormData(prev => ({ ...prev, meta_description: metaDesc }));
+    }
+  }, [formData.description, editingDisease]);
+
   const addSymptom = () => {
     if (newSymptom.trim() && !formData.symptoms.includes(newSymptom.trim())) {
       handleInputChange('symptoms', [...formData.symptoms, newSymptom.trim()]);
@@ -201,6 +223,10 @@ const DiseasesManagement: React.FC = () => {
   };
 
   const resetForm = () => {
+    // Calculate next order index
+    const maxOrderIndex = diseases.length > 0 ? Math.max(...diseases.map(d => d.order_index)) : 0;
+    const nextOrderIndex = maxOrderIndex + 1;
+
     setFormData({
       name: '',
       slug: '',
@@ -213,7 +239,7 @@ const DiseasesManagement: React.FC = () => {
       meta_description: '',
       active: true,
       featured: false,
-      order_index: 0,
+      order_index: nextOrderIndex,
       translations: {
         ru: {
           name: '',
@@ -490,34 +516,62 @@ const DiseasesManagement: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="theme-bg rounded-xl theme-shadow theme-border border p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
                 placeholder="Kasalliklarni qidiring..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
               />
             </div>
           </div>
 
           {/* Status Filter */}
-          <div className="lg:w-48">
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+          <div className="lg:w-48 relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setStatusDropdownOpen(!statusDropdownOpen); }}
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <option value="all">Barcha holatlar</option>
-              <option value="active">Faol</option>
-              <option value="inactive">Faol emas</option>
-              <option value="featured">Asosiy kasalliklar</option>
-            </select>
+              <span>{selectedStatus === 'all' ? 'Barcha holatlar' :
+                    selectedStatus === 'active' ? 'Faol' :
+                    selectedStatus === 'inactive' ? 'Faol emas' :
+                    'Asosiy kasalliklar'}</span>
+              <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+            </button>
+            {statusDropdownOpen && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div
+                  onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Barcha holatlar
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('active'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Faol
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('inactive'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Faol emas
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('featured'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  Asosiy kasalliklar
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -681,16 +735,24 @@ const DiseasesManagement: React.FC = () => {
       {/* Create Disease Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Yangi Kasallik Qo'shish</h3>
-              <button
-                onClick={closeModals}
-                className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
-              >
-                <X size={20} />
-              </button>
-            </div>
+          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh]">
+            <div style={{ maxHeight: 'calc(90vh - 4rem)', overflowY: 'auto' }}>
+              <style dangerouslySetInnerHTML={{
+                __html: `
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                `
+              }} />
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold theme-text">Yangi Kasallik Qo'shish</h3>
+                <button
+                  onClick={closeModals}
+                  className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
             <form onSubmit={handleCreate} className="space-y-6">
               {message.text && (
@@ -713,76 +775,53 @@ const DiseasesManagement: React.FC = () => {
               {/* Language Tabs */}
               <div className="flex items-center justify-between">
                 <h4 className="text-lg font-semibold theme-text">Kasallik Ma'lumotlari</h4>
-                <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-                  {languages.map((lang) => (
+                <div className="flex space-x-1 bg-gray-50 rounded-lg p-1 overflow-x-auto">
+                  {[
+                    { code: 'uz', label: 'O\'zbek', flag: '🇺🇿', bgClass: 'bg-nav-500', textClass: 'text-white' },
+                    { code: 'ru', label: 'Русский', flag: '🇷🇺', bgClass: 'bg-primary-500', textClass: 'text-white' },
+                    { code: 'en', label: 'English', flag: '🇺🇸', bgClass: 'bg-highlight-500', textClass: 'text-gray-800' }
+                  ].map((lang) => (
                     <button
                       key={lang.code}
                       type="button"
-                      onClick={() => setActiveLanguageTab(lang.code)}
-                      className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 ${
+                      onClick={() => setActiveLanguageTab(lang.code as 'uz' | 'ru' | 'en')}
+                      className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center space-x-2 whitespace-nowrap ${
                         activeLanguageTab === lang.code
-                          ? 'bg-white dark:bg-gray-700 theme-text shadow-sm'
-                          : 'theme-text-secondary hover:theme-text'
+                          ? lang.bgClass + ' ' + lang.textClass + ' shadow-sm'
+                          : 'text-gray-600 hover:bg-gray-100'
                       }`}
                     >
                       <span>{lang.flag}</span>
-                      <span>{lang.label}</span>
+                      <span className="hidden sm:inline">{lang.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Kasallik nomi ({languages.find(l => l.code === activeLanguageTab)?.label}) *
-                  </label>
-                  {activeLanguageTab === 'uz' ? (
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      required
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                      placeholder="Kasallik nomi"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.translations?.[activeLanguageTab]?.name || ''}
-                      onChange={handleTranslationChange}
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                      placeholder="Kasallik nomi"
-                    />
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    URL Slug ({languages.find(l => l.code === activeLanguageTab)?.label}) *
-                  </label>
-                  {activeLanguageTab === 'uz' ? (
-                    <input
-                      type="text"
-                      value={formData.slug}
-                      onChange={(e) => handleInputChange('slug', e.target.value)}
-                      required
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                      placeholder="url-slug"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      name="slug"
-                      value={formData.translations?.[activeLanguageTab]?.slug || ''}
-                      onChange={handleTranslationChange}
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                      placeholder="url-slug"
-                    />
-                  )}
-                </div>
+              <div>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">
+                  Kasallik nomi ({languages.find(l => l.code === activeLanguageTab)?.label}) *
+                </label>
+                {activeLanguageTab === 'uz' ? (
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    required
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                    placeholder="Kasallik nomi"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.translations?.[activeLanguageTab]?.name || ''}
+                    onChange={handleTranslationChange}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                    placeholder="Kasallik nomi"
+                  />
+                )}
               </div>
 
               <div>
@@ -795,7 +834,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('description', e.target.value)}
                     required
                     rows={4}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
                     placeholder="Kasallik haqida batafsil ma'lumot"
                   />
                 ) : (
@@ -804,7 +843,7 @@ const DiseasesManagement: React.FC = () => {
                     value={formData.translations?.[activeLanguageTab]?.description || ''}
                     onChange={handleTranslationChange}
                     rows={4}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
                     placeholder="Kasallik haqida batafsil ma'lumot"
                   />
                 )}
@@ -854,7 +893,7 @@ const DiseasesManagement: React.FC = () => {
                     placeholder="https://www.youtube.com/watch?v=..."
                     value={formData.youtube_url || ''}
                     onChange={(e) => handleInputChange('youtube_url', e.target.value)}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
               </div>
@@ -874,7 +913,7 @@ const DiseasesManagement: React.FC = () => {
                         value={newSymptom}
                         onChange={(e) => setNewSymptom(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSymptom())}
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
                       <button
                         type="button"
@@ -918,7 +957,7 @@ const DiseasesManagement: React.FC = () => {
                         value={newTreatment}
                         onChange={(e) => setNewTreatment(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTreatment())}
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
                       <button
                         type="button"
@@ -962,7 +1001,7 @@ const DiseasesManagement: React.FC = () => {
                         value={newPrevention}
                         onChange={(e) => setNewPrevention(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addPrevention())}
-                        className="flex-1 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text text-sm"
+                        className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
                       <button
                         type="button"
@@ -994,34 +1033,6 @@ const DiseasesManagement: React.FC = () => {
                 </div>
               </div>
 
-              {/* SEO Settings */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Meta sarlavha
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.meta_title || ''}
-                    onChange={(e) => handleInputChange('meta_title', e.target.value)}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="SEO uchun sarlavha"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Meta tavsif
-                  </label>
-                  <textarea
-                    value={formData.meta_description || ''}
-                    onChange={(e) => handleInputChange('meta_description', e.target.value)}
-                    rows={2}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
-                    placeholder="SEO uchun qisqacha tavsif"
-                  />
-                </div>
-              </div>
 
               {/* Publish Settings */}
               <div className="flex items-center space-x-6">
@@ -1043,18 +1054,6 @@ const DiseasesManagement: React.FC = () => {
                   />
                   <span className="text-sm theme-text-secondary">Asosiy kasallik</span>
                 </label>
-                <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Tartib raqami
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.order_index}
-                    onChange={(e) => handleInputChange('order_index', parseInt(e.target.value) || 0)}
-                    min="0"
-                    className="w-20 px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                  />
-                </div>
               </div>
 
               <div className="flex space-x-3 pt-4">
@@ -1075,6 +1074,7 @@ const DiseasesManagement: React.FC = () => {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       )}
