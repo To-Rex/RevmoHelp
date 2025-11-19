@@ -27,10 +27,11 @@ import {
   Shield,
   ChevronDown
 } from 'lucide-react';
-import { 
-  getDiseases, 
-  createDisease, 
-  updateDisease, 
+import {
+  getDiseases,
+  getDiseasesAdmin,
+  createDisease,
+  updateDisease,
   deleteDisease,
   uploadDiseaseImage,
   checkDiseaseSlugUniqueness
@@ -93,6 +94,17 @@ const DiseasesManagement: React.FC = () => {
   const [newTreatment, setNewTreatment] = useState('');
   const [newPrevention, setNewPrevention] = useState('');
 
+  // New item states per language
+  const [newSymptomUz, setNewSymptomUz] = useState('');
+  const [newSymptomRu, setNewSymptomRu] = useState('');
+  const [newSymptomEn, setNewSymptomEn] = useState('');
+  const [newTreatmentUz, setNewTreatmentUz] = useState('');
+  const [newTreatmentRu, setNewTreatmentRu] = useState('');
+  const [newTreatmentEn, setNewTreatmentEn] = useState('');
+  const [newPreventionUz, setNewPreventionUz] = useState('');
+  const [newPreventionRu, setNewPreventionRu] = useState('');
+  const [newPreventionEn, setNewPreventionEn] = useState('');
+
   const languages = [
     { code: 'uz' as const, label: "O'zbek", flag: '🇺🇿' },
     { code: 'ru' as const, label: 'Русский', flag: '🇷🇺' },
@@ -106,7 +118,7 @@ const DiseasesManagement: React.FC = () => {
   const loadDiseases = async () => {
     setLoading(true);
     try {
-      const { data } = await getDiseases('uz', {});
+      const { data } = await getDiseasesAdmin({});
       if (data) {
         setDiseases(data);
       }
@@ -156,70 +168,283 @@ const DiseasesManagement: React.FC = () => {
     setImagePreview(null);
   };
 
-  // Auto-generate slug from name
+  // Auto-generate slug from name (same for all languages)
   useEffect(() => {
-    if (formData.name && !editingDisease) {
+    if (formData.name && (!editingDisease || !formData.slug)) {
       const slug = formData.name
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim();
-      setFormData(prev => ({ ...prev, slug }));
+
+      // Set the same slug for all languages
+      setFormData(prev => ({
+        ...prev,
+        slug,
+        translations: {
+          ...prev.translations!,
+          ru: {
+            ...prev.translations!.ru,
+            slug
+          },
+          en: {
+            ...prev.translations!.en,
+            slug
+          }
+        }
+      }));
     }
-  }, [formData.name, editingDisease]);
+  }, [formData.name, editingDisease, formData.slug]);
 
   // Auto-generate meta title from name
   useEffect(() => {
-    if (formData.name && !editingDisease) {
+    if (formData.name && (!editingDisease || !formData.meta_title)) {
       const metaTitle = formData.name.length > 60
         ? formData.name.substring(0, 57) + '...'
         : formData.name;
       setFormData(prev => ({ ...prev, meta_title: metaTitle }));
     }
-  }, [formData.name, editingDisease]);
+  }, [formData.name, editingDisease, formData.meta_title]);
+
+  // Auto-generate Russian meta title from Uzbek name
+  useEffect(() => {
+    if (formData.name && (!editingDisease || !formData.translations?.ru?.meta_title)) {
+      // Keep the Uzbek name as Russian meta title for now (can be manually edited later)
+      const ruMetaTitle = formData.name.length > 60
+        ? formData.name.substring(0, 57) + '...'
+        : formData.name;
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          ru: {
+            ...prev.translations!.ru,
+            meta_title: ruMetaTitle
+          }
+        }
+      }));
+    }
+  }, [formData.name, editingDisease, formData.translations?.ru?.meta_title]);
+
+  // Auto-generate English meta title from Uzbek name
+  useEffect(() => {
+    if (formData.name && (!editingDisease || !formData.translations?.en?.meta_title)) {
+      // Keep the Uzbek name as English meta title for now (can be manually edited later)
+      const enMetaTitle = formData.name.length > 60
+        ? formData.name.substring(0, 57) + '...'
+        : formData.name;
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          en: {
+            ...prev.translations!.en,
+            meta_title: enMetaTitle
+          }
+        }
+      }));
+    }
+  }, [formData.name, editingDisease, formData.translations?.en?.meta_title]);
 
   // Auto-generate meta description from description
   useEffect(() => {
-    if (formData.description && !editingDisease) {
+    if (formData.description && (!editingDisease || !formData.meta_description)) {
       const metaDesc = formData.description.length > 160
         ? formData.description.substring(0, 157) + '...'
         : formData.description;
       setFormData(prev => ({ ...prev, meta_description: metaDesc }));
     }
-  }, [formData.description, editingDisease]);
+  }, [formData.description, editingDisease, formData.meta_description]);
+
+  // Auto-generate Russian meta description from Uzbek description
+  useEffect(() => {
+    if (formData.description && (!editingDisease || !formData.translations?.ru?.meta_description)) {
+      // Keep the Uzbek description as Russian meta description for now (can be manually edited later)
+      const ruMetaDesc = formData.description.length > 160
+        ? formData.description.substring(0, 157) + '...'
+        : formData.description;
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          ru: {
+            ...prev.translations!.ru,
+            meta_description: ruMetaDesc
+          }
+        }
+      }));
+    }
+  }, [formData.description, editingDisease, formData.translations?.ru?.meta_description]);
+
+  // Auto-generate English meta description from Uzbek description
+  useEffect(() => {
+    if (formData.description && (!editingDisease || !formData.translations?.en?.meta_description)) {
+      // Keep the Uzbek description as English meta description for now (can be manually edited later)
+      const enMetaDesc = formData.description.length > 160
+        ? formData.description.substring(0, 157) + '...'
+        : formData.description;
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          en: {
+            ...prev.translations!.en,
+            meta_description: enMetaDesc
+          }
+        }
+      }));
+    }
+  }, [formData.description, editingDisease, formData.translations?.en?.meta_description]);
 
   const addSymptom = () => {
-    if (newSymptom.trim() && !formData.symptoms.includes(newSymptom.trim())) {
-      handleInputChange('symptoms', [...formData.symptoms, newSymptom.trim()]);
-      setNewSymptom('');
+    const newItem = activeLanguageTab === 'uz' ? newSymptomUz : activeLanguageTab === 'ru' ? newSymptomRu : newSymptomEn;
+    if (newItem.trim()) {
+      // Split by comma and process each item
+      const itemsToAdd = newItem.split(',').map(item => item.trim()).filter(item => item.length > 0);
+      const currentSymptoms = activeLanguageTab === 'uz' ? formData.symptoms : formData.translations?.[activeLanguageTab]?.symptoms || [];
+
+      // Filter out items that are already in the list
+      const uniqueItemsToAdd = itemsToAdd.filter(item => !currentSymptoms.includes(item));
+
+      if (uniqueItemsToAdd.length > 0) {
+        if (activeLanguageTab === 'uz') {
+          handleInputChange('symptoms', [...currentSymptoms, ...uniqueItemsToAdd]);
+        } else {
+          setFormData(prev => ({
+            ...prev,
+            translations: {
+              ...prev.translations!,
+              [activeLanguageTab]: {
+                ...prev.translations![activeLanguageTab],
+                symptoms: [...currentSymptoms, ...uniqueItemsToAdd]
+              }
+            }
+          }));
+        }
+        // Clear the input
+        if (activeLanguageTab === 'uz') setNewSymptomUz('');
+        else if (activeLanguageTab === 'ru') setNewSymptomRu('');
+        else setNewSymptomEn('');
+      }
     }
   };
 
   const removeSymptom = (symptom: string) => {
-    handleInputChange('symptoms', formData.symptoms.filter(s => s !== symptom));
+    if (activeLanguageTab === 'uz') {
+      handleInputChange('symptoms', formData.symptoms.filter(s => s !== symptom));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          [activeLanguageTab]: {
+            ...prev.translations![activeLanguageTab],
+            symptoms: (prev.translations![activeLanguageTab].symptoms || []).filter(s => s !== symptom)
+          }
+        }
+      }));
+    }
   };
 
   const addTreatment = () => {
-    if (newTreatment.trim() && !formData.treatment_methods.includes(newTreatment.trim())) {
-      handleInputChange('treatment_methods', [...formData.treatment_methods, newTreatment.trim()]);
-      setNewTreatment('');
+    const newItem = activeLanguageTab === 'uz' ? newTreatmentUz : activeLanguageTab === 'ru' ? newTreatmentRu : newTreatmentEn;
+    if (newItem.trim()) {
+      // Split by comma and process each item
+      const itemsToAdd = newItem.split(',').map(item => item.trim()).filter(item => item.length > 0);
+      const currentTreatments = activeLanguageTab === 'uz' ? formData.treatment_methods : formData.translations?.[activeLanguageTab]?.treatment_methods || [];
+
+      // Filter out items that are already in the list
+      const uniqueItemsToAdd = itemsToAdd.filter(item => !currentTreatments.includes(item));
+
+      if (uniqueItemsToAdd.length > 0) {
+        if (activeLanguageTab === 'uz') {
+          handleInputChange('treatment_methods', [...currentTreatments, ...uniqueItemsToAdd]);
+        } else {
+          setFormData(prev => ({
+            ...prev,
+            translations: {
+              ...prev.translations!,
+              [activeLanguageTab]: {
+                ...prev.translations![activeLanguageTab],
+                treatment_methods: [...currentTreatments, ...uniqueItemsToAdd]
+              }
+            }
+          }));
+        }
+        // Clear the input
+        if (activeLanguageTab === 'uz') setNewTreatmentUz('');
+        else if (activeLanguageTab === 'ru') setNewTreatmentRu('');
+        else setNewTreatmentEn('');
+      }
     }
   };
 
   const removeTreatment = (treatment: string) => {
-    handleInputChange('treatment_methods', formData.treatment_methods.filter(t => t !== treatment));
+    if (activeLanguageTab === 'uz') {
+      handleInputChange('treatment_methods', formData.treatment_methods.filter(t => t !== treatment));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          [activeLanguageTab]: {
+            ...prev.translations![activeLanguageTab],
+            treatment_methods: (prev.translations![activeLanguageTab].treatment_methods || []).filter(t => t !== treatment)
+          }
+        }
+      }));
+    }
   };
 
   const addPrevention = () => {
-    if (newPrevention.trim() && !formData.prevention_tips.includes(newPrevention.trim())) {
-      handleInputChange('prevention_tips', [...formData.prevention_tips, newPrevention.trim()]);
-      setNewPrevention('');
+    const newItem = activeLanguageTab === 'uz' ? newPreventionUz : activeLanguageTab === 'ru' ? newPreventionRu : newPreventionEn;
+    if (newItem.trim()) {
+      // Split by comma and process each item
+      const itemsToAdd = newItem.split(',').map(item => item.trim()).filter(item => item.length > 0);
+      const currentPreventions = activeLanguageTab === 'uz' ? formData.prevention_tips : formData.translations?.[activeLanguageTab]?.prevention_tips || [];
+
+      // Filter out items that are already in the list
+      const uniqueItemsToAdd = itemsToAdd.filter(item => !currentPreventions.includes(item));
+
+      if (uniqueItemsToAdd.length > 0) {
+        if (activeLanguageTab === 'uz') {
+          handleInputChange('prevention_tips', [...currentPreventions, ...uniqueItemsToAdd]);
+        } else {
+          setFormData(prev => ({
+            ...prev,
+            translations: {
+              ...prev.translations!,
+              [activeLanguageTab]: {
+                ...prev.translations![activeLanguageTab],
+                prevention_tips: [...currentPreventions, ...uniqueItemsToAdd]
+              }
+            }
+          }));
+        }
+        // Clear the input
+        if (activeLanguageTab === 'uz') setNewPreventionUz('');
+        else if (activeLanguageTab === 'ru') setNewPreventionRu('');
+        else setNewPreventionEn('');
+      }
     }
   };
 
   const removePrevention = (prevention: string) => {
-    handleInputChange('prevention_tips', formData.prevention_tips.filter(p => p !== prevention));
+    if (activeLanguageTab === 'uz') {
+      handleInputChange('prevention_tips', formData.prevention_tips.filter(p => p !== prevention));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        translations: {
+          ...prev.translations!,
+          [activeLanguageTab]: {
+            ...prev.translations![activeLanguageTab],
+            prevention_tips: (prev.translations![activeLanguageTab].prevention_tips || []).filter(p => p !== prevention)
+          }
+        }
+      }));
+    }
   };
 
   const resetForm = () => {
@@ -269,6 +494,15 @@ const DiseasesManagement: React.FC = () => {
     setNewSymptom('');
     setNewTreatment('');
     setNewPrevention('');
+    setNewSymptomUz('');
+    setNewSymptomRu('');
+    setNewSymptomEn('');
+    setNewTreatmentUz('');
+    setNewTreatmentRu('');
+    setNewTreatmentEn('');
+    setNewPreventionUz('');
+    setNewPreventionRu('');
+    setNewPreventionEn('');
   };
 
   const openCreateModal = () => {
@@ -277,6 +511,9 @@ const DiseasesManagement: React.FC = () => {
   };
 
   const openEditModal = (disease: Disease) => {
+    // Reset form first to ensure clean state
+    resetForm();
+
     // Convert translations array to object format
     const translations: { [key: string]: any } = {
       ru: {
@@ -301,16 +538,22 @@ const DiseasesManagement: React.FC = () => {
       }
     };
 
-    // Populate translations from disease.translations array
-    if (disease.translations) {
-      disease.translations.forEach((translation: any) => {
+    // Track which languages have translations in the database
+    // Supabase returns translations as 'disease_translations' property
+    const diseaseTranslations = (disease as any).disease_translations;
+    const hasRuTranslation = diseaseTranslations?.some((t: any) => t.language === 'ru');
+    const hasEnTranslation = diseaseTranslations?.some((t: any) => t.language === 'en');
+
+    // Populate translations from disease.disease_translations array
+    if (diseaseTranslations && Array.isArray(diseaseTranslations)) {
+      diseaseTranslations.forEach((translation: any) => {
         if (translation.language === 'ru' || translation.language === 'en') {
           translations[translation.language] = {
             name: translation.name || '',
             description: translation.description || '',
-            symptoms: translation.symptoms || [],
-            treatment_methods: translation.treatment_methods || [],
-            prevention_tips: translation.prevention_tips || [],
+            symptoms: Array.isArray(translation.symptoms) ? translation.symptoms : [],
+            treatment_methods: Array.isArray(translation.treatment_methods) ? translation.treatment_methods : [],
+            prevention_tips: Array.isArray(translation.prevention_tips) ? translation.prevention_tips : [],
             meta_title: translation.meta_title || '',
             meta_description: translation.meta_description || '',
             slug: translation.slug || ''
@@ -319,20 +562,46 @@ const DiseasesManagement: React.FC = () => {
       });
     }
 
+    // Only auto-generate translations if they don't exist in the database at all
+    // This ensures existing translations are preserved and only missing ones are filled
+    if (!hasRuTranslation && disease.name) {
+      // Generate Russian translation from Uzbek name (simple placeholder)
+      translations.ru.name = disease.name; // Keep Uzbek name as placeholder
+      translations.ru.description = disease.description || '';
+      translations.ru.symptoms = Array.isArray(disease.symptoms) ? disease.symptoms : [];
+      translations.ru.treatment_methods = Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [];
+      translations.ru.prevention_tips = Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [];
+      translations.ru.meta_title = disease.meta_title || '';
+      translations.ru.meta_description = disease.meta_description || '';
+      translations.ru.slug = disease.slug || ''; // Use the same slug for all languages
+    }
+
+    if (!hasEnTranslation && disease.name) {
+      // Generate English translation from Uzbek name (simple placeholder)
+      translations.en.name = disease.name; // Keep Uzbek name as placeholder
+      translations.en.description = disease.description || '';
+      translations.en.symptoms = Array.isArray(disease.symptoms) ? disease.symptoms : [];
+      translations.en.treatment_methods = Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [];
+      translations.en.prevention_tips = Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [];
+      translations.en.meta_title = disease.meta_title || '';
+      translations.en.meta_description = disease.meta_description || '';
+      translations.en.slug = disease.slug || ''; // Use the same slug for all languages
+    }
+
     setFormData({
-      name: disease.name,
-      slug: disease.slug,
-      description: disease.description,
-      symptoms: disease.symptoms || [],
-      treatment_methods: disease.treatment_methods || [],
-      prevention_tips: disease.prevention_tips || [],
+      name: disease.name || '',
+      slug: disease.slug || '',
+      description: disease.description || '',
+      symptoms: Array.isArray(disease.symptoms) ? disease.symptoms : [],
+      treatment_methods: Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [],
+      prevention_tips: Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [],
       youtube_url: disease.youtube_url || '',
       meta_title: disease.meta_title || '',
       meta_description: disease.meta_description || '',
-      active: disease.active,
-      featured: disease.featured,
-      order_index: disease.order_index,
-      translations
+      active: disease.active ?? true,
+      featured: disease.featured ?? false,
+      order_index: disease.order_index ?? 0,
+      translations: translations // Use the translations object with auto-generated data
     });
 
     if (disease.featured_image_url) {
@@ -870,6 +1139,103 @@ const DiseasesManagement: React.FC = () => {
                 )}
               </div>
 
+
+              {/* SEO Settings - Only show when editing */}
+              {editingDisease && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium theme-text-secondary mb-2">
+                        Meta Title ({languages.find(l => l.code === activeLanguageTab)?.label})
+                      </label>
+                      {activeLanguageTab === 'uz' ? (
+                        <input
+                          type="text"
+                          value={formData.meta_title || ''}
+                          onChange={(e) => handleInputChange('meta_title', e.target.value)}
+                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                          placeholder="SEO uchun sarlavha"
+                          maxLength={60}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          name="meta_title"
+                          value={formData.translations?.[activeLanguageTab]?.meta_title || ''}
+                          onChange={handleTranslationChange}
+                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                          placeholder="SEO uchun sarlavha"
+                          maxLength={60}
+                        />
+                      )}
+                      <p className="text-xs theme-text-muted mt-1">
+                        {activeLanguageTab === 'uz'
+                          ? (formData.meta_title?.length || 0)
+                          : (formData.translations?.[activeLanguageTab]?.meta_title?.length || 0)
+                        }/60 belgidan iborat
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium theme-text-secondary mb-2">
+                        URL Slug ({languages.find(l => l.code === activeLanguageTab)?.label})
+                      </label>
+                      {activeLanguageTab === 'uz' ? (
+                        <input
+                          type="text"
+                          value={formData.slug || ''}
+                          onChange={(e) => handleInputChange('slug', e.target.value)}
+                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                          placeholder="url-uchun-slug"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          name="slug"
+                          value={formData.translations?.[activeLanguageTab]?.slug || ''}
+                          onChange={handleTranslationChange}
+                          className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
+                          placeholder="url-uchun-slug"
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium theme-text-secondary mb-2">
+                      Meta Description ({languages.find(l => l.code === activeLanguageTab)?.label})
+                    </label>
+                    {activeLanguageTab === 'uz' ? (
+                      <textarea
+                        value={formData.meta_description || ''}
+                        onChange={(e) => handleInputChange('meta_description', e.target.value)}
+                        rows={3}
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                        placeholder="SEO uchun tavsif"
+                        maxLength={160}
+                      />
+                    ) : (
+                      <textarea
+                        name="meta_description"
+                        value={formData.translations?.[activeLanguageTab]?.meta_description || ''}
+                        onChange={handleTranslationChange}
+                        rows={3}
+                        className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                        placeholder="SEO uchun tavsif"
+                        maxLength={160}
+                      />
+                    )}
+                    <p className="text-xs theme-text-muted mt-1">
+                      {activeLanguageTab === 'uz'
+                        ? (formData.meta_description?.length || 0)
+                        : (formData.translations?.[activeLanguageTab]?.meta_description?.length || 0)
+                      }/160 belgidan iborat
+                    </p>
+                  </div>
+                </>
+              )}
+
+
               {/* Media Upload */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -930,9 +1296,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Yangi belgi"
-                        value={newSymptom}
-                        onChange={(e) => setNewSymptom(e.target.value)}
+                        placeholder="Yangi belgi (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newSymptomUz : activeLanguageTab === 'ru' ? newSymptomRu : newSymptomEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewSymptomUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewSymptomRu(e.target.value);
+                          else setNewSymptomEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSymptom())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -946,7 +1316,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
                     
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.symptoms.map((symptom, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.symptoms : formData.translations?.[activeLanguageTab]?.symptoms || []).map((symptom, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm"
@@ -974,9 +1344,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Davolash usuli"
-                        value={newTreatment}
-                        onChange={(e) => setNewTreatment(e.target.value)}
+                        placeholder="Davolash usuli (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newTreatmentUz : activeLanguageTab === 'ru' ? newTreatmentRu : newTreatmentEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewTreatmentUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewTreatmentRu(e.target.value);
+                          else setNewTreatmentEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTreatment())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -990,7 +1364,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
                     
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.treatment_methods.map((treatment, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.treatment_methods : formData.translations?.[activeLanguageTab]?.treatment_methods || []).map((treatment, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-lg text-sm"
@@ -1018,9 +1392,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Profilaktika maslahati"
-                        value={newPrevention}
-                        onChange={(e) => setNewPrevention(e.target.value)}
+                        placeholder="Profilaktika maslahati (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newPreventionUz : activeLanguageTab === 'ru' ? newPreventionRu : newPreventionEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewPreventionUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewPreventionRu(e.target.value);
+                          else setNewPreventionEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addPrevention())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -1034,7 +1412,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
                     
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.prevention_tips.map((tip, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.prevention_tips : formData.translations?.[activeLanguageTab]?.prevention_tips || []).map((tip, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg text-sm"
@@ -1269,9 +1647,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Yangi belgi"
-                        value={newSymptom}
-                        onChange={(e) => setNewSymptom(e.target.value)}
+                        placeholder="Yangi belgi (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newSymptomUz : activeLanguageTab === 'ru' ? newSymptomRu : newSymptomEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewSymptomUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewSymptomRu(e.target.value);
+                          else setNewSymptomEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSymptom())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -1285,7 +1667,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
 
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.symptoms.map((symptom, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.symptoms : formData.translations?.[activeLanguageTab]?.symptoms || []).map((symptom, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm"
@@ -1313,9 +1695,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Davolash usuli"
-                        value={newTreatment}
-                        onChange={(e) => setNewTreatment(e.target.value)}
+                        placeholder="Davolash usuli (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newTreatmentUz : activeLanguageTab === 'ru' ? newTreatmentRu : newTreatmentEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewTreatmentUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewTreatmentRu(e.target.value);
+                          else setNewTreatmentEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTreatment())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -1329,7 +1715,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
 
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.treatment_methods.map((treatment, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.treatment_methods : formData.translations?.[activeLanguageTab]?.treatment_methods || []).map((treatment, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-lg text-sm"
@@ -1357,9 +1743,13 @@ const DiseasesManagement: React.FC = () => {
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Profilaktika maslahati"
-                        value={newPrevention}
-                        onChange={(e) => setNewPrevention(e.target.value)}
+                        placeholder="Profilaktika maslahati (vergul bilan ajrating)"
+                        value={activeLanguageTab === 'uz' ? newPreventionUz : activeLanguageTab === 'ru' ? newPreventionRu : newPreventionEn}
+                        onChange={(e) => {
+                          if (activeLanguageTab === 'uz') setNewPreventionUz(e.target.value);
+                          else if (activeLanguageTab === 'ru') setNewPreventionRu(e.target.value);
+                          else setNewPreventionEn(e.target.value);
+                        }}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addPrevention())}
                         className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 text-sm"
                       />
@@ -1373,7 +1763,7 @@ const DiseasesManagement: React.FC = () => {
                     </div>
 
                     <div className="space-y-1 max-h-32 overflow-y-auto">
-                      {formData.prevention_tips.map((tip, index) => (
+                      {(activeLanguageTab === 'uz' ? formData.prevention_tips : formData.translations?.[activeLanguageTab]?.prevention_tips || []).map((tip, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg text-sm"

@@ -49,12 +49,12 @@ const DiseaseDetail: React.FC = () => {
       const { data, error } = await getDiseaseBySlug(slug, i18n.language);
       
       if (error) {
-        setError('Kasallik topilmadi');
+        setError(t('diseaseNotFound'));
       } else if (data) {
         setDisease(data);
       }
     } catch (error) {
-      setError('Xatolik yuz berdi');
+      setError(t('errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -70,11 +70,11 @@ const DiseaseDetail: React.FC = () => {
         });
       } catch (error) {
         navigator.clipboard.writeText(window.location.href);
-        alert('Havola nusxalandi!');
+        alert(t('linkCopied'));
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Havola nusxalandi!');
+      alert(t('linkCopied'));
     }
   };
 
@@ -83,7 +83,7 @@ const DiseaseDetail: React.FC = () => {
       <div className="min-h-screen theme-bg flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Kasallik ma'lumotlari yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('loadingDiseaseInfo')}</p>
         </div>
       </div>
     );
@@ -93,14 +93,14 @@ const DiseaseDetail: React.FC = () => {
     return (
       <div className="min-h-screen theme-bg flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold theme-text mb-4">Kasallik topilmadi</h1>
-          <p className="theme-text-secondary mb-6">Siz qidirayotgan kasallik mavjud emas yoki o'chirilgan.</p>
+          <h1 className="text-2xl font-bold theme-text mb-4">{t('diseaseNotFound')}</h1>
+          <p className="theme-text-secondary mb-6">{t('diseaseNotExist')}</p>
           <Link
             to="/diseases"
             className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <ArrowLeft size={20} />
-            <span>Kasalliklarga qaytish</span>
+            <span>{t('backToDiseases')}</span>
           </Link>
         </div>
       </div>
@@ -135,7 +135,7 @@ const DiseaseDetail: React.FC = () => {
               className="inline-flex items-center space-x-2 theme-text-secondary hover:theme-accent transition-colors duration-200"
             >
               <ArrowLeft size={20} />
-              <span>Kasalliklarga qaytish</span>
+              <span>{t('backToDiseases')}</span>
             </Link>
           </div>
         </div>
@@ -187,7 +187,7 @@ const DiseaseDetail: React.FC = () => {
                     <div className="absolute top-6 left-6">
                       <span className="bg-yellow-500 text-white rounded-full px-4 py-2 flex items-center space-x-2 text-sm font-bold shadow-lg">
                         <Award size={16} />
-                        <span>Asosiy Kasallik</span>
+                        <span>{t('mainDisease')}</span>
                       </span>
                     </div>
                   )}
@@ -218,7 +218,7 @@ const DiseaseDetail: React.FC = () => {
                         className="flex items-center space-x-2 theme-bg-tertiary theme-text-secondary px-6 py-3 rounded-xl hover:theme-bg-quaternary transition-colors duration-200 font-medium"
                       >
                         <Share2 size={18} />
-                        <span>Ulashish</span>
+                        <span>{t('share')}</span>
                       </button>
                       
                       <Link
@@ -226,7 +226,7 @@ const DiseaseDetail: React.FC = () => {
                         className="flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors duration-200 font-medium"
                       >
                         <Stethoscope size={18} />
-                        <span>Maslahat olish</span>
+                        <span>{t('getConsultation')}</span>
                       </Link>
                     </div>
                   </div>
@@ -235,15 +235,15 @@ const DiseaseDetail: React.FC = () => {
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
                       <div className="text-2xl font-bold theme-text mb-1">{disease.symptoms?.length || 0}</div>
-                      <div className="text-sm theme-text-secondary">Belgilar</div>
+                      <div className="text-sm theme-text-secondary">{t('symptomsLabel')}</div>
                     </div>
                     <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
                       <div className="text-2xl font-bold theme-text mb-1">{disease.treatment_methods?.length || 0}</div>
-                      <div className="text-sm theme-text-secondary">Davolash</div>
+                      <div className="text-sm theme-text-secondary">{t('treatmentLabel')}</div>
                     </div>
                     <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
                       <div className="text-2xl font-bold theme-text mb-1">{disease.prevention_tips?.length || 0}</div>
-                      <div className="text-sm theme-text-secondary">Profilaktika</div>
+                      <div className="text-sm theme-text-secondary">{t('preventionLabel')}</div>
                     </div>
                   </div>
                 </div>
@@ -264,7 +264,7 @@ const DiseaseDetail: React.FC = () => {
                     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                       <AlertCircle size={24} className="text-primary-600" />
                     </div>
-                    <h2 className="text-2xl font-bold theme-text">Kasallik Belgilari</h2>
+                    <h2 className="text-2xl font-bold theme-text">{t('diseaseSymptoms')}</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {disease.symptoms.map((symptom, idx) => (
@@ -284,7 +284,7 @@ const DiseaseDetail: React.FC = () => {
                     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                       <Stethoscope size={24} className="text-primary-600" />
                     </div>
-                    <h2 className="text-2xl font-bold theme-text">Davolash Usullari</h2>
+                    <h2 className="text-2xl font-bold theme-text">{t('treatmentMethods')}</h2>
                   </div>
                   <div className="space-y-4">
                     {disease.treatment_methods.map((method, idx) => (
@@ -304,7 +304,7 @@ const DiseaseDetail: React.FC = () => {
                     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                       <Shield size={24} className="text-primary-600" />
                     </div>
-                    <h2 className="text-2xl font-bold theme-text">Profilaktika Choralari</h2>
+                    <h2 className="text-2xl font-bold theme-text">{t('preventionTips')}</h2>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {disease.prevention_tips.map((tip, idx) => (
@@ -324,7 +324,7 @@ const DiseaseDetail: React.FC = () => {
                     <div className="w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-2xl flex items-center justify-center">
                       <Video size={24} className="text-red-600 dark:text-red-400" />
                     </div>
-                    <h2 className="text-2xl font-bold theme-text">Video Ma'lumot</h2>
+                    <h2 className="text-2xl font-bold theme-text">{t('videoInfo')}</h2>
                   </div>
                   <div className="relative w-full h-64 md:h-96 bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden">
                     <iframe
@@ -342,26 +342,26 @@ const DiseaseDetail: React.FC = () => {
             <div className="space-y-8">
               {/* Disease Summary */}
               <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 mt-8 animate-slide-left" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-xl font-bold theme-text mb-6">Kasallik Xulasasi</h3>
+                <h3 className="text-xl font-bold theme-text mb-6">{t('diseaseSummary')}</h3>
                 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <span className="theme-text-secondary font-medium">Belgilar soni</span>
+                    <span className="theme-text-secondary font-medium">{t('symptomsCount')}</span>
                     <span className="font-bold theme-text text-lg">{disease.symptoms?.length || 0}</span>
                   </div>
                   
                   <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <span className="theme-text-secondary font-medium">Davolash usullari</span>
+                    <span className="theme-text-secondary font-medium">{t('treatmentMethodsCount')}</span>
                     <span className="font-bold theme-text text-lg">{disease.treatment_methods?.length || 0}</span>
                   </div>
                   
                   <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <span className="theme-text-secondary font-medium">Profilaktika</span>
+                    <span className="theme-text-secondary font-medium">{t('preventionLabel')}</span>
                     <span className="font-bold theme-text text-lg">{disease.prevention_tips?.length || 0}</span>
                   </div>
                   
                   <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <span className="theme-text-secondary font-medium">Kontent turi</span>
+                    <span className="theme-text-secondary font-medium">{t('contentType')}</span>
                     <div className="flex items-center space-x-2">
                       <ContentIcon size={16} className="theme-accent" />
                       <span className="font-bold theme-text">{getContentTypeLabel(disease)}</span>
@@ -372,7 +372,7 @@ const DiseaseDetail: React.FC = () => {
 
               {/* Quick Actions */}
               <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-xl font-bold theme-text mb-6">Tezkor Amallar</h3>
+                <h3 className="text-xl font-bold theme-text mb-6">{t('quickActions')}</h3>
                 
                 <div className="space-y-3">
                   <Link
@@ -380,7 +380,7 @@ const DiseaseDetail: React.FC = () => {
                     className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <Stethoscope size={18} className="text-blue-600" />
-                    <span className="font-medium">Bepul maslahat olish</span>
+                    <span className="font-medium">{t('getFreeConsultationDetail')}</span>
                   </Link>
                   
                   <Link
@@ -388,7 +388,7 @@ const DiseaseDetail: React.FC = () => {
                     className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <Users size={18} className="text-green-600" />
-                    <span className="font-medium">Shifokorlar bilan tanishing</span>
+                    <span className="font-medium">{t('meetDoctorsDetail')}</span>
                   </Link>
                   
                   <Link
@@ -396,23 +396,23 @@ const DiseaseDetail: React.FC = () => {
                     className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
                     <BookOpen size={18} className="text-purple-600" />
-                    <span className="font-medium">Tegishli maqolalar</span>
+                    <span className="font-medium">{t('relatedArticles')}</span>
                   </Link>
                 </div>
               </div>
 
               {/* Share */}
               <div className="bg-primary-600 rounded-2xl theme-shadow-lg p-6 text-white animate-slide-left delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-lg font-bold mb-2">Ma'lumotni Ulashing</h3>
+                <h3 className="text-lg font-bold mb-2">{t('shareInfo')}</h3>
                 <p className="text-blue-100 mb-4 text-sm">
-                  Bu kasallik haqida ma'lumotni boshqalar bilan ulashing
+                  {t('shareDiseaseInfo')}
                 </p>
                 <button
                   onClick={handleShare}
                   className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Share2 size={18} />
-                  <span>Ulashish</span>
+                  <span>{t('share')}</span>
                 </button>
               </div>
             </div>
@@ -425,10 +425,9 @@ const DiseaseDetail: React.FC = () => {
             <div className="flex items-center space-x-3 text-black dark:text-black">
               <Shield size={20} className="flex-shrink-0" />
               <div>
-                <h4 className="font-semibold mb-1">Tibbiy Ogohlantirish</h4>
+                <h4 className="font-semibold mb-1">{t('medicalWarning')}</h4>
                 <p className="text-sm">
-                  Bu ma'lumotlar faqat ta'lim maqsadida berilgan. Har qanday tibbiy muammo uchun 
-                  malakali shifokorga murojaat qiling. O'z-o'zini davolash xavfli bo'lishi mumkin.
+                  {t('medicalWarningText')}
                 </p>
               </div>
             </div>

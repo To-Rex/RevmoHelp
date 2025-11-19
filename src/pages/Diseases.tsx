@@ -28,7 +28,6 @@ import SEOHead from '../components/common/SEOHead';
 import { getDiseases } from '../lib/diseases';
 import { getContentTypeIcon, getContentTypeLabel, getContentTypeColor } from '../utils/diseaseHelpers';
 import type { Disease } from '../lib/diseases';
-import LanguageAwareLink from '../components/common/LanguageAwareLink';
 
 const Diseases: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -108,7 +107,7 @@ const Diseases: React.FC = () => {
       <div className="min-h-screen theme-bg flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Kasalliklar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('loadingDiseases')}</p>
         </div>
       </div>
     );
@@ -133,24 +132,23 @@ const Diseases: React.FC = () => {
               <span className="text-blue-800 text-sm font-medium">Medical Conditions</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold theme-text mb-6 animate-slide-up">
-              Revmatik Kasalliklar
+              {t('rheumaticDiseases')}
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8 animate-slide-up delay-200">
-              Eng keng tarqalgan revmatik kasalliklar haqida batafsil ma'lumot oling.
-              Har bir kasallik uchun belgilar, davolash usullari va profilaktika choralari.
+              {t('diseasesSubtitle')}
             </p>
             <div className="flex items-center justify-center space-x-8 text-sm theme-text-tertiary animate-fade-in delay-300">
               <div className="flex items-center space-x-2">
                 <Shield size={16} className="text-blue-600" />
-                <span>Tasdiqlangan ma'lumotlar</span>
+                <span>{t('verifiedInfo')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Heart size={16} className="text-green-600" />
-                <span>Professional maslahatlar</span>
+                <span>{t('professionalAdvice')}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Activity size={16} className="text-purple-600" />
-                <span>Zamonaviy davolash</span>
+                <span>{t('modernTreatment')}</span>
               </div>
             </div>
           </div>
@@ -166,7 +164,7 @@ const Diseases: React.FC = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
                   <input style={{ backgroundColor: '#ffffff' }}
                     type="text"
-                    placeholder="Kasalliklarni qidiring..."
+                    placeholder={t('searchDiseases')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
@@ -183,10 +181,10 @@ const Diseases: React.FC = () => {
                     onChange={(e) => setSelectedType(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 appearance-none bg-white dark:bg-[#3E433B] theme-text"
                   >
-                    <option value="all">Barcha kasalliklar</option>
-                    <option value="featured">Asosiy kasalliklar</option>
-                    <option value="video">Video bilan</option>
-                    <option value="image">Rasm bilan</option>
+                    <option value="all">{t('allDiseases')}</option>
+                    <option value="featured">{t('mainDiseases')}</option>
+                    <option value="video">{t('withVideo')}</option>
+                    <option value="image">{t('withImage')}</option>
                   </select>
                 </div>
               </div>
@@ -196,7 +194,7 @@ const Diseases: React.FC = () => {
           {/* Results Count */}
           <div className="mb-8">
             <p className="theme-text-secondary">
-              <span className="font-semibold theme-text">{filteredDiseases.length}</span> ta kasallik topildi
+              <span className="font-semibold theme-text">{filteredDiseases.length}</span> {t('diseasesFound')}
             </p>
           </div>
 
@@ -209,9 +207,9 @@ const Diseases: React.FC = () => {
               const ContentIcon = getContentTypeIcon(disease);
               
               return (
-                <LanguageAwareLink
+                <Link
                   key={disease.id}
-                  to={`/diseases/${disease.slug}`}
+                  to={i18n.language === 'uz' ? `/diseases/${disease.slug}` : `/${i18n.language}/diseases/${disease.slug}`}
                   className="group block h-full min-h-[350px]"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -259,7 +257,7 @@ const Diseases: React.FC = () => {
                       {disease.featured && (
                         <div className="absolute top-3 left-3">
                           <span className="bg-yellow-500 text-white rounded-full px-3 py-1 text-xs font-bold shadow-lg">
-                            Asosiy
+                            {t('main')}
                           </span>
                         </div>
                       )}
@@ -279,15 +277,15 @@ const Diseases: React.FC = () => {
                       <div className="flex items-center justify-center space-x-4 text-xs theme-text-muted mb-4">
                         <div className="flex items-center space-x-1">
                           <Users size={14} />
-                          <span>{disease.symptoms?.length || 0} belgi</span>
+                          <span>{disease.symptoms?.length || 0} {t('symptoms')}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <Clock size={14} />
-                          <span>{disease.treatment_methods?.length || 0} usul</span>
+                          <span>{disease.treatment_methods?.length || 0} {t('methods')}</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <MessageCircle size={14} />
-                          <span>{disease.prevention_tips?.length || 0} maslahat</span>
+                          <span>{disease.prevention_tips?.length || 0} {t('advice')}</span>
                         </div>
                       </div>
 
@@ -295,14 +293,14 @@ const Diseases: React.FC = () => {
                       <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 text-center">
                         <div className="inline-flex items-center space-x-2 theme-accent font-medium text-sm">
                           <BookOpen size={14} />
-                          <span>Batafsil ma'lumot</span>
+                          <span>{t('detailedInfo')}</span>
                           <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
                         </div>
                       </div>
                     </div>
 
                   </div>
-                </LanguageAwareLink>
+                </Link>
               );
             })}
           </div>
@@ -314,10 +312,10 @@ const Diseases: React.FC = () => {
                 <Search size={48} className="mx-auto" />
               </div>
               <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-                Kasallik topilmadi
+                {t('diseaseNotFound')}
               </h3>
               <p className="theme-text-muted">
-                Qidiruv so'zini o'zgartiring yoki filtrlarni qayta sozlang
+                {t('changeSearchOrFilters')}
               </p>
             </div>
           )}
@@ -327,10 +325,9 @@ const Diseases: React.FC = () => {
             <div className="flex items-center space-x-3 text-black dark:text-black">
               <Shield size={10} className="flex-shrink-0" />
               <div>
-                <h4 className="font-semibold mb-1">Tibbiy Ogohlantirish</h4>
+                <h4 className="font-semibold mb-1">{t('medicalWarning')}</h4>
                 <p className="text-sm">
-                  Bu ma'lumotlar faqat ta'lim maqsadida berilgan. Har qanday tibbiy muammo uchun 
-                  malakali shifokorga murojaat qiling. O'z-o'zini davolash xavfli bo'lishi mumkin.
+                  {t('medicalWarningText')}
                 </p>
               </div>
             </div>

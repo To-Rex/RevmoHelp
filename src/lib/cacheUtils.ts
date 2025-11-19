@@ -320,6 +320,11 @@ export const invalidateRelatedCache = (entityType: string, entityId?: string): v
       }
       break;
 
+    case 'disease':
+      dataCache.invalidatePattern('diseases.*');
+      dataCache.invalidatePattern('disease.*');
+      break;
+
     default:
       console.warn(`Unknown entity type for cache invalidation: ${entityType}`);
   }

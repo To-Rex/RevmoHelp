@@ -107,6 +107,78 @@ export const uploadDiseaseImage = async (file: File, diseaseId: string): Promise
   }
 };
 
+// Get all diseases (admin version with all translations)
+const _getDiseasesAdmin = async (options?: {
+  active?: boolean;
+  featured?: boolean;
+  limit?: number;
+}): Promise<{ data: Disease[] | null; error: any }> => {
+  try {
+    console.log('🦠 Loading diseases for admin panel');
+
+    // Check Supabase availability first to prevent network errors
+    if (!isSupabaseAvailable()) {
+      console.log('⚠️ Supabase not available, using mock data');
+      return { data: getMockDiseases(), error: null };
+    }
+
+    try {
+      let query = supabase!
+        .from('diseases')
+        .select(`
+          *,
+          disease_translations(*)
+        `)
+        .order('order_index', { ascending: true });
+
+      // Apply filters
+      if (options?.active !== undefined && query) {
+        query = query.eq('active', options.active);
+      }
+
+      if (options?.featured !== undefined && query) {
+        query = query.eq('featured', options.featured);
+      }
+
+      if (options?.limit && query) {
+        query = query.limit(options.limit);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.log('❌ Supabase error loading diseases:', error);
+        console.log('🔄 Falling back to mock data');
+        return { data: getMockDiseases(), error: null };
+      }
+
+      // If no data from Supabase, use mock data
+      if (!data || data.length === 0) {
+        console.log('⚠️ No diseases found in Supabase, using mock data');
+        return { data: getMockDiseases(), error: null };
+      }
+
+      // Return diseases with all translations intact (no language processing)
+      console.log('✅ Diseases loaded from Supabase for admin:', data.length);
+      return { data, error: null };
+    } catch (supabaseError) {
+      console.log('❌ Supabase connection failed:', supabaseError);
+      console.log('🔄 Using mock data due to connection error');
+      return { data: getMockDiseases(), error: null };
+    }
+  } catch (error) {
+    console.warn('🦠 Error fetching diseases from Supabase, using mock data:', error);
+    return { data: getMockDiseases(), error: null };
+  }
+};
+
+// Cached version of getDiseasesAdmin
+export const getDiseasesAdmin = withCache(
+  _getDiseasesAdmin,
+  (options) => `diseases.admin.${JSON.stringify(options || {})}`,
+  5 * 60 * 1000 // 5 minutes TTL
+);
+
 // Get all diseases
 const _getDiseases = async (language: string = 'uz', options?: {
   active?: boolean;
@@ -123,24 +195,24 @@ const _getDiseases = async (language: string = 'uz', options?: {
     }
 
     try {
-      let query = supabase
+      let query = supabase!
         .from('diseases')
         .select(`
           *,
-          translations:disease_translations(*)
+          disease_translations(*)
         `)
         .order('order_index', { ascending: true });
 
       // Apply filters
-      if (options?.active !== undefined) {
+      if (options?.active !== undefined && query) {
         query = query.eq('active', options.active);
       }
 
-      if (options?.featured !== undefined) {
+      if (options?.featured !== undefined && query) {
         query = query.eq('featured', options.featured);
       }
 
-      if (options?.limit) {
+      if (options?.limit && query) {
         query = query.limit(options.limit);
       }
 
@@ -160,7 +232,7 @@ const _getDiseases = async (language: string = 'uz', options?: {
 
       // Process diseases with translations
       const processedDiseases = data?.map(disease => {
-        const translation = disease.translations?.find((t: any) => t.language === language);
+        const translation = disease.disease_translations?.find((t: any) => t.language === language);
         if (translation) {
           return {
             ...disease,
@@ -202,11 +274,21 @@ export const getDiseases = withCache(
 const _getDiseaseBySlug = async (slug: string, language: string = 'uz'): Promise<{ data: Disease | null; error: any }> => {
   try {
     console.log('🦠 Loading disease by slug:', slug, 'language:', language);
-    
+
     if (!supabase) {
       console.log('⚠️ Supabase not available, using mock data');
-      const mockDiseases = getMockDiseases(language);
-      const disease = mockDiseases.find(d => d.slug === slug);
+      // For mock data, try to find disease by slug first, then try to find by base slug
+      let mockDiseases = getMockDiseases(language);
+      let disease = mockDiseases.find(d => d.slug === slug);
+
+      // If not found with exact slug, try to find by base slug (remove language suffix)
+      if (!disease) {
+        const baseSlug = slug.replace(/-(uz|ru|en)$/, '');
+        console.log('🔍 Trying to find disease by base slug:', baseSlug);
+        mockDiseases = getMockDiseases(language);
+        disease = mockDiseases.find(d => d.slug.replace(/-(uz|ru|en)$/, '') === baseSlug);
+      }
+
       return { data: disease || null, error: disease ? null : { message: 'Disease not found' } };
     }
 
@@ -223,25 +305,77 @@ const _getDiseaseBySlug = async (slug: string, language: string = 'uz'): Promise
         .maybeSingle();
 
       if (translationError || !translationData) {
+        // Try to find by base slug (remove language suffix and search for any translation)
+        const baseSlug = slug.replace(/-(uz|ru|en)$/, '');
+        console.log('🔍 Trying to find disease by base slug:', baseSlug);
+
+        const { data: baseTranslationData, error: baseTranslationError } = await supabase
+          .from('disease_translations')
+          .select(`
+            *,
+            disease:diseases(*)
+          `)
+          .ilike('slug', `${baseSlug}%`)
+          .limit(1)
+          .maybeSingle();
+
+        if (!baseTranslationError && baseTranslationData) {
+          // Found a translation with similar base slug, now get the correct translation for current language
+          const { data: correctTranslationData, error: correctTranslationError } = await supabase
+            .from('disease_translations')
+            .select(`
+              *,
+              disease:diseases(*)
+            `)
+            .eq('disease_id', baseTranslationData.disease_id)
+            .eq('language', language)
+            .maybeSingle();
+
+          if (!correctTranslationError && correctTranslationData) {
+            // Found correct translation
+            const disease = correctTranslationData.disease;
+            const processedDisease = {
+              ...disease,
+              name: correctTranslationData.name,
+              description: correctTranslationData.description,
+              symptoms: correctTranslationData.symptoms || disease.symptoms,
+              treatment_methods: correctTranslationData.treatment_methods || disease.treatment_methods,
+              prevention_tips: correctTranslationData.prevention_tips || disease.prevention_tips,
+              slug: correctTranslationData.slug,
+              meta_title: correctTranslationData.meta_title || disease.meta_title,
+              meta_description: correctTranslationData.meta_description || disease.meta_description,
+              current_language: language
+            };
+
+            console.log('✅ Disease found by base slug and loaded correct translation:', processedDisease.name);
+            return { data: processedDisease, error: null };
+          }
+        }
+
         // Fallback to original diseases table
         const { data, error } = await supabase
           .from('diseases')
           .select(`
             *,
-            translations:disease_translations(*)
+            disease_translations(*)
           `)
           .eq('slug', slug)
           .maybeSingle();
 
         if (error) {
           console.log('❌ Supabase error loading disease:', error);
+          // Try mock data fallback with base slug logic
           const mockDiseases = getMockDiseases(language);
-          const disease = mockDiseases.find(d => d.slug === slug);
+          let disease = mockDiseases.find(d => d.slug === slug);
+          if (!disease) {
+            const baseSlug = slug.replace(/-(uz|ru|en)$/, '');
+            disease = mockDiseases.find(d => d.slug.replace(/-(uz|ru|en)$/, '') === baseSlug);
+          }
           return { data: disease || null, error: disease ? null : { message: 'Disease not found' } };
         }
 
         // Process with translation if available
-        const translation = data.translations?.find((t: any) => t.language === language);
+        const translation = data.disease_translations?.find((t: any) => t.language === language);
         const processedDisease = translation ? {
           ...data,
           name: translation.name,
@@ -279,14 +413,24 @@ const _getDiseaseBySlug = async (slug: string, language: string = 'uz'): Promise
     } catch (supabaseError) {
       console.log('❌ Supabase connection failed:', supabaseError);
       console.log('🔄 Using mock data due to connection error');
+      // Try mock data fallback with base slug logic
       const mockDiseases = getMockDiseases(language);
-      const disease = mockDiseases.find(d => d.slug === slug);
+      let disease = mockDiseases.find(d => d.slug === slug);
+      if (!disease) {
+        const baseSlug = slug.replace(/-(uz|ru|en)$/, '');
+        disease = mockDiseases.find(d => d.slug.replace(/-(uz|ru|en)$/, '') === baseSlug);
+      }
       return { data: disease || null, error: disease ? null : { message: 'Disease not found' } };
     }
   } catch (error) {
     console.warn('🦠 Error fetching disease from Supabase, using mock data:', error);
+    // Try mock data fallback with base slug logic
     const mockDiseases = getMockDiseases(language);
-    const disease = mockDiseases.find(d => d.slug === slug);
+    let disease = mockDiseases.find(d => d.slug === slug);
+    if (!disease) {
+      const baseSlug = slug.replace(/-(uz|ru|en)$/, '');
+      disease = mockDiseases.find(d => d.slug.replace(/-(uz|ru|en)$/, '') === baseSlug);
+    }
     return { data: disease || null, error: null };
   }
 };
