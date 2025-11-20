@@ -300,7 +300,7 @@ const DoctorRegistration: React.FC = () => {
         url="https://revmohelp.uz/doctor-registration"
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-blue-100 rounded-full px-4 py-2 mb-6">
@@ -336,7 +336,7 @@ const DoctorRegistration: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <h2 className="text-2xl font-bold theme-text mb-6 flex items-center space-x-2">
               <User size={24} className="text-blue-600" />
               <span>Asosiy Ma'lumotlar</span>
@@ -351,7 +351,7 @@ const DoctorRegistration: React.FC = () => {
                   type="text"
                   value={user.full_name}
                   disabled
-                  className="w-full px-4 py-3 theme-border border rounded-lg theme-bg theme-text opacity-60"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg theme-text opacity-60"
                 />
               </div>
 
@@ -363,7 +363,7 @@ const DoctorRegistration: React.FC = () => {
                   type="email"
                   value={user.email}
                   disabled
-                  className="w-full px-4 py-3 theme-border border rounded-lg theme-bg theme-text opacity-60"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg theme-text opacity-60"
                 />
               </div>
 
@@ -376,7 +376,7 @@ const DoctorRegistration: React.FC = () => {
                   name="phone"
                   value={user.phone || ''}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   placeholder="+998 90 123 45 67"
                 />
               </div>
@@ -431,7 +431,7 @@ const DoctorRegistration: React.FC = () => {
                   value={formData.specialization}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                 >
                   <option value="">Mutaxassislikni tanlang</option>
                   {specializations.map((spec) => (
@@ -454,7 +454,7 @@ const DoctorRegistration: React.FC = () => {
                   required
                   min="0"
                   max="50"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                 />
               </div>
 
@@ -468,7 +468,7 @@ const DoctorRegistration: React.FC = () => {
                   value={formData.consultation_fee}
                   onChange={handleInputChange}
                   min="0"
-                  className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                   placeholder="0 (bepul konsultatsiya)"
                 />
               </div>
@@ -476,7 +476,7 @@ const DoctorRegistration: React.FC = () => {
           </div>
 
           {/* Bio and Translations */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold theme-text flex items-center space-x-2">
                 <FileText size={24} className="text-green-600" />
@@ -513,7 +513,7 @@ const DoctorRegistration: React.FC = () => {
                     value={formData.specialization}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
                     placeholder="Masalan: Revmatologiya"
                   />
                 </div>
@@ -527,7 +527,7 @@ const DoctorRegistration: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
                     placeholder="O'zingiz haqingizda batafsil yozing..."
                   />
                 </div>
@@ -598,7 +598,7 @@ const DoctorRegistration: React.FC = () => {
           </div>
 
           {/* Certificates */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <h2 className="text-2xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Award size={24} className="text-purple-600" />
               <span>Sertifikatlar va Diplomlar</span>
@@ -644,7 +644,7 @@ const DoctorRegistration: React.FC = () => {
           </div>
 
           {/* Education */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <h2 className="text-2xl font-bold theme-text mb-6 flex items-center space-x-2">
               <GraduationCap size={24} className="text-orange-600" />
               <span>Ta'lim</span>
@@ -690,7 +690,7 @@ const DoctorRegistration: React.FC = () => {
           </div>
 
           {/* Languages */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <h2 className="text-2xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Languages size={24} className="text-teal-600" />
               <span>Tillar</span>
@@ -712,7 +712,7 @@ const DoctorRegistration: React.FC = () => {
           </div>
 
           {/* Working Hours */}
-          <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+          <div className="bg-white rounded-3xl theme-shadow-lg theme-border border p-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <h2 className="text-2xl font-bold theme-text mb-6 flex items-center space-x-2">
               <Clock size={24} className="text-indigo-600" />
               <span>Ish Vaqti</span>

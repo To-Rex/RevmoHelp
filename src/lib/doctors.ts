@@ -331,23 +331,43 @@ const _getDoctorById = async (id: string, language: string = 'uz'): Promise<{ da
           .select(`*`)
           .eq('id', id)
           .single();
-        const { data: profileMatch } = await supabase
-          .from('doctor_profiles')
-          .select('id')
-          .eq('email', legacyDoctor?.email)
-          .maybeSingle();
 
-        // Process legacy doctor with translations
-        
-        const translation = legacyDoctor?.translations?.find((t: any) => t.language === language);
-        const processedDoctor = translation ? {
-          ...legacyDoctor,
-          bio: translation?.bio || legacyDoctor.bio,
-          specialization: translation?.specialization || legacyDoctor.specialization,
-          current_language: language
-        } : legacyDoctor;
-        console.log('✅ Doctor loaded from legacy doctors table');
-        return { data: processedDoctor, error: null };
+        if (legacyDoctor) {
+          // Load translations if needed
+          let translation = null;
+          if (language !== 'uz') {
+            try {
+              const { data: transData } = await supabase
+                .from('doctor_translations')
+                .select('*')
+                .eq('doctor_id', id);
+
+              if (transData && transData.length > 0) {
+                // Use pickTranslation logic: prefer requested language, then uz, ru, en
+                const order = [language, 'uz', 'ru', 'en'].filter((v, i, a) => a.indexOf(v) === i);
+                for (const lang of order) {
+                  const t = transData.find((x: any) => x.language === lang);
+                  if (t && (t.bio || t.specialization)) {
+                    translation = t;
+                    break;
+                  }
+                }
+              }
+            } catch (transError) {
+              console.log('⚠️ Error loading translations for legacy doctor:', transError);
+            }
+          }
+
+          const processedDoctor = {
+            ...legacyDoctor,
+            bio: translation?.bio || legacyDoctor.bio,
+            specialization: translation?.specialization || legacyDoctor.specialization,
+            current_language: translation ? translation.language : undefined
+          };
+
+          console.log('✅ Doctor loaded from legacy doctors table');
+          return { data: processedDoctor, error: null };
+        }
       } catch (legacyError) {
         console.log('⚠️ Error loading from legacy doctors table:', legacyError);
       }

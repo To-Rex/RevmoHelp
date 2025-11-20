@@ -52,12 +52,20 @@ const _getDoctorRatingStats = async (doctorId: string): Promise<DoctorRatingStat
 
     if (error) {
       console.log('❌ Supabase error loading rating stats:', error);
-      return getMockRatingStats(doctorId);
+      return {
+        averageRating: 0,
+        totalReviews: 0,
+        ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+      };
     }
 
     if (!data || data.length === 0) {
-      console.log('⚠️ No reviews found, using mock data');
-      return getMockRatingStats(doctorId);
+      console.log('⚠️ No reviews found for doctor');
+      return {
+        averageRating: 0,
+        totalReviews: 0,
+        ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+      };
     }
 
     // Calculate statistics
@@ -81,8 +89,12 @@ const _getDoctorRatingStats = async (doctorId: string): Promise<DoctorRatingStat
       ratingDistribution
     };
   } catch (error) {
-    console.warn('⭐ Error fetching rating stats, using mock data:', error);
-    return getMockRatingStats(doctorId);
+    console.warn('⭐ Error fetching rating stats:', error);
+    return {
+      averageRating: 0,
+      totalReviews: 0,
+      ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    };
   }
 };
 
@@ -121,13 +133,13 @@ const _getDoctorReviews = async (doctorId: string, options?: {
 
     if (error) {
       console.log('❌ Supabase error loading reviews:', error);
-      return { data: getMockReviews(doctorId), error: null };
+      return { data: [], error: null };
     }
 
     return { data, error: null };
   } catch (error) {
-    console.warn('⭐ Error fetching reviews, using mock data:', error);
-    return { data: getMockReviews(doctorId), error: null };
+    console.warn('⭐ Error fetching reviews:', error);
+    return { data: [], error: null };
   }
 };
 
@@ -214,6 +226,7 @@ const getMockReviews = (doctorId: string): DoctorReview[] => [
     user_id: 'user-1',
     rating: 5,
     comment: 'Juda professional shifokor! Menga juda yordam berdi.',
+    anonymous: false,
     reviewer_name: 'Malika Karimova',
     approved: true,
     created_at: new Date(Date.now() - 86400000).toISOString(),
@@ -225,6 +238,7 @@ const getMockReviews = (doctorId: string): DoctorReview[] => [
     user_id: undefined,
     rating: 5,
     comment: 'Shifokor juda sabr-toqatli va tushuntiradi.',
+    anonymous: true,
     reviewer_name: undefined,
     approved: true,
     created_at: new Date(Date.now() - 172800000).toISOString(),
@@ -236,6 +250,7 @@ const getMockReviews = (doctorId: string): DoctorReview[] => [
     user_id: 'user-3',
     rating: 4,
     comment: 'Yaxshi maslahat berdi, lekin biroz kutish vaqti uzoq edi.',
+    anonymous: false,
     reviewer_name: 'Akmal Toshmatov',
     approved: true,
     created_at: new Date(Date.now() - 259200000).toISOString(),

@@ -76,16 +76,16 @@ const DoctorProfile: React.FC = () => {
       
       if (doctorByIdError && !doctorByIdData) {
         console.log('❌ Doctor not found via getDoctorById');
-        setError('Shifokor topilmadi');
+        setError(t('doctorNotFound'));
       } else if (doctorByIdData) {
         console.log('✅ Doctor found via getDoctorById');
         setDoctor(doctorByIdData);
       } else {
-        setError('Shifokor ma\'lumotlari yuklanmadi');
+        setError(t('doctorDataNotLoaded'));
       }
     } catch (error) {
       console.error('❌ Error in loadDoctor:', error);
-      setError('Xatolik yuz berdi');
+      setError(t('errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -144,12 +144,12 @@ const DoctorProfile: React.FC = () => {
     e.preventDefault();
     
     if (!reviewFormData.comment.trim()) {
-      setReviewMessage({ type: 'error', text: 'Sharh matni kiritilishi shart' });
+      setReviewMessage({ type: 'error', text: t('commentRequired') });
       return;
     }
     
     if (!user && !reviewFormData.reviewer_name.trim()) {
-      setReviewMessage({ type: 'error', text: 'Ismingizni kiriting' });
+      setReviewMessage({ type: 'error', text: t('enterYourName') });
       return;
     }
 
@@ -168,9 +168,9 @@ const DoctorProfile: React.FC = () => {
       const { data, error } = await createDoctorReview(reviewData);
 
       if (error) {
-        setReviewMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setReviewMessage({ type: 'error', text: t('error') + ': ' + error.message });
       } else {
-        setReviewMessage({ type: 'success', text: 'Sharh muvaffaqiyatli qo\'shildi!' });
+        setReviewMessage({ type: 'success', text: t('reviewAddedSuccessfully') });
         setReviewFormData({ rating: 5, comment: '', anonymous: false, reviewer_name: '' });
         setShowReviewForm(false);
         
@@ -179,7 +179,7 @@ const DoctorProfile: React.FC = () => {
         await loadRatingStats();
       }
     } catch (error) {
-      setReviewMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setReviewMessage({ type: 'error', text: t('errorOccurredTryAgain') });
     } finally {
       setIsSubmittingReview(false);
     }
@@ -226,7 +226,7 @@ const DoctorProfile: React.FC = () => {
       <div className="min-h-screen theme-bg flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Shifokor ma'lumotlari yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('loadingDoctor')}</p>
         </div>
       </div>
     );
@@ -236,14 +236,14 @@ const DoctorProfile: React.FC = () => {
     return (
       <div className="min-h-screen theme-bg flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold theme-text mb-4">Shifokor topilmadi</h1>
-          <p className="theme-text-secondary mb-6">Siz qidirayotgan shifokor mavjud emas yoki o'chirilgan.</p>
+          <h1 className="text-2xl font-bold theme-text mb-4">{t('doctorNotFound')}</h1>
+          <p className="theme-text-secondary mb-6">{t('doctorNotFoundDesc')}</p>
           <Link
             to="/doctors"
             className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <ArrowLeft size={20} />
-            <span>Shifokorlar ro'yxatiga qaytish</span>
+            <span>{t('backToDoctorsList')}</span>
           </Link>
         </div>
       </div>
@@ -268,7 +268,7 @@ const DoctorProfile: React.FC = () => {
               className="inline-flex items-center space-x-2 theme-text-secondary hover:theme-accent transition-colors duration-200"
             >
               <ArrowLeft size={20} />
-              <span>Shifokorlar ro'yxatiga qaytish</span>
+              <span>{t('backToDoctorsList')}</span>
             </Link>
           </div>
         </div>
@@ -301,7 +301,7 @@ const DoctorProfile: React.FC = () => {
                     <div className="absolute top-6 left-6">
                       <span className="bg-yellow-500 text-white rounded-full px-4 py-2 flex items-center space-x-2 text-sm font-bold shadow-lg">
                         <Award size={16} />
-                        <span>Tasdiqlangan</span>
+                        <span>{t('verified')}</span>
                       </span>
                     </div>
                   )}
@@ -324,12 +324,12 @@ const DoctorProfile: React.FC = () => {
                           <Star key={star} size={18} className={`${star <= (ratingStats?.averageRating || 4.9) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
                         ))}
                         <span className="theme-text-secondary ml-2">
-                          {ratingStats?.averageRating?.toFixed(1) || '4.9'} ({ratingStats?.totalReviews || 127} sharh)
+                          {ratingStats?.averageRating?.toFixed(1) || '0.0'} ({ratingStats?.totalReviews || 0} sharh)
                         </span>
                       </div>
                       <div className="flex items-center space-x-1 theme-text-secondary">
                         <Users size={16} />
-                        <span>500+ bemor</span>
+                        <span>{t('patientsCount')}</span>
                       </div>
                     </div>
                   </div>
@@ -345,15 +345,15 @@ const DoctorProfile: React.FC = () => {
                     <div className="flex items-center space-x-3 p-3 theme-bg-secondary rounded-xl">
                       <Calendar className="theme-accent" size={20} />
                       <div>
-                        <p className="text-sm theme-text-secondary">Tajriba</p>
-                        <p className="font-semibold theme-text">{doctor.experience_years} yil</p>
+                        <p className="text-sm theme-text-secondary">{t('experience')}</p>
+                        <p className="font-semibold theme-text">{doctor.experience_years} {t('years')}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 theme-bg-secondary rounded-xl">
                       <CheckCircle className="text-green-600" size={20} />
                       <div>
-                        <p className="text-sm theme-text-secondary">Sertifikatlar</p>
-                        <p className="font-semibold theme-text">{doctor.certificates?.length || 0} ta</p>
+                        <p className="text-sm theme-text-secondary">{t('certificates')}</p>
+                        <p className="font-semibold theme-text">{doctor.certificates?.length || 0} {t('count')}</p>
                       </div>
                     </div>
                   </div>
@@ -372,7 +372,7 @@ const DoctorProfile: React.FC = () => {
                     </div>
                     <div className="flex items-center space-x-2 theme-text-secondary">
                       <MapPin size={16} />
-                      <span>Toshkent, O'zbekiston</span>
+                      <span>{t('location')}</span>
                     </div>
                   </div>
                 </div>
@@ -386,14 +386,34 @@ const DoctorProfile: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Doctor Details */}
             <div className="lg:col-span-2 space-y-8">
+              {/* Specialization Areas */}
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                    <Stethoscope size={24} className="text-primary-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold theme-text">{t('specializationAreas')}</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">{doctor.specialization}</h4>
+                    <p className="theme-text-secondary text-sm">{t('mainSpecialization')}</p>
+                  </div>
+                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">{t('professionalExperience')}</h4>
+                    <p className="theme-text-secondary text-sm">{doctor.experience_years} {t('yearsExperience')}</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Certificates */}
               {doctor.certificates && doctor.certificates.length > 0 && (
-                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                   <div className="flex items-center space-x-3 mb-6">
                     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                       <Award size={24} className="text-primary-600" />
                     </div>
-                    <h3 className="text-2xl font-bold theme-text">Sertifikatlar va Ta'lim</h3>
+                    <h3 className="text-2xl font-bold theme-text">{t('certificatesAndEducation')}</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {doctor.certificates.map((cert, index) => (
@@ -406,26 +426,6 @@ const DoctorProfile: React.FC = () => {
                 </div>
               )}
 
-              {/* Specialization Areas */}
-              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
-                    <Stethoscope size={24} className="text-primary-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold theme-text">Mutaxassislik Sohalari</h3>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
-                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">{doctor.specialization}</h4>
-                    <p className="theme-text-secondary text-sm">Asosiy mutaxassislik sohasi</p>
-                  </div>
-                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
-                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">Professional Tajriba</h4>
-                    <p className="theme-text-secondary text-sm">{doctor.experience_years} yillik amaliy tajriba</p>
-                  </div>
-                </div>
-              </div>
-
               {/* Doctor's Posts */}
               {doctorPosts.length > 0 && (
                 <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
@@ -434,17 +434,17 @@ const DoctorProfile: React.FC = () => {
                       <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                         <FileText size={24} className="text-primary-600" />
                       </div>
-                      <h3 className="text-2xl font-bold theme-text">Shifokor Maqolalari</h3>
+                      <h3 className="text-2xl font-bold theme-text">{t('doctorArticles')}</h3>
                     </div>
                     <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-sm font-medium rounded-full">
-                      {doctorPosts.length} ta maqola
+                      {doctorPosts.length} {t('articles')}
                     </span>
                   </div>
 
                   {postsLoading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                      <p className="theme-text-muted">Maqolalar yuklanmoqda...</p>
+                      <p className="theme-text-muted">{t('loadingArticles')}</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -557,7 +557,7 @@ const DoctorProfile: React.FC = () => {
                                 className="inline-flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200 text-sm"
                               >
                                 <BookOpen size={14} />
-                                <span>Batafsil o'qish</span>
+                                <span>{t('readMore')}</span>
                                 <ArrowRight size={12} />
                               </Link>
                             </div>
@@ -575,7 +575,7 @@ const DoctorProfile: React.FC = () => {
                         className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200"
                       >
                         <BookOpen size={18} />
-                        <span>Barcha maqolalarni ko'rish</span>
+                        <span>{t('viewAllArticles')}</span>
                         <ArrowRight size={16} />
                       </Link>
                     </div>
@@ -590,14 +590,14 @@ const DoctorProfile: React.FC = () => {
                     <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
                       <MessageSquare size={24} className="text-primary-600" />
                     </div>
-                    <h3 className="text-2xl font-bold theme-text">Bemorlar Sharhlari ({doctorReviews.length})</h3>
+                    <h3 className="text-2xl font-bold theme-text">{t('patientReviews')} ({doctorReviews.length})</h3>
                   </div>
                   <button
                     onClick={() => setShowReviewForm(!showReviewForm)}
                     className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200"
                   >
                     <MessageSquare size={16} />
-                    <span>Sharh yozish</span>
+                    <span>{t('writeReview')}</span>
                   </button>
                 </div>
 
@@ -623,14 +623,14 @@ const DoctorProfile: React.FC = () => {
                 {showReviewForm && (
                   <div className="theme-bg-secondary rounded-xl p-6 mb-8 animate-slide-down">
                     <h4 className="text-lg font-semibold theme-text mb-4">
-                      Shifokor haqida sharh qoldiring
+                      {t('leaveReviewAboutDoctor')}
                     </h4>
                     
                     <form onSubmit={handleReviewSubmit} className="space-y-4">
                       {/* Rating */}
                       <div>
                         <label className="block text-sm font-medium theme-text-secondary mb-2">
-                          Reyting *
+                          {t('rating')} *
                         </label>
                         <div className="flex items-center space-x-2">
                           <div className="flex items-center space-x-1">
@@ -654,7 +654,7 @@ const DoctorProfile: React.FC = () => {
                       {!user && (
                         <div>
                           <label className="block text-sm font-medium theme-text-secondary mb-2">
-                            Ismingiz *
+                            {t('yourName')} *
                           </label>
                           <input
                             type="text"
@@ -670,7 +670,7 @@ const DoctorProfile: React.FC = () => {
                       
                       <div>
                         <label className="block text-sm font-medium theme-text-secondary mb-2">
-                          Sharh *
+                          {t('comment')} *
                         </label>
                         <textarea
                           name="comment"
@@ -679,7 +679,7 @@ const DoctorProfile: React.FC = () => {
                           required
                           rows={4}
                           className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
-                          placeholder="Shifokor haqida fikringizni bildiring..."
+                          placeholder={t('shareYourThoughtsAboutDoctor')}
                         />
                         <div className="text-xs theme-text-muted mt-1">
                           {reviewFormData.comment.length}/500 belgi
@@ -696,7 +696,7 @@ const DoctorProfile: React.FC = () => {
                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                           />
                           <label className="text-sm theme-text-secondary">
-                            Anonim sharh qoldirish
+                            {t('leaveAnonymousReview')}
                           </label>
                         </div>
                       )}
@@ -708,7 +708,7 @@ const DoctorProfile: React.FC = () => {
                           className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                         >
                           <Star size={16} />
-                          <span>{isSubmittingReview ? 'Yuborilmoqda...' : 'Sharh yuborish'}</span>
+                          <span>{isSubmittingReview ? t('sending') : t('sendReview')}</span>
                         </button>
                         <button
                           type="button"
@@ -719,7 +719,7 @@ const DoctorProfile: React.FC = () => {
                           }}
                           className="theme-border border theme-text-secondary px-6 py-3 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                         >
-                          Bekor qilish
+                          {t('cancel')}
                         </button>
                       </div>
                     </form>
@@ -730,7 +730,7 @@ const DoctorProfile: React.FC = () => {
                 {reviewsLoading ? (
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="theme-text-muted">Sharhlar yuklanmoqda...</p>
+                    <p className="theme-text-muted">{t('loadingReviews')}</p>
                   </div>
                 ) : doctorReviews.length > 0 ? (
                   <div className="space-y-6">
@@ -777,17 +777,17 @@ const DoctorProfile: React.FC = () => {
                   <div className="text-center py-12">
                     <MessageSquare size={48} className="theme-text-muted mx-auto mb-4 opacity-50" />
                     <h4 className="text-lg font-semibold theme-text-secondary mb-2">
-                      Hozircha sharhlar yo'q
+                      {t('noReviewsYet')}
                     </h4>
                     <p className="theme-text-muted mb-6">
-                      Birinchi bo'lib shifokor haqida fikringizni bildiring!
+                      {t('beFirstToReview')}
                     </p>
                     <button
                       onClick={() => setShowReviewForm(true)}
                       className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
                     >
                       <Star size={16} />
-                      <span>Birinchi sharh</span>
+                      <span>{t('firstReview')}</span>
                     </button>
                   </div>
                 )}
@@ -798,33 +798,33 @@ const DoctorProfile: React.FC = () => {
             <div className="space-y-8">
               {/* Professional Stats */}
               <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 mt-8 animate-slide-left" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-xl font-bold theme-text mb-6">Professional Ma'lumotlar</h3>
+                <h3 className="text-xl font-bold theme-text mb-6">{t('professionalInfo')}</h3>
                 <div className="space-y-4">
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <div className="text-2xl font-bold theme-text mb-1">{doctor.experience_years}</div>
-                    <div className="text-sm theme-text-secondary">Yillik tajriba</div>
+                    <div className="text-sm theme-text-secondary">{t('yearsExperience')}</div>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.averageRating?.toFixed(1) || '4.9'}</div>
-                    <div className="text-sm theme-text-secondary">O'rtacha reyting</div>
+                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.averageRating?.toFixed(1) || '0.0'}</div>
+                    <div className="text-sm theme-text-secondary">{t('averageRating')}</div>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
-                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.totalReviews || 127}</div>
-                    <div className="text-sm theme-text-secondary">Jami sharhlar</div>
+                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.totalReviews || 0}</div>
+                    <div className="text-sm theme-text-secondary">{t('totalReviews')}</div>
                   </div>
 
                   <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
                     <div className="text-2xl font-bold theme-text mb-1">{doctor.certificates?.length || 0}</div>
-                    <div className="text-sm theme-text-secondary">Sertifikatlar</div>
+                    <div className="text-sm theme-text-secondary">{t('certificates')}</div>
                   </div>
                 </div>
               </div>
 
               {/* Contact Card */}
               <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-xl font-bold theme-text mb-6">Bog'lanish</h3>
+                <h3 className="text-xl font-bold theme-text mb-6">{t('contact')}</h3>
                 <div className="space-y-3">
                   {doctor.phone && (
                     <a
@@ -848,16 +848,16 @@ const DoctorProfile: React.FC = () => {
 
               {/* Consultation Info */}
               <div className="bg-primary-600 rounded-3xl p-6 text-white animate-slide-left delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-lg font-bold mb-2">Maslahat Olish</h3>
+                <h3 className="text-lg font-bold mb-2">{t('getConsultation')}</h3>
                 <p className="text-blue-100 mb-4 text-sm">
-                  Professional maslahat va davolash uchun bog'laning
+                  {t('consultationDescription')}
                 </p>
                 <Link
                   to="/consultation"
                   className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Stethoscope size={18} />
-                  <span>Bepul maslahat olish</span>
+                  <span>{t('freeConsultation')}</span>
                 </Link>
               </div>
             </div>

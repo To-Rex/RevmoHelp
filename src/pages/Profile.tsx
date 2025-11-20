@@ -452,13 +452,49 @@ const Profile: React.FC = () => {
                          <BookOpen size={20} />
                          <span>{t('readArticles')}</span>
                        </Link>
+                       <Link
+                         to="/doctor-registration"
+                         className="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
+                       >
+                         <Stethoscope size={20} />
+                         <span>{t('becomeDoctor')}</span>
+                       </Link>
                      </div>
                    </div>
                  </div>
                )}
+
+               {/* Become Doctor Section */}
+               {user.role === 'patient' && (
+                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                   <div className="bg-white px-6 py-4 border-b border-gray-100">
+                     <div className="flex items-center space-x-3">
+                       <div className="p-3 bg-green-100 rounded-xl">
+                         <Stethoscope size={20} className="text-green-600" />
+                       </div>
+                       <h3 className="text-lg font-semibold text-gray-900">{t('becomeDoctor')}</h3>
+                     </div>
+                   </div>
+
+                   <div className="p-6">
+                     <div className="text-center">
+                       <p className="text-gray-600 mb-6">
+                         Agar siz ham shifokor bo'lishni xohlasangiz, professional profilingizni yarating va bemorlarga yordam bering.
+                       </p>
+                       <Link
+                         to="/doctor-registration"
+                         className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
+                       >
+                         <Stethoscope size={20} />
+                         <span>{t('becomeDoctor')}</span>
+                       </Link>
+                     </div>
+                   </div>
+                 </div>
+               )}
+
             </div>
           )}
-
           {/* Modern Doctor Info Tab (only for doctors) */}
            {activeTab === 'doctor-info' && user.role === 'doctor' && (
              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
