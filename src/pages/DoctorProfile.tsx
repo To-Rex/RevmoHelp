@@ -274,36 +274,41 @@ const DoctorProfile: React.FC = () => {
         </div>
 
         {/* Doctor Profile Header */}
-        <section className="relative py-12 overflow-hidden">
+        <section className="relative py-16 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-teal-600/5 dark:from-blue-400/3 dark:to-teal-400/3"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in">
-              <div className="md:flex">
+            <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border overflow-hidden animate-fade-in" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Doctor Photo */}
-                <div className="md:w-1/3 relative">
+                <div className="relative h-96 lg:h-full">
                   {doctor.avatar_url ? (
                     <img
                       src={doctor.avatar_url}
                       alt={doctor.full_name}
-                      className="w-full h-80 md:h-full object-cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-80 md:h-full theme-bg-tertiary flex items-center justify-center">
-                      <User size={64} className="theme-text-muted opacity-50" />
+                    <div className="w-full h-full bg-gradient-to-br from-primary-50 to-highlight-50 dark:from-primary-900/20 dark:to-highlight-900/20 flex items-center justify-center">
+                      <div className="text-center">
+                        <User size={64} className="theme-text-muted opacity-60" />
+                      </div>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
                   {/* Verification Badge */}
                   {doctor.verified && (
-                    <div className="absolute top-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg">
-                      <Award size={20} />
+                    <div className="absolute top-6 left-6">
+                      <span className="bg-yellow-500 text-white rounded-full px-4 py-2 flex items-center space-x-2 text-sm font-bold shadow-lg">
+                        <Award size={16} />
+                        <span>Tasdiqlangan</span>
+                      </span>
                     </div>
                   )}
                 </div>
 
                 {/* Doctor Info */}
-                <div className="md:w-2/3 p-8">
+                <div className="p-8 lg:p-12">
                   <div className="mb-6">
                     <h1 className="text-3xl font-bold theme-text mb-2">
                       {doctor.full_name}
@@ -383,13 +388,18 @@ const DoctorProfile: React.FC = () => {
             <div className="lg:col-span-2 space-y-8">
               {/* Certificates */}
               {doctor.certificates && doctor.certificates.length > 0 && (
-                <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
-                  <h3 className="text-2xl font-bold theme-text mb-4">Sertifikatlar va Ta'lim</h3>
-                  <div className="space-y-3">
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <Award size={24} className="text-primary-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold theme-text">Sertifikatlar va Ta'lim</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {doctor.certificates.map((cert, index) => (
-                      <div key={index} className="flex items-center space-x-3 p-4 theme-bg-secondary rounded-xl">
-                        <Award className="theme-accent" size={20} />
-                        <span className="theme-text">{cert}</span>
+                      <div key={index} className="flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                        <Award className="text-primary-600" size={20} />
+                        <span className="font-medium">{cert}</span>
                       </div>
                     ))}
                   </div>
@@ -397,191 +407,194 @@ const DoctorProfile: React.FC = () => {
               )}
 
               {/* Specialization Areas */}
-              <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
-                <h3 className="text-2xl font-bold theme-text mb-4">Mutaxassislik Sohalari</h3>
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                    <Stethoscope size={24} className="text-primary-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold theme-text">Mutaxassislik Sohalari</h3>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl">
-                    <h4 className="font-semibold theme-accent mb-2">{doctor.specialization}</h4>
+                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">{doctor.specialization}</h4>
                     <p className="theme-text-secondary text-sm">Asosiy mutaxassislik sohasi</p>
                   </div>
-                  <div className="p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl">
-                    <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2">Professional Tajriba</h4>
+                  <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-xl">
+                    <h4 className="font-semibold text-primary-600 dark:text-primary-400 mb-2">Professional Tajriba</h4>
                     <p className="theme-text-secondary text-sm">{doctor.experience_years} yillik amaliy tajriba</p>
                   </div>
                 </div>
               </div>
 
               {/* Doctor's Posts */}
-              <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold theme-text flex items-center space-x-2">
-                    <FileText size={24} className="theme-accent" />
-                    <span>Shifokor Maqolalari</span>
-                  </h3>
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
-                    {doctorPosts.length} ta maqola
-                  </span>
-                </div>
-
-                {postsLoading ? (
-                  <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="theme-text-muted">Maqolalar yuklanmoqda...</p>
+              {doctorPosts.length > 0 && (
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                        <FileText size={24} className="text-primary-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold theme-text">Shifokor Maqolalari</h3>
+                    </div>
+                    <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-sm font-medium rounded-full">
+                      {doctorPosts.length} ta maqola
+                    </span>
                   </div>
-                ) : doctorPosts.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {doctorPosts.map((post, index) => {
-                      const PostTypeIcon = getPostTypeIcon(post);
-                      return (
-                        <article
-                          key={post.id}
-                          className="theme-bg-secondary rounded-xl theme-shadow hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 theme-border border overflow-hidden group animate-fade-in"
-                          style={{ animationDelay: `${index * 100}ms` }}
-                        >
-                          {/* Post Media */}
-                          <div className="relative h-40 overflow-hidden">
-                            {post.featured_image_url ? (
-                              <img
-                                src={post.featured_image_url}
-                                alt={post.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                              />
-                            ) : post.youtube_url ? (
-                              <div className="relative w-full h-full">
+
+                  {postsLoading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                      <p className="theme-text-muted">Maqolalar yuklanmoqda...</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {doctorPosts.map((post, index) => {
+                        const PostTypeIcon = getPostTypeIcon(post);
+                        return (
+                          <article
+                            key={post.id}
+                            className="theme-bg-secondary rounded-xl theme-shadow hover:theme-shadow-lg transition-all duration-300 transform hover:-translate-y-1 theme-border border overflow-hidden group animate-fade-in"
+                            style={{ animationDelay: `${index * 100}ms` }}
+                          >
+                            {/* Post Media */}
+                            <div className="relative h-40 overflow-hidden">
+                              {post.featured_image_url ? (
                                 <img
-                                  src={`https://img.youtube.com/vi/${post.youtube_url.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/maxresdefault.jpg`}
+                                  src={post.featured_image_url}
                                   alt={post.title}
                                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                  onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    target.src = `https://img.youtube.com/vi/${post.youtube_url?.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
-                                  }}
                                 />
-                                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                                  <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-xl animate-pulse">
-                                    <Play size={16} className="text-white ml-1" />
+                              ) : post.youtube_url ? (
+                                <div className="relative w-full h-full">
+                                  <img
+                                    src={`https://img.youtube.com/vi/${post.youtube_url.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/maxresdefault.jpg`}
+                                    alt={post.title}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement;
+                                      target.src = `https://img.youtube.com/vi/${post.youtube_url?.split('v=')[1]?.split('&')[0] || 'dQw4w9WgXcQ'}/hqdefault.jpg`;
+                                    }}
+                                  />
+                                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                    <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-xl animate-pulse">
+                                      <Play size={16} className="text-white ml-1" />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ) : (
-                              <div className="w-full h-full theme-bg-tertiary flex items-center justify-center">
-                                <div className="text-center">
-                                  <PostTypeIcon size={32} className="theme-text-muted mx-auto mb-2 opacity-50" />
-                                  <p className="theme-text-muted text-sm">Matn Maqolasi</p>
+                              ) : (
+                                <div className="w-full h-full theme-bg-tertiary flex items-center justify-center">
+                                  <div className="text-center">
+                                    <PostTypeIcon size={32} className="theme-text-muted mx-auto mb-2 opacity-50" />
+                                    <p className="theme-text-muted text-sm">Matn Maqolasi</p>
+                                  </div>
                                 </div>
-                              </div>
-                            )}
-                            
-                            {/* Post Type Badge */}
-                            <div className="absolute top-3 right-3">
-                              <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPostTypeColor(post)}`}>
-                                {getPostTypeLabel(post)}
-                              </span>
-                            </div>
+                              )}
 
-                            {/* Category Badge */}
-                            {post.category && (
-                              <div className="absolute top-3 left-3">
-                                <span
-                                  className="px-2 py-1 text-xs font-medium text-white rounded-full"
-                                  style={{ backgroundColor: post.category.color }}
-                                >
-                                  {post.category.name}
+                              {/* Post Type Badge */}
+                              <div className="absolute top-3 right-3">
+                                <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPostTypeColor(post)}`}>
+                                  {getPostTypeLabel(post)}
                                 </span>
                               </div>
-                            )}
-                          </div>
 
-                          {/* Post Content */}
-                          <div className="p-4">
-                            <h4 className="text-lg font-bold theme-text mb-2 line-clamp-2 group-hover:theme-accent transition-colors duration-300">
-                              <Link to={`/posts/${post.slug}`}>
-                                {post.title}
-                              </Link>
-                            </h4>
-                            
-                            <p className="theme-text-secondary text-sm mb-3 line-clamp-2 leading-relaxed">
-                              {post.excerpt}
-                            </p>
-
-                            {/* Post Meta */}
-                            <div className="flex items-center justify-between text-sm theme-text-muted mb-3">
-                              <div className="flex items-center space-x-1">
-                                <Calendar size={12} />
-                                <span>{formatDate(post.published_at || post.created_at)}</span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Eye size={12} />
-                                <span className="theme-accent font-medium">{(post.views_count || 0).toLocaleString()}</span>
-                              </div>
-                            </div>
-
-                            {/* Tags */}
-                            <div className="flex flex-wrap gap-1 mb-3">
-                              {post.tags.slice(0, 2).map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="px-2 py-1 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs rounded-full"
-                                >
-                                  #{tag}
-                                </span>
-                              ))}
-                              {post.tags.length > 2 && (
-                                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
-                                  +{post.tags.length - 2}
-                                </span>
+                              {/* Category Badge */}
+                              {post.category && (
+                                <div className="absolute top-3 left-3">
+                                  <span
+                                    className="px-2 py-1 text-xs font-medium text-white rounded-full"
+                                    style={{ backgroundColor: post.category.color }}
+                                  >
+                                    {post.category.name}
+                                  </span>
+                                </div>
                               )}
                             </div>
 
-                            {/* Read More */}
-                            <Link
-                              to={`/posts/${post.slug}`}
-                              className="inline-flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200 text-sm"
-                            >
-                              <BookOpen size={14} />
-                              <span>Batafsil o'qish</span>
-                              <ArrowRight size={12} />
-                            </Link>
-                          </div>
-                        </article>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <FileText size={48} className="theme-text-muted mx-auto mb-4 opacity-50" />
-                    <h4 className="text-lg font-semibold theme-text-secondary mb-2">Hozircha maqolalar yo'q</h4>
-                    <p className="theme-text-muted">
-                      Bu shifokor hali maqola yozmagan yoki maqolalari nashr etilmagan.
-                    </p>
-                  </div>
-                )}
+                            {/* Post Content */}
+                            <div className="p-4">
+                              <h4 className="text-lg font-bold theme-text mb-2 line-clamp-2 group-hover:theme-accent transition-colors duration-300">
+                                <Link to={`/posts/${post.slug}`}>
+                                  {post.title}
+                                </Link>
+                              </h4>
 
-                {/* View All Posts Link */}
-                {doctorPosts.length > 4 && (
-                  <div className="text-center mt-6">
-                    <Link
-                      to={`/posts?author=${doctor.id}`}
-                      className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200"
-                    >
-                      <BookOpen size={18} />
-                      <span>Barcha maqolalarni ko'rish</span>
-                      <ArrowRight size={16} />
-                    </Link>
-                  </div>
-                )}
-              </div>
+                              <p className="theme-text-secondary text-sm mb-3 line-clamp-2 leading-relaxed">
+                                {post.excerpt}
+                              </p>
+
+                              {/* Post Meta */}
+                              <div className="flex items-center justify-between text-sm theme-text-muted mb-3">
+                                <div className="flex items-center space-x-1">
+                                  <Calendar size={12} />
+                                  <span>{formatDate(post.published_at || post.created_at)}</span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Eye size={12} />
+                                  <span className="theme-accent font-medium">{(post.views_count || 0).toLocaleString()}</span>
+                                </div>
+                              </div>
+
+                              {/* Tags */}
+                              <div className="flex flex-wrap gap-1 mb-3">
+                                {post.tags.slice(0, 2).map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="px-2 py-1 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs rounded-full"
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                                {post.tags.length > 2 && (
+                                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
+                                    +{post.tags.length - 2}
+                                </span>
+                                )}
+                              </div>
+
+                              {/* Read More */}
+                              <Link
+                                to={`/posts/${post.slug}`}
+                                className="inline-flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200 text-sm"
+                              >
+                                <BookOpen size={14} />
+                                <span>Batafsil o'qish</span>
+                                <ArrowRight size={12} />
+                              </Link>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* View All Posts Link */}
+                  {doctorPosts.length > 4 && (
+                    <div className="text-center mt-6">
+                      <Link
+                        to={`/posts?author=${doctor.id}`}
+                        className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200"
+                      >
+                        <BookOpen size={18} />
+                        <span>Barcha maqolalarni ko'rish</span>
+                        <ArrowRight size={16} />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Doctor Reviews Section */}
-              <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8">
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up delay-600" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold theme-text flex items-center space-x-2">
-                    <MessageSquare size={24} className="theme-accent" />
-                    <span>Bemorlar Sharhlari ({doctorReviews.length})</span>
-                  </h3>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <MessageSquare size={24} className="text-primary-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold theme-text">Bemorlar Sharhlari ({doctorReviews.length})</h3>
+                  </div>
                   <button
                     onClick={() => setShowReviewForm(!showReviewForm)}
-                    className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                    className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200"
                   >
                     <MessageSquare size={16} />
                     <span>Sharh yozish</span>
@@ -784,76 +797,64 @@ const DoctorProfile: React.FC = () => {
             {/* Right Column - Professional Info */}
             <div className="space-y-8">
               {/* Professional Stats */}
-              <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
-                <h3 className="text-xl font-bold theme-text mb-4">Professional Ma'lumotlar</h3>
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 mt-8 animate-slide-left" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <h3 className="text-xl font-bold theme-text mb-6">Professional Ma'lumotlar</h3>
                 <div className="space-y-4">
-                  <div className="text-center p-4 theme-bg-secondary rounded-xl">
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Stethoscope size={24} className="theme-accent" />
-                    </div>
-                    <div className="text-xl font-bold theme-text mb-1">{doctor.experience_years}</div>
-                    <div className="theme-text-secondary text-sm">Yillik tajriba</div>
+                  <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                    <div className="text-2xl font-bold theme-text mb-1">{doctor.experience_years}</div>
+                    <div className="text-sm theme-text-secondary">Yillik tajriba</div>
                   </div>
-                  
-                  <div className="text-center p-4 theme-bg-secondary rounded-xl">
-                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Award size={24} className="text-green-600 dark:text-green-400" />
-                    </div>
-                    <div className="text-xl font-bold theme-text mb-1">{ratingStats?.averageRating?.toFixed(1) || '4.9'}</div>
-                    <div className="theme-text-secondary text-sm">O'rtacha reyting</div>
+
+                  <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.averageRating?.toFixed(1) || '4.9'}</div>
+                    <div className="text-sm theme-text-secondary">O'rtacha reyting</div>
                   </div>
-                  
-                  <div className="text-center p-4 theme-bg-secondary rounded-xl">
-                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <MessageSquare size={24} className="text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <div className="text-xl font-bold theme-text mb-1">{ratingStats?.totalReviews || 127}</div>
-                    <div className="theme-text-secondary text-sm">Jami sharhlar</div>
+
+                  <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                    <div className="text-2xl font-bold theme-text mb-1">{ratingStats?.totalReviews || 127}</div>
+                    <div className="text-sm theme-text-secondary">Jami sharhlar</div>
                   </div>
-                  
-                  <div className="text-center p-4 theme-bg-secondary rounded-xl">
-                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Award size={24} className="text-orange-600 dark:text-orange-400" />
-                    </div>
-                    <div className="text-xl font-bold theme-text mb-1">{doctor.certificates?.length || 0}</div>
-                    <div className="theme-text-secondary text-sm">Sertifikatlar</div>
+
+                  <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200">
+                    <div className="text-2xl font-bold theme-text mb-1">{doctor.certificates?.length || 0}</div>
+                    <div className="text-sm theme-text-secondary">Sertifikatlar</div>
                   </div>
                 </div>
               </div>
 
               {/* Contact Card */}
-              <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6">
-                <h3 className="text-xl font-bold theme-text mb-4">Bog'lanish</h3>
+              <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-6 animate-slide-left delay-200" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                <h3 className="text-xl font-bold theme-text mb-6">Bog'lanish</h3>
                 <div className="space-y-3">
                   {doctor.phone && (
                     <a
                       href={`tel:${doctor.phone}`}
-                      className="flex items-center space-x-3 p-3 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors duration-200"
+                      className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                     >
-                      <Phone size={18} />
+                      <Phone size={18} className="text-green-600" />
                       <span className="font-medium">{doctor.phone}</span>
                     </a>
                   )}
-                  
+
                   <a
                     href={`mailto:${doctor.email}`}
-                    className="flex items-center space-x-3 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200"
+                    className="w-full flex items-center space-x-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl focus:border-blue-500 transition-all duration-200 theme-text hover:theme-bg-tertiary transition-colors duration-200"
                   >
-                    <Mail size={18} />
+                    <Mail size={18} className="text-blue-600" />
                     <span className="font-medium">{doctor.email}</span>
                   </a>
                 </div>
               </div>
 
               {/* Consultation Info */}
-              <div className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-6 text-white">
+              <div className="bg-primary-600 rounded-3xl p-6 text-white animate-slide-left delay-400" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <h3 className="text-lg font-bold mb-2">Maslahat Olish</h3>
                 <p className="text-blue-100 mb-4 text-sm">
                   Professional maslahat va davolash uchun bog'laning
                 </p>
                 <Link
                   to="/consultation"
-                  className="w-full bg-white text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors duration-200 flex items-center justify-center space-x-2"
+                  className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
                   <Stethoscope size={18} />
                   <span>Bepul maslahat olish</span>
