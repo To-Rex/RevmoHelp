@@ -452,13 +452,6 @@ const Profile: React.FC = () => {
                          <BookOpen size={20} />
                          <span>{t('readArticles')}</span>
                        </Link>
-                       <Link
-                         to="/doctor-registration"
-                         className="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
-                       >
-                         <Stethoscope size={20} />
-                         <span>{t('becomeDoctor')}</span>
-                       </Link>
                      </div>
                    </div>
                  </div>
