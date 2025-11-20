@@ -121,15 +121,15 @@ const QA: React.FC = () => {
 
   const baseQuestions = questionsState;
   const categories = [
-    { value: 'all', label: 'Barcha kategoriyalar', count: baseQuestions.length },
+    { value: 'all', label: t('qaAllCategories'), count: baseQuestions.length },
     ...categoriesState.map((c: any) => ({ value: c.id, label: c.name, count: baseQuestions.filter((q: any) => q.category_id === c.id).length }))
   ];
 
   const statuses = [
-    { value: 'all', label: 'Barcha savollar', count: baseQuestions.length },
-    { value: 'open', label: 'Ochiq savollar', count: baseQuestions.filter((q: any) => q.status === 'open').length },
-    { value: 'answered', label: 'Javob berilgan', count: baseQuestions.filter((q: any) => q.status === 'answered').length },
-    { value: 'closed', label: 'Yopilgan', count: baseQuestions.filter((q: any) => q.status === 'closed').length }
+    { value: 'all', label: t('qaAllQuestions'), count: baseQuestions.length },
+    { value: 'open', label: t('qaOpenQuestions'), count: baseQuestions.filter((q: any) => q.status === 'open').length },
+    { value: 'answered', label: t('qaAnswered'), count: baseQuestions.filter((q: any) => q.status === 'answered').length },
+    { value: 'closed', label: t('qaClosed'), count: baseQuestions.filter((q: any) => q.status === 'closed').length }
   ];
 
   const filteredQuestions = baseQuestions.filter((question: any) => {
@@ -216,8 +216,8 @@ const QA: React.FC = () => {
   return (
     <div className="theme-bg min-h-screen">
       <SEOHead
-        title="Savol-Javob"
-        description="Revmatik kasalliklar bo'yicha savollar va javoblar. Professional shifokorlardan maslahat oling."
+        title={t('qaTitle')}
+        description={`${t('qaTitle')}. ${t('qaGetFreeAdvice')}`}
         keywords="savol javob, tibbiy maslahat, revmatik kasalliklar, shifokor maslahati"
         url="https://revmohelp.uz/qa"
       />
@@ -235,13 +235,13 @@ const QA: React.FC = () => {
               <span className="text-secondary">{t('qaTitle')}</span>
             </h1>
             <p className="text-xl theme-text-secondary max-w-3xl mx-auto mb-8">
-              <span className="text-lg font-bold mb-2 block">{t('haveQuestion')}</span>
-              {t('getFreeAdvice')}
+              <span className="text-lg font-bold mb-2 block">{t('qaHaveQuestion')}</span>
+              {t('qaGetFreeAdvice')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button onClick={() => setAskOpen(true)} className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
                 <Plus size={20} />
-                <span>{t('askQuestionBtn')}</span>
+                <span>{t('qaAskQuestion')}</span>
               </button>
               <Link
                 to="/doctors"
@@ -298,7 +298,7 @@ const QA: React.FC = () => {
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
                       <input style={{ backgroundColor: '#ffffff' }}
                         type="text"
-                        placeholder="Savollar bo'yicha qidiring..."
+                        placeholder={t('qaSearchPlaceholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full pl-10 pr-4 py-3 ring-1 ring-[#5FA8D3] border-transparent rounded-lg focus:ring-2 focus:ring-[#62B6CB] focus:border-[#62B6CB] transition-colors duration-200 bg-white dark:bg-[#3E433B] theme-text"
@@ -347,7 +347,7 @@ const QA: React.FC = () => {
               {/* Results Count */}
               <div className="mb-8">
                 <p className="theme-text-secondary">
-                 <span className="font-semibold theme-text">{filteredQuestions.length}</span> ta savol topildi
+                 <span className="font-semibold theme-text">{filteredQuestions.length}</span> {t('qaQuestionsFound')}
                 </p>
               </div>
 
@@ -408,11 +408,11 @@ const QA: React.FC = () => {
                             <div className="flex items-center space-x-4">
                               <div className="flex items-center space-x-1">
                                 <MessageSquare size={14} />
-                                <span>{question.answers_count} javob</span>
+                                <span>{question.answers_count} {t('qaAnswers')}</span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Eye size={14} />
-                                <span>{question.views_count} ko'rishlar</span>
+                                <span>{question.views_count} {t('qaViews')}</span>
                               </div>
                             </div>
                           </div>
@@ -430,13 +430,13 @@ const QA: React.FC = () => {
                     <Search size={48} className="mx-auto" />
                   </div>
                   <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-                    Hech qanday savol topilmadi
+                    {t('qaNoQuestionsFound')}
                   </h3>
                   <p className="theme-text-muted mb-6">
-                    Qidiruv so'zini o'zgartiring yoki yangi savol bering
+                    {t('qaChangeSearchOrAsk')}
                   </p>
                   <button onClick={() => setAskOpen(true)} className="theme-accent-bg text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105">
-                    Birinchi savol berish
+                    {t('qaAskFirstQuestion')}
                   </button>
                 </div>
               )}
@@ -450,7 +450,7 @@ const QA: React.FC = () => {
                     className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center space-x-1"
                   >
                     <ChevronLeft size={16} />
-                    <span>Oldingi</span>
+                    <span>{t('qaPrevious')}</span>
                   </button>
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <button
@@ -466,7 +466,7 @@ const QA: React.FC = () => {
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center space-x-1"
                   >
-                    <span>Keyingi</span>
+                    <span>{t('qaNext')}</span>
                     <ChevronRight size={16} />
                   </button>
                 </div>
@@ -477,7 +477,7 @@ const QA: React.FC = () => {
             <div className="space-y-8">
               {/* Popular Tags */}
               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-lg font-bold theme-text mb-4">Mashhur Teglar</h3>
+                <h3 className="text-lg font-bold theme-text mb-4">{t('qaPopularTags')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {popularTags.map((tag) => (
                     <button
@@ -493,7 +493,7 @@ const QA: React.FC = () => {
 
               {/* Top Experts */}
               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                <h3 className="text-lg font-bold theme-text mb-4">Top Ekspertlar</h3>
+                <h3 className="text-lg font-bold theme-text mb-4">{t('qaTopExperts')}</h3>
                 <div className="space-y-4">
                   {(topDoctors.length ? topDoctors.slice(0,3) : topExperts).map((d: any) => (
                     <div key={d.id} className="flex items-center space-x-3 p-4 bg-white dark:bg-white rounded-xl hover:theme-shadow-md transition-all duration-200 mb-3 border-b border-gray-200 last:border-b-0">
@@ -519,12 +519,12 @@ const QA: React.FC = () => {
 
               {/* Ask Question CTA */}
               <div className="bg-primary-600 rounded-2xl p-6 text-white">
-                <h3 className="text-lg font-bold mb-2">Savolingiz bormi?</h3>
+                <h3 className="text-lg font-bold mb-2">{t('qaHaveQuestion')}</h3>
                 <p className="text-blue-100 mb-4">
-                  Professional shifokorlardan bepul maslahat oling
+                  {t('qaGetFreeAdvice')}
                 </p>
                 <button onClick={() => setAskOpen(true)} className="w-full bg-white text-primary-600 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors duration-200 transform hover:scale-105">
-                  Savol berish
+                  {t('qaAskQuestion')}
                 </button>
               </div>
             </div>
@@ -536,7 +536,7 @@ const QA: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div className="w-full max-w-2xl bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             <div className="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-gray-50 dark:bg-white/5">
-              <div className="flex items-center space-x-3"><HelpCircle size={22} className="text-blue-600" /><h3 className="text-xl font-bold theme-text">{t('askQuestionBtn')}</h3></div>
+              <div className="flex items-center space-x-3"><HelpCircle size={22} className="text-blue-600" /><h3 className="text-xl font-bold theme-text">{t('qaAskQuestion')}</h3></div>
               <button onClick={() => setAskOpen(false)} className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-white/10 dark:hover:bg-white/15">✕</button>
             </div>
             <div className="p-6 space-y-4">
@@ -546,18 +546,18 @@ const QA: React.FC = () => {
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha</label>
-                <input value={formTitle} onChange={(e)=>setFormTitle(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Savolingiz sarlavhasi" />
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('qaTitleLabel')}</label>
+                <input value={formTitle} onChange={(e)=>setFormTitle(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder={t('qaTitlePlaceholder')} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Savol matni</label>
-                <textarea value={formContent} onChange={(e)=>setFormContent(e.target.value)} rows={6} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none" placeholder="Savolingizni batafsil yozing" />
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('qaContentLabel')}</label>
+                <textarea value={formContent} onChange={(e)=>setFormContent(e.target.value)} rows={6} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none" placeholder={t('qaContentPlaceholder')} />
               </div>
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Kategoriya</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('qaCategoryLabel')}</label>
                   <select value={formCategory} onChange={(e)=>setFormCategory(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
-                    <option value="">Tanlang</option>
+                    <option value="">{t('qaSelectOption')}</option>
                     {categoriesState.map((c: any) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
@@ -566,7 +566,7 @@ const QA: React.FC = () => {
               </div>
             </div>
             <div className="p-6 border-t border-gray-200 dark:border-white/20 flex items-center justify-end gap-3">
-              <button onClick={() => setAskOpen(false)} className="px-5 py-3 rounded-xl bg-white border border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-white/5 dark:text-black dark:border-white/25">Bekor qilish</button>
+              <button onClick={() => setAskOpen(false)} className="px-5 py-3 rounded-xl bg-white border border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-white/5 dark:text-black dark:border-white/25">{t('qaCancel')}</button>
               <button disabled={submitting || !formTitle.trim() || !formContent.trim() || !formCategory} onClick={async ()=>{
                 setSubmitting(true);
                 try {
@@ -585,10 +585,10 @@ const QA: React.FC = () => {
                   } else {
                     console.error('Create question failed:', error);
                     const message = error?.message || (typeof error === 'string' ? error : JSON.stringify(error));
-                    alert('Savol yuborilmadi: ' + message);
+                    alert(t('answerSubmissionError') + ': ' + message);
                   }
                 } finally { setSubmitting(false); }
-              }} className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{submitting ? 'Yuborilmoqda...' : 'Savolni yuborish'}</button>
+              }} className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{submitting ? t('qaSubmitting') : t('qaSubmitQuestion')}</button>
             </div>
           </div>
         </div>

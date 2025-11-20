@@ -139,10 +139,7 @@ const Profile: React.FC = () => {
                 {user.full_name}
               </h1>
               <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-4">
-                {user.role === 'doctor' ? 'Shifokor' :
-                 user.role === 'admin' ? 'Administrator' :
-                 user.role === 'moderator' ? 'Moderator' :
-                 'Bemor'}
+                {t(user.role)}
               </div>
             </div>
 
@@ -150,21 +147,21 @@ const Profile: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               <div className="bg-gray-50 rounded-xl p-4 text-center">
                 <Mail className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                <div className="text-sm font-medium text-gray-900 mb-1">Email</div>
+                <div className="text-sm font-medium text-gray-900 mb-1">{t('email')}</div>
                 <div className="text-xs text-gray-600 truncate">{user.email}</div>
               </div>
 
               {user.phone && (
                 <div className="bg-gray-50 rounded-xl p-4 text-center">
                   <Phone className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-gray-900 mb-1">Telefon</div>
+                  <div className="text-sm font-medium text-gray-900 mb-1">{t('phone')}</div>
                   <div className="text-xs text-gray-600">{user.phone}</div>
                 </div>
               )}
 
               <div className="bg-gray-50 rounded-xl p-4 text-center">
                 <Calendar className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                <div className="text-sm font-medium text-gray-900 mb-1">A'zo bo'lgan</div>
+                <div className="text-sm font-medium text-gray-900 mb-1">{t('memberSince')}</div>
                 <div className="text-xs text-gray-600">{formatDate(user.created_at)}</div>
               </div>
             </div>
@@ -175,26 +172,26 @@ const Profile: React.FC = () => {
                 <div className="text-lg font-bold text-gray-900 mb-1">
                   {new Date(user.created_at).toLocaleDateString('uz-UZ', { month: 'short', year: 'numeric' })}
                 </div>
-                <div className="text-xs text-gray-600">Ro'yxatdan o'tgan</div>
+                <div className="text-xs text-gray-600">{t('registered')}</div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
                 <div className="text-lg font-bold text-gray-900 mb-1">
-                  {user.role === 'doctor' ? doctorPosts.length : 'Faol'}
+                  {user.role === 'doctor' ? doctorPosts.length : t('status')}
                 </div>
                 <div className="text-xs text-gray-600">
-                  {user.role === 'doctor' ? 'Maqolalar' : 'Holat'}
+                  {user.role === 'doctor' ? t('articles') : t('status')}
                 </div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
                 <div className="text-lg font-bold text-blue-600 mb-1">100%</div>
-                <div className="text-xs text-gray-600">Profil to'liqligi</div>
+                <div className="text-xs text-gray-600">{t('profileCompleteness')}</div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
                 <div className="text-lg font-bold text-green-600 mb-1">5.0</div>
-                <div className="text-xs text-gray-600">Reyting</div>
+                <div className="text-xs text-gray-600">{t('rating')}</div>
               </div>
             </div>
 
@@ -202,7 +199,7 @@ const Profile: React.FC = () => {
             {user.role === 'patient' && (
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-blue-800 text-center">
-                  Tibbiy ma'lumotlar va professional maslahatlardan foydalaning
+                  {t('useMedicalInfo')}
                 </p>
               </div>
             )}
@@ -216,7 +213,7 @@ const Profile: React.FC = () => {
                     className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <Stethoscope size={18} />
-                    <span>Shifokor Paneli</span>
+                    <span>{t('doctorPanel')}</span>
                   </Link>
                   {!doctorProfile && (
                     <Link
@@ -224,7 +221,7 @@ const Profile: React.FC = () => {
                       className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                     >
                       <Plus size={18} />
-                      <span>Profil Yaratish</span>
+                      <span>{t('createProfile')}</span>
                     </Link>
                   )}
                 </>
@@ -237,14 +234,14 @@ const Profile: React.FC = () => {
                     className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <Stethoscope size={18} />
-                    <span>Konsultatsiya</span>
+                    <span>{t('consultation')}</span>
                   </Link>
                   <Link
                     to="/posts"
                     className="flex items-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <BookOpen size={18} />
-                    <span>Maqolalar</span>
+                    <span>{t('articles')}</span>
                   </Link>
                 </>
               )}
@@ -255,7 +252,7 @@ const Profile: React.FC = () => {
                   className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                 >
                   <Settings size={18} />
-                  <span>Admin Panel</span>
+                  <span>{t('adminPanel')}</span>
                 </Link>
               )}
             </div>
@@ -306,7 +303,7 @@ const Profile: React.FC = () => {
                      <div className="p-3 bg-blue-100 rounded-xl">
                        <User size={20} className="text-blue-600" />
                      </div>
-                     <h2 className="text-lg font-semibold text-gray-900">Shaxsiy Ma'lumotlar</h2>
+                     <h2 className="text-lg font-semibold text-gray-900">{t('personalInfo')}</h2>
                    </div>
                  </div>
 
@@ -316,7 +313,7 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <User size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">To'liq ism</label>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('fullName')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{user.full_name}</div>
                          </div>
                        </div>
@@ -326,7 +323,7 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <Mail size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Email manzil</label>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('emailAddress')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium break-all">{user.email}</div>
                          </div>
                        </div>
@@ -336,8 +333,8 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <Phone size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Telefon raqam</label>
-                           <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{user.phone || 'Kiritilmagan'}</div>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('phoneNumber')}</label>
+                           <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{user.phone || t('notSpecified')}</div>
                          </div>
                        </div>
                      </div>
@@ -346,12 +343,9 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <Briefcase size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('role')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">
-                             {user.role === 'doctor' ? 'Shifokor' :
-                              user.role === 'admin' ? 'Administrator' :
-                              user.role === 'moderator' ? 'Moderator' :
-                              'Bemor'}
+                             {t(user.role)}
                            </div>
                          </div>
                        </div>
@@ -361,7 +355,7 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <Calendar size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Ro'yxatdan o'tgan</label>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('registered')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{formatDate(user.created_at)}</div>
                          </div>
                        </div>
@@ -371,7 +365,7 @@ const Profile: React.FC = () => {
                        <div className="flex items-center space-x-3">
                          <Activity size={16} className="text-blue-600 flex-shrink-0" />
                          <div className="flex-1">
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Oxirgi yangilanish</label>
+                           <label className="block text-sm font-medium text-gray-700 mb-1">{t('lastUpdate')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{formatDate(user.updated_at)}</div>
                          </div>
                        </div>
@@ -388,7 +382,7 @@ const Profile: React.FC = () => {
                        <div className="p-3 bg-green-100 rounded-xl">
                          <Heart size={20} className="text-green-600" />
                        </div>
-                       <h3 className="text-lg font-semibold text-gray-900">Bemor Imkoniyatlari</h3>
+                       <h3 className="text-lg font-semibold text-gray-900">{t('patientBenefits')}</h3>
                      </div>
                    </div>
 
@@ -400,8 +394,8 @@ const Profile: React.FC = () => {
                              <BookOpen size={20} className="text-white" />
                            </div>
                            <div>
-                             <h4 className="font-semibold text-gray-900 mb-1">Tibbiy Maqolalar</h4>
-                             <p className="text-sm text-gray-600">Professional maqolalarni o'qish</p>
+                             <h4 className="font-semibold text-gray-900 mb-1">{t('medicalArticles')}</h4>
+                             <p className="text-sm text-gray-600">{t('readProfessionalArticles')}</p>
                            </div>
                          </div>
                        </div>
@@ -412,8 +406,8 @@ const Profile: React.FC = () => {
                              <Stethoscope size={20} className="text-white" />
                            </div>
                            <div>
-                             <h4 className="font-semibold text-gray-900 mb-1">Konsultatsiya</h4>
-                             <p className="text-sm text-gray-600">Shifokorlardan maslahat olish</p>
+                             <h4 className="font-semibold text-gray-900 mb-1">{t('consultation')}</h4>
+                             <p className="text-sm text-gray-600">{t('getAdviceFromDoctors')}</p>
                            </div>
                          </div>
                        </div>
@@ -424,8 +418,8 @@ const Profile: React.FC = () => {
                              <MessageSquare size={20} className="text-white" />
                            </div>
                            <div>
-                             <h4 className="font-semibold text-gray-900 mb-1">Savol-Javob</h4>
-                             <p className="text-sm text-gray-600">Savollaringizni bering</p>
+                             <h4 className="font-semibold text-gray-900 mb-1">{t('qa')}</h4>
+                             <p className="text-sm text-gray-600">{t('askYourQuestions')}</p>
                            </div>
                          </div>
                        </div>
@@ -436,8 +430,8 @@ const Profile: React.FC = () => {
                              <Users size={20} className="text-white" />
                            </div>
                            <div>
-                             <h4 className="font-semibold text-gray-900 mb-1">Bemor Tarixi</h4>
-                             <p className="text-sm text-gray-600">Muvaffaqiyatli hikoyalar</p>
+                             <h4 className="font-semibold text-gray-900 mb-1">{t('patientStories')}</h4>
+                             <p className="text-sm text-gray-600">{t('successStories')}</p>
                            </div>
                          </div>
                        </div>
@@ -449,14 +443,14 @@ const Profile: React.FC = () => {
                          className="flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
                        >
                          <Stethoscope size={20} />
-                         <span>Konsultatsiya Boshlash</span>
+                         <span>{t('startConsultation')}</span>
                        </Link>
                        <Link
                          to="/posts"
                          className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
                        >
                          <BookOpen size={20} />
-                         <span>Maqolalarni O'qish</span>
+                         <span>{t('readArticles')}</span>
                        </Link>
                      </div>
                    </div>
@@ -474,7 +468,7 @@ const Profile: React.FC = () => {
                     <div className="p-3 bg-blue-100 rounded-xl">
                       <Stethoscope size={20} className="text-blue-600" />
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-900">Shifokor Ma'lumotlari</h2>
+                    <h2 className="text-xl font-semibold text-gray-900">{t('doctorInfo')}</h2>
                   </div>
                   {doctorProfile && (
                     <Link
@@ -482,7 +476,7 @@ const Profile: React.FC = () => {
                       className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                     >
                       <Edit size={16} />
-                      <span>Tahrirlash</span>
+                      <span>{t('edit')}</span>
                     </Link>
                   )}
                 </div>
@@ -498,7 +492,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-blue-500 rounded-lg">
                             <Stethoscope size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-blue-800">Mutaxassislik</span>
+                          <span className="text-sm font-medium text-blue-800">{t('specialization')}</span>
                         </div>
                         <p className="text-gray-900 font-semibold text-lg">{doctorProfile.specialization}</p>
                       </div>
@@ -508,7 +502,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-green-500 rounded-lg">
                             <Award size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-green-800">Tajriba</span>
+                          <span className="text-sm font-medium text-green-800">{t('experience')}</span>
                         </div>
                         <p className="text-gray-900 font-semibold text-lg">{doctorProfile.experience_years} yil</p>
                       </div>
@@ -518,14 +512,14 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-purple-500 rounded-lg">
                             <Shield size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-purple-800">Holat</span>
+                          <span className="text-sm font-medium text-purple-800">{t('status')}</span>
                         </div>
                         <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
                           doctorProfile.verified
                             ? 'bg-green-100 text-green-800'
                             : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {doctorProfile.verified ? 'Tasdiqlangan' : 'Tasdiq kutilmoqda'}
+                          {doctorProfile.verified ? t('verified') : t('verificationPending')}
                         </span>
                       </div>
 
@@ -534,12 +528,12 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-orange-500 rounded-lg">
                             <Activity size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-orange-800">Konsultatsiya narxi</span>
+                          <span className="text-sm font-medium text-orange-800">{t('consultationFee')}</span>
                         </div>
                         <p className="text-gray-900 font-semibold text-lg">
                           {doctorProfile.consultation_fee ?
                             `${doctorProfile.consultation_fee.toLocaleString()} so'm` :
-                            'Bepul'
+                            t('free')
                           }
                         </p>
                       </div>
@@ -552,7 +546,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-indigo-500 rounded-lg">
                             <FileText size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-indigo-800">Bio</span>
+                          <span className="text-sm font-medium text-indigo-800">{t('bio')}</span>
                         </div>
                         <p className="text-gray-700 leading-relaxed">{doctorProfile.bio}</p>
                       </div>
@@ -565,7 +559,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-yellow-500 rounded-lg">
                             <Award size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-yellow-800">Sertifikatlar</span>
+                          <span className="text-sm font-medium text-yellow-800">{t('certificates')}</span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {doctorProfile.certificates.map((cert, index) => (
@@ -585,7 +579,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-pink-500 rounded-lg">
                             <MessageSquare size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-pink-800">Tillar</span>
+                          <span className="text-sm font-medium text-pink-800">{t('languages')}</span>
                         </div>
                         <div className="flex flex-wrap gap-3">
                           {doctorProfile.languages.map((lang) => (
@@ -606,17 +600,17 @@ const Profile: React.FC = () => {
                       <Stethoscope size={40} className="text-blue-600" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-600 mb-3">
-                      Shifokor Profili Yaratilmagan
+                      {t('doctorProfileNotCreated')}
                     </h3>
                     <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-                      Shifokor sifatida faoliyat yuritish uchun professional profilingizni yarating va bemorlarga yordam bering.
+                      {t('createDoctorProfileDesc')}
                     </p>
                     <Link
                       to="/doctor-registration"
                       className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
                     >
                       <Plus size={20} />
-                      <span>Profil Yaratish</span>
+                      <span>{t('createProfile')}</span>
                     </Link>
                   </div>
                 )}
@@ -633,14 +627,14 @@ const Profile: React.FC = () => {
                     <div className="p-3 bg-blue-100 rounded-xl">
                       <FileText size={20} className="text-blue-600" />
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-900">Mening Maqolalarim</h2>
+                    <h2 className="text-xl font-semibold text-gray-900">{t('myArticles')}</h2>
                   </div>
                   <Link
                     to="/doctor/posts/create"
                     className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
                   >
                     <Plus size={18} />
-                    <span>Yangi Maqola</span>
+                    <span>{t('newArticle')}</span>
                   </Link>
                 </div>
               </div>
@@ -658,12 +652,12 @@ const Profile: React.FC = () => {
                                 <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                                   post.published ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                                 }`}>
-                                  {post.published ? 'Nashr etilgan' : 'Qoralama'}
+                                  {post.published ? t('published') : t('draft')}
                                 </span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Eye size={14} />
-                                <span>{(post.views_count || 0).toLocaleString()} ko'rishlar</span>
+                                <span>{(post.views_count || 0).toLocaleString()} {t('views')}</span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Calendar size={14} />
@@ -695,7 +689,7 @@ const Profile: React.FC = () => {
                         to="/doctor/posts"
                         className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-semibold text-lg hover:underline"
                       >
-                        <span>Barcha maqolalarni ko'rish ({doctorPosts.length})</span>
+                        <span>{t('viewAllArticles')} ({doctorPosts.length})</span>
                         <ArrowRight size={18} />
                       </Link>
                     </div>
@@ -705,16 +699,16 @@ const Profile: React.FC = () => {
                     <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                       <FileText size={40} className="text-gray-500" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-600 mb-3">Hozircha maqolalar yo'q</h3>
+                    <h3 className="text-xl font-semibold text-gray-600 mb-3">{t('noArticlesYet')}</h3>
                     <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-                      Birinchi tibbiy maqolangizni yozing va bilimlaringizni bemorlar bilan baham ko'ring.
+                      {t('writeFirstArticle')}
                     </p>
                     <Link
                       to="/doctor/posts/create"
                       className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
                     >
                       <Plus size={20} />
-                      <span>Maqola Yozish</span>
+                      <span>{t('writeArticle')}</span>
                     </Link>
                   </div>
                 )}
@@ -730,7 +724,7 @@ const Profile: React.FC = () => {
                   <div className="p-3 bg-blue-100 rounded-xl">
                     <Bell size={20} className="text-blue-600" />
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-900">Bildirishnomalar</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('notifications')}</h2>
                 </div>
               </div>
 
@@ -767,7 +761,7 @@ const Profile: React.FC = () => {
                                   to={`/posts/${notification.post.slug}`}
                                   className="text-blue-600 hover:text-blue-800 font-medium text-sm hover:underline"
                                 >
-                                  Maqolani ko'rish →
+                                  {t('viewArticle')} →
                                 </Link>
                               )}
                             </div>
@@ -781,8 +775,8 @@ const Profile: React.FC = () => {
                     <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                       <Bell size={32} className="text-gray-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-600 mb-3">Bildirishnomalar yo'q</h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">Hozircha sizga bildirishnomalar kelmagan. Yangiliklar paydo bo'lganda bu yerda ko'rinadi.</p>
+                    <h3 className="text-xl font-semibold text-gray-600 mb-3">{t('noNotifications')}</h3>
+                    <p className="text-gray-500 max-w-sm mx-auto">{t('noNotificationsDesc')}</p>
                   </div>
                 )}
               </div>
@@ -799,7 +793,7 @@ const Profile: React.FC = () => {
                     <div className="p-3 bg-blue-100 rounded-xl">
                       <Settings size={20} className="text-blue-600" />
                     </div>
-                    <h2 className="text-lg font-semibold text-gray-900">Hisob Sozlamalari</h2>
+                    <h2 className="text-lg font-semibold text-gray-900">{t('accountSettings')}</h2>
                   </div>
                 </div>
 
@@ -811,8 +805,8 @@ const Profile: React.FC = () => {
                           <Mail size={20} className="text-white" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">Email Bildirishnomalar</h3>
-                          <p className="text-sm text-gray-600">Yangi maqolalar va javoblar haqida email olish</p>
+                          <h3 className="font-semibold text-gray-900">{t('emailNotifications')}</h3>
+                          <p className="text-sm text-gray-600">{t('emailNotificationsDesc')}</p>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -829,8 +823,8 @@ const Profile: React.FC = () => {
                           <Phone size={20} className="text-white" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">SMS Bildirishnomalar</h3>
-                          <p className="text-sm text-gray-600">Muhim yangiliklar haqida SMS olish</p>
+                          <h3 className="font-semibold text-gray-900">{t('smsNotifications')}</h3>
+                          <p className="text-sm text-gray-600">{t('smsNotificationsDesc')}</p>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -849,7 +843,7 @@ const Profile: React.FC = () => {
                     <div className="p-3 bg-green-100 rounded-xl">
                       <Shield size={20} className="text-green-600" />
                     </div>
-                    <h2 className="text-lg font-semibold text-gray-900">Maxfiylik Sozlamalari</h2>
+                    <h2 className="text-lg font-semibold text-gray-900">{t('privacySettings')}</h2>
                   </div>
                 </div>
 
@@ -861,8 +855,8 @@ const Profile: React.FC = () => {
                           <Eye size={20} className="text-white" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">Profil Ko'rinishi</h3>
-                          <p className="text-sm text-gray-600">Profilingiz boshqalar tomonidan ko'rinishi</p>
+                          <h3 className="font-semibold text-gray-900">{t('profileVisibility')}</h3>
+                          <p className="text-sm text-gray-600">{t('profileVisibilityDesc')}</p>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -879,8 +873,8 @@ const Profile: React.FC = () => {
                           <Activity size={20} className="text-white" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">Faollik Holati</h3>
-                          <p className="text-sm text-gray-600">Oxirgi faollik vaqtingiz ko'rinishi</p>
+                          <h3 className="font-semibold text-gray-900">{t('activityStatus')}</h3>
+                          <p className="text-sm text-gray-600">{t('activityStatusDesc')}</p>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -899,7 +893,7 @@ const Profile: React.FC = () => {
                     <div className="p-3 bg-red-100 rounded-xl">
                       <AlertCircle size={20} className="text-red-600" />
                     </div>
-                    <h2 className="text-lg font-semibold text-red-600">Xavfli Zona</h2>
+                    <h2 className="text-lg font-semibold text-red-600">{t('dangerZone')}</h2>
                   </div>
                 </div>
 
@@ -910,12 +904,12 @@ const Profile: React.FC = () => {
                         <AlertCircle size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-red-800 mb-2">Hisobni O'chirish</h3>
+                        <h3 className="font-semibold text-red-800 mb-2">{t('deleteAccount')}</h3>
                         <p className="text-red-700 text-sm mb-4 leading-relaxed">
-                          Hisobingizni butunlay o'chirish. Bu amal qaytarib bo'lmaydi va barcha ma'lumotlaringiz o'chib ketadi.
+                          {t('deleteAccountDesc')}
                         </p>
                         <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
-                          Hisobni O'chirish
+                          {t('deleteAccount')}
                         </button>
                       </div>
                     </div>
@@ -927,16 +921,16 @@ const Profile: React.FC = () => {
                         <LogOut size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-yellow-800 mb-2">Tizimdan Chiqish</h3>
+                        <h3 className="font-semibold text-yellow-800 mb-2">{t('logout')}</h3>
                         <p className="text-yellow-700 text-sm mb-4 leading-relaxed">
-                          Barcha qurilmalarda tizimdan chiqish va sessiyani tugatish
+                          {t('logoutDesc')}
                         </p>
                         <button
                           onClick={handleSignOut}
                           className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-xl transition-all duration-200 flex items-center space-x-2 font-semibold shadow-lg hover:shadow-xl"
                         >
                           <LogOut size={18} />
-                          <span>Tizimdan Chiqish</span>
+                          <span>{t('logout')}</span>
                         </button>
                       </div>
                     </div>
