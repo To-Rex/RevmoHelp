@@ -20,10 +20,10 @@ interface SEOHeadProps {
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'Revmohelp - Revmatik kasalliklar haqida ishonchli ma\'lumot',
-  description = 'Bemor va shifokorlar uchun professional tibbiy ma\'lumot va yo\'riqnoma platformasi. Revmatik kasalliklar haqida eng so\'nggi ma\'lumotlar va maslahatlar.',
-  keywords = 'revmatik kasalliklar, shifokor, bemor, tibbiy ma\'lumot, revmatologiya, salomatlik',
-  image = 'https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  title = 'Revmohelp - O\'zbekistonda artrit, osteoporoz va revmatik kasalliklar davolash',
+  description = '🏥 Toshkentdagi eng yaxshi revmatologlardan bepul maslahat. Artrit, osteoporoz, revmatoid artrit, ankilozlovchi spondilit davolash usullari. ✅ Professional tibbiy yordam va konsultatsiya.',
+  keywords = 'artrit davolash toshkent, osteoporoz shifokor o\'zbekiston, revmatologiya markazi, bo\'g\'im og\'rig\'i, revmatoid artrit belgilari, ankilozlovchi spondilit, spondiloartrit, sistemik lupus eritematoz, podagra, fibromialgiya, revmatik kasalliklar, bo\'g\'imlar og\'rig\'i, suyaklar og\'rig\'i, mushaklar og\'rig\'i, immunitet kasalliklari, autoimmun kasalliklar, tibbiy diagnostika, rentgen, MRT, analizlar, dori vositalari, fizioterapiya, massaj, gimnastika, parhez, vitaminlar, kaltsiy, D vitamini, shifokorlar ro\'yxati, konsultatsiya narxi, onlayn maslahat, telegon shifokor, bemorlar hikoyalari, maqolalar, yangiliklar, salomatlik maslahatlari, tibbiy konsultatsiya, shifokor maslahat, bemor yordam, salomatlik sayt, tibbiy ma\'lumot, revmatolog toshkent, artrit alomatlari, osteoporoz oldini olish, bo\'g\'im kasalliklari, revmatik og\'riq, tibbiy muolaja, sog\'liqni saqlash, kasallik belgilari, tibbiy yordam o\'zbekiston, onlayn shifokor, tekin konsultatsiya, tibbiy portal, salomatlik platformasi, revmatolog konsultatsiya, artrit simptomlari, osteoporoz davolash, revmatik bemorlar, bo\'g\'im shishishi, qizil rang, harorat ko\'tarilishi, charchoq, og\'riq qoldiruvchi dori, steroidlar, immunosupressorlar, biologik preparatlar, revmatologiya klinikasi, toshkent revmatolog, o\'zbekiston shifokorlar, bemorlar uchun yordam, salomatlikni saqlash, kasalliklar diagnostikasi, davolash usullari, profilaktika, sog\'liqni mustahkamlash',
+  image = 'https://revmohelp.uz/logo.png',
   url = 'https://revmohelp.uz',
   type = 'website',
   article,

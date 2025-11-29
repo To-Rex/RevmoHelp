@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://revmohelp.uz/sitemap.xml
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+
+# Allow important pages
+Allow: /
+Allow: /diseases
+Allow: /doctors
+Allow: /posts
+Allow: /qa
+Allow: /about
+Allow: /contact
