@@ -1319,13 +1319,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.symptoms : formData.translations?.[activeLanguageTab]?.symptoms || []).map((symptom, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{symptom}</span>
                           <button
                             type="button"
                             onClick={() => removeSymptom(symptom)}
-                            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>
@@ -1367,13 +1367,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.treatment_methods : formData.translations?.[activeLanguageTab]?.treatment_methods || []).map((treatment, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{treatment}</span>
                           <button
                             type="button"
                             onClick={() => removeTreatment(treatment)}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>
@@ -1415,13 +1415,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.prevention_tips : formData.translations?.[activeLanguageTab]?.prevention_tips || []).map((tip, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{tip}</span>
                           <button
                             type="button"
                             onClick={() => removePrevention(tip)}
-                            className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>
@@ -1670,13 +1670,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.symptoms : formData.translations?.[activeLanguageTab]?.symptoms || []).map((symptom, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{symptom}</span>
                           <button
                             type="button"
                             onClick={() => removeSymptom(symptom)}
-                            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>
@@ -1718,13 +1718,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.treatment_methods : formData.translations?.[activeLanguageTab]?.treatment_methods || []).map((treatment, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{treatment}</span>
                           <button
                             type="button"
                             onClick={() => removeTreatment(treatment)}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>
@@ -1766,13 +1766,13 @@ const DiseasesManagement: React.FC = () => {
                       {(activeLanguageTab === 'uz' ? formData.prevention_tips : formData.translations?.[activeLanguageTab]?.prevention_tips || []).map((tip, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg text-sm"
+                          className="flex items-center justify-between p-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg text-sm border border-blue-600 dark:border-blue-500"
                         >
                           <span>{tip}</span>
                           <button
                             type="button"
                             onClick={() => removePrevention(tip)}
-                            className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300"
+                            className="text-white hover:text-blue-100 transition-colors duration-200"
                           >
                             <X size={14} />
                           </button>

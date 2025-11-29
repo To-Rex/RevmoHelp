@@ -135,7 +135,7 @@ const Footer: React.FC = () => {
                 to="/consultation"
                 className="block theme-text-secondary hover:theme-accent transition-colors duration-200 text-sm"
               >
-                A'zosi Bo'ling
+                {t('getFreeConsultation')}
               </LanguageAwareLink>
             </div>
           </div>

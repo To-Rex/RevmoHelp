@@ -1,0 +1,1 @@
+import{c as g,j as o,L as i}from"./index-BLJsMvxT.js";const L=({to:e,preserveLanguage:r=!0,children:t,...u})=>{const{i18n:n}=g(),s=a=>!r||n.language==="uz"?a:n.language==="ru"||n.language==="en"?`/${n.language}${a}`:a;return o.jsx(i,{to:s(e),...u,children:t})};export{L};
