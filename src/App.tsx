@@ -56,6 +56,7 @@ const Diseases = lazy(() => import('./pages/Diseases'));
 const DiseaseDetail = lazy(() => import('./pages/DiseaseDetail'));
 const TelegramLogin = lazy(() => import('./pages/TelegramLogin'));
 const TelegramVerify = lazy(() => import('./pages/TelegramVerify'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 import './lib/i18n';
 
 // Language Route Wrapper Component
@@ -308,6 +309,44 @@ function App() {
               <Route path="settings" element={<Settings />} />
             </Route>
 
+            {/* Russian Admin Routes */}
+            <Route path="/ru/admin/login" element={<AdminLogin />} />
+            <Route path="/ru/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="admins" element={<AdminsManagement />} />
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="posts" element={<PostsManagement />} />
+              <Route path="doctors" element={<DoctorsManagement />} />
+              <Route path="diseases" element={<DiseasesManagement />} />
+              <Route path="posts/create" element={<CreatePost />} />
+              <Route path="posts/edit/:id" element={<CreatePost />} />
+              <Route path="pages" element={<StaticPagesManagement />} />
+              <Route path="partners" element={<PartnersManagement />} />
+              <Route path="patient-stories" element={<PatientStoriesManagement />} />
+              <Route path="notifications" element={<NotificationsManagement />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+
+            {/* English Admin Routes */}
+            <Route path="/en/admin/login" element={<AdminLogin />} />
+            <Route path="/en/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="admins" element={<AdminsManagement />} />
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="posts" element={<PostsManagement />} />
+              <Route path="doctors" element={<DoctorsManagement />} />
+              <Route path="diseases" element={<DiseasesManagement />} />
+              <Route path="posts/create" element={<CreatePost />} />
+              <Route path="posts/edit/:id" element={<CreatePost />} />
+              <Route path="pages" element={<StaticPagesManagement />} />
+              <Route path="partners" element={<PartnersManagement />} />
+              <Route path="patient-stories" element={<PatientStoriesManagement />} />
+              <Route path="notifications" element={<NotificationsManagement />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+
             {/* Public Routes with Layout */}
             <Route path="/*" element={<PublicLayout />}>
               {/* Uzbek routes (no prefix) */}
@@ -408,6 +447,9 @@ function App() {
               <Route path="en/diseases/:slug" element={<DiseaseDetail />} />
               <Route path="en/telegram-login" element={<TelegramLogin />} />
               <Route path="en/telegram-verify" element={<TelegramVerify />} />
+
+              {/* 404 Not Found - must be last */}
+              <Route path="*" element={<NotFound />} />
             </Route>
             </Routes>
           </Suspense>
