@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Bell, 
-  Plus, 
-  Send, 
-  Users, 
-  User, 
-  FileText, 
+import { useTranslation } from 'react-i18next';
+import {
+  Bell,
+  Plus,
+  Send,
+  Users,
+  User,
+  FileText,
   Search,
   Filter,
   Calendar,
@@ -20,7 +21,8 @@ import {
   Target,
   MessageSquare,
   Globe,
-  Mail
+  Mail,
+  ChevronDown
 } from 'lucide-react';
 import { 
   getAllNotifications, 
@@ -34,6 +36,7 @@ import type { User as UserType } from '../../types';
 import type { Post } from '../../types';
 
 const NotificationsManagement: React.FC = () => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [users, setUsers] = useState<UserType[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -45,6 +48,7 @@ const NotificationsManagement: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [targetDropdownOpen, setTargetDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState<CreateNotificationData>({
     title: '',
@@ -81,7 +85,7 @@ const NotificationsManagement: React.FC = () => {
         setPosts(postsResult.data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Ma\'lumotlarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('notificationsDataLoadingError') });
     } finally {
       setLoading(false);
     }
@@ -118,15 +122,15 @@ const NotificationsManagement: React.FC = () => {
 
   const validateForm = () => {
     if (!formData.title.trim()) {
-      setMessage({ type: 'error', text: 'Sarlavha kiritilishi shart' });
+      setMessage({ type: 'error', text: t('notificationsTitleRequired') });
       return false;
     }
     if (!formData.message.trim()) {
-      setMessage({ type: 'error', text: 'Xabar matni kiritilishi shart' });
+      setMessage({ type: 'error', text: t('notificationsMessageRequired') });
       return false;
     }
     if (formData.target_type === 'individual' && !formData.target_user_id) {
-      setMessage({ type: 'error', text: 'Shaxsiy xabar uchun foydalanuvchi tanlanishi shart' });
+      setMessage({ type: 'error', text: t('notificationsUserRequired') });
       return false;
     }
     return true;
@@ -149,37 +153,37 @@ const NotificationsManagement: React.FC = () => {
       });
 
       if (error) {
-        setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setMessage({ type: 'error', text: t('notificationsGeneralError') + ': ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Bildirishnoma muvaffaqiyatli yuborildi!' });
+        setMessage({ type: 'success', text: t('notificationsSent') });
         await loadData();
         setTimeout(() => {
           closeModal();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('notificationsGeneralError') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (notificationId: string, title: string) => {
-    if (!confirm(`"${title}" bildirishnomani o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`"${title}" ${t('notificationsConfirmDelete')}`)) return;
 
     setDeleteLoading(notificationId);
     setMessage({ type: '', text: '' });
-    
+
     try {
       const { error } = await deleteNotification(notificationId);
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Bildirishnoma muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('notificationsDeleted') });
         await loadData();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('notificationsGeneralError') });
     } finally {
       setDeleteLoading(null);
     }
@@ -223,7 +227,7 @@ const NotificationsManagement: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Bildirishnomalar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('notificationsLoading')}</p>
         </div>
       </div>
     );
@@ -234,15 +238,15 @@ const NotificationsManagement: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold theme-text">Bildirishnomalar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Foydalanuvchilarga bildirishnoma yuborish va boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">{t('notificationsManagementTitle')}</h1>
+          <p className="theme-text-secondary">{t('notificationsManagementDesc')}</p>
         </div>
         <button
           onClick={openCreateModal}
           className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           <Plus size={20} />
-          <span>Yangi Bildirishnoma</span>
+          <span>{t('notificationsNewNotification')}</span>
         </button>
       </div>
 
@@ -268,35 +272,35 @@ const NotificationsManagement: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold theme-text">{notifications.length}</div>
-          <div className="text-sm theme-text-secondary">Jami bildirishnomalar</div>
+          <div className="text-sm theme-text-secondary">{t('notificationsTotal')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-purple-600">{notifications.filter(n => n.target_type === 'broadcast').length}</div>
-          <div className="text-sm theme-text-secondary">Ommaviy</div>
+          <div className="text-sm theme-text-secondary">{t('notificationsBroadcast')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-orange-600">{notifications.filter(n => n.target_type === 'individual').length}</div>
-          <div className="text-sm theme-text-secondary">Shaxsiy</div>
+          <div className="text-sm theme-text-secondary">{t('notificationsIndividual')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-green-600">{notifications.filter(n => n.active).length}</div>
-          <div className="text-sm theme-text-secondary">Faol</div>
+          <div className="text-sm theme-text-secondary">{t('notificationsActive')}</div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="theme-bg rounded-xl theme-shadow theme-border border p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
-                placeholder="Bildirishnomalarni qidiring..."
+                placeholder={t('notificationsSearch')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
               />
             </div>
           </div>
@@ -306,27 +310,49 @@ const NotificationsManagement: React.FC = () => {
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
             >
-              <option value="all">Barcha turlar</option>
-              <option value="info">Ma'lumot</option>
-              <option value="success">Muvaffaqiyat</option>
-              <option value="warning">Ogohlantirish</option>
-              <option value="error">Xatolik</option>
+              <option value="all">{t('notificationsAllTypes')}</option>
+              <option value="info">{t('notificationsInfoType')}</option>
+              <option value="success">{t('notificationsSuccessType')}</option>
+              <option value="warning">{t('notificationsWarningType')}</option>
+              <option value="error">{t('notificationsErrorType')}</option>
             </select>
           </div>
 
           {/* Target Filter */}
-          <div className="lg:w-48">
-            <select
-              value={selectedTarget}
-              onChange={(e) => setSelectedTarget(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+          <div className="lg:w-48 relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setTargetDropdownOpen(!targetDropdownOpen); }}
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <option value="all">Barcha maqsadlar</option>
-              <option value="broadcast">Ommaviy</option>
-              <option value="individual">Shaxsiy</option>
-            </select>
+              <span>{selectedTarget === 'all' ? t('notificationsAllTargets') :
+                    selectedTarget === 'broadcast' ? t('notificationsBroadcastTarget') :
+                    t('notificationsIndividualTarget')}</span>
+              <ChevronDown className={`theme-text-muted transition-transform ${targetDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+            </button>
+            {targetDropdownOpen && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div
+                  onClick={() => { setSelectedTarget('all'); setTargetDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('notificationsAllTargets')}
+                </div>
+                <div
+                  onClick={() => { setSelectedTarget('broadcast'); setTargetDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('notificationsBroadcastTarget')}
+                </div>
+                <div
+                  onClick={() => { setSelectedTarget('individual'); setTargetDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('notificationsIndividualTarget')}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -342,14 +368,17 @@ const NotificationsManagement: React.FC = () => {
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-3">
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${getTypeColor(notification.type)}`}>
-                    {notification.type}
+                    {notification.type === 'info' ? t('notificationsInfoType') :
+                     notification.type === 'success' ? t('notificationsSuccessType') :
+                     notification.type === 'warning' ? t('notificationsWarningType') :
+                     t('notificationsErrorType')}
                   </span>
                   <span className={`px-3 py-1 text-xs font-medium rounded-full ${getTargetColor(notification.target_type)}`}>
-                    {notification.target_type === 'broadcast' ? 'Ommaviy' : 'Shaxsiy'}
+                    {notification.target_type === 'broadcast' ? t('notificationsBroadcastTarget') : t('notificationsIndividualTarget')}
                   </span>
                   {notification.post && (
                     <span className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full">
-                      Maqola bilan
+                      {t('notificationsWithArticle')}
                     </span>
                   )}
                 </div>
@@ -361,7 +390,7 @@ const NotificationsManagement: React.FC = () => {
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-1">
                       <User size={14} />
-                      <span>{notification.creator?.full_name || 'System'}</span>
+                      <span>{notification.creator?.full_name || t('notificationsSystem')}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Calendar size={14} />
@@ -371,14 +400,14 @@ const NotificationsManagement: React.FC = () => {
                       <div className="flex items-center space-x-1">
                         <Target size={14} />
                         <span>
-                          {users.find(u => u.id === notification.target_user_id)?.full_name || 'Foydalanuvchi'}
+                          {users.find(u => u.id === notification.target_user_id)?.full_name || t('notificationsUser')}
                         </span>
                       </div>
                     )}
                   </div>
                   <div className="flex items-center space-x-1">
                     <Eye size={14} />
-                    <span>{notification.read_by?.length || 0} o'qilgan</span>
+                    <span>{notification.read_by?.length || 0} {t('notificationsReadCount')}</span>
                   </div>
                 </div>
 
@@ -387,7 +416,7 @@ const NotificationsManagement: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       <FileText size={16} className="text-blue-600 dark:text-blue-400" />
                       <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                        Bog'langan maqola: {notification.post.title}
+                        {t('notificationsLinkedArticle')}: {notification.post.title}
                       </span>
                     </div>
                   </div>
@@ -419,17 +448,17 @@ const NotificationsManagement: React.FC = () => {
             <Bell size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Bildirishnoma topilmadi
+            {t('notificationsNotFound')}
           </h3>
           <p className="theme-text-muted mb-6">
-            Qidiruv so'zini o'zgartiring yoki yangi bildirishnoma yarating
+            {t('notificationsChangeSearchOrCreate')}
           </p>
           <button
             onClick={openCreateModal}
             className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <Plus size={20} />
-            <span>Birinchi bildirishnomani yaratish</span>
+            <span>{t('notificationsCreateFirst')}</span>
           </button>
         </div>
       )}
@@ -439,7 +468,7 @@ const NotificationsManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Yangi Bildirishnoma</h3>
+              <h3 className="text-xl font-bold theme-text">{t('notificationsNewModal')}</h3>
               <button
                 onClick={closeModal}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -469,7 +498,7 @@ const NotificationsManagement: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Sarlavha *
+                    {t('notificationsTitleLabel')}
                   </label>
                   <input
                     type="text"
@@ -478,13 +507,13 @@ const NotificationsManagement: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="Bildirishnoma sarlavhasi"
+                    placeholder={t('notificationsTitlePlaceholder')}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Turi *
+                    {t('notificationsTypeLabel')}
                   </label>
                   <select
                     name="type"
@@ -492,16 +521,16 @@ const NotificationsManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
                   >
-                    <option value="info">Ma'lumot</option>
-                    <option value="success">Muvaffaqiyat</option>
-                    <option value="warning">Ogohlantirish</option>
-                    <option value="error">Xatolik</option>
+                    <option value="info">{t('notificationsInfoType')}</option>
+                    <option value="success">{t('notificationsSuccessType')}</option>
+                    <option value="warning">{t('notificationsWarningType')}</option>
+                    <option value="error">{t('notificationsErrorType')}</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Maqsad *
+                    {t('notificationsTargetLabel')}
                   </label>
                   <select
                     name="target_type"
@@ -509,15 +538,15 @@ const NotificationsManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
                   >
-                    <option value="broadcast">Ommaviy (barcha foydalanuvchilar)</option>
-                    <option value="individual">Shaxsiy (bitta foydalanuvchi)</option>
+                    <option value="broadcast">{t('notificationsBroadcastOption')}</option>
+                    <option value="individual">{t('notificationsIndividualOption')}</option>
                   </select>
                 </div>
 
                 {formData.target_type === 'individual' && (
                   <div>
                     <label className="block text-sm font-medium theme-text-secondary mb-2">
-                      Foydalanuvchi *
+                      {t('notificationsUserLabel')}
                     </label>
                     <select
                       name="target_user_id"
@@ -526,7 +555,7 @@ const NotificationsManagement: React.FC = () => {
                       required
                       className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
                     >
-                      <option value="">Foydalanuvchini tanlang</option>
+                      <option value="">{t('notificationsSelectUser')}</option>
                       {users.map((user) => (
                         <option key={user.id} value={user.id}>
                           {user.full_name} ({user.email})
@@ -538,7 +567,7 @@ const NotificationsManagement: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Bog'langan maqola (ixtiyoriy)
+                    {t('notificationsLinkedArticleLabel')}
                   </label>
                   <select
                     name="post_id"
@@ -546,7 +575,7 @@ const NotificationsManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
                   >
-                    <option value="">Maqola tanlanmagan</option>
+                    <option value="">{t('notificationsNoArticleSelected')}</option>
                     {posts.map((post) => (
                       <option key={post.id} value={post.id}>
                         {post.title}
@@ -557,7 +586,7 @@ const NotificationsManagement: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Amal qilish muddati (ixtiyoriy)
+                    {t('notificationsExpirationLabel')}
                   </label>
                   <input
                     type="datetime-local"
@@ -571,7 +600,7 @@ const NotificationsManagement: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium theme-text-secondary mb-2">
-                  Xabar matni *
+                  {t('notificationsMessageLabel')}
                 </label>
                 <textarea
                   name="message"
@@ -580,10 +609,10 @@ const NotificationsManagement: React.FC = () => {
                   required
                   rows={4}
                   className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
-                  placeholder="Bildirishnoma matnini kiriting..."
+                  placeholder={t('notificationsMessagePlaceholder')}
                 />
                 <div className="text-xs theme-text-muted mt-1">
-                  {formData.message.length}/500 belgi
+                  {formData.message.length}/500
                 </div>
               </div>
 
@@ -593,7 +622,7 @@ const NotificationsManagement: React.FC = () => {
                   onClick={closeModal}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-3 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
@@ -601,7 +630,7 @@ const NotificationsManagement: React.FC = () => {
                   className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 flex items-center justify-center space-x-2"
                 >
                   <Send size={18} />
-                  <span>{isSubmitting ? 'Yuborilmoqda...' : 'Yuborish'}</span>
+                  <span>{isSubmitting ? t('notificationsSending') : t('notificationsSend')}</span>
                 </button>
               </div>
             </form>

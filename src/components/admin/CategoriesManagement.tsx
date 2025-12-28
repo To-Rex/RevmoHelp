@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Save, 
-  X, 
-  CheckCircle, 
+import { useTranslation } from 'react-i18next';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Save,
+  X,
+  CheckCircle,
   AlertCircle,
   Tag,
   Palette,
   Hash,
   FileText
 } from 'lucide-react';
-import { 
-  getCategories, 
-  createCategory, 
-  updateCategory, 
-  deleteCategory, 
-  checkCategorySlugUniqueness 
+import {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  checkCategorySlugUniqueness
 } from '../../lib/categories';
 import type { Category, CreateCategoryData } from '../../lib/categories';
 
@@ -28,6 +29,7 @@ interface CategoriesManagementProps {
 }
 
 const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategoriesChange, triggerCreateModal, onModalClosed }) => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -69,7 +71,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
         setCategories(data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Kategoriyalarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('categoriesLoadingError') });
     } finally {
       setLoading(false);
     }
@@ -129,22 +131,22 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
 
   const validateForm = async () => {
     if (!formData.name.trim()) {
-      setMessage({ type: 'error', text: 'Kategoriya nomi kiritilishi shart' });
+      setMessage({ type: 'error', text: t('categoryNameRequired') });
       return false;
     }
     if (!formData.slug.trim()) {
-      setMessage({ type: 'error', text: 'URL slug kiritilishi shart' });
+      setMessage({ type: 'error', text: t('categorySlugRequired') });
       return false;
     }
 
     // Check slug uniqueness
     const { isUnique } = await checkCategorySlugUniqueness(
-      formData.slug, 
+      formData.slug,
       editingCategory?.id
     );
-    
+
     if (!isUnique) {
-      setMessage({ type: 'error', text: 'Bu URL (slug) allaqachon mavjud. Boshqa nom yozing yoki URL ni o\'zgartiring.' });
+      setMessage({ type: 'error', text: t('categorySlugExists') });
       return false;
     }
 
@@ -163,9 +165,9 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
       const { data, error } = await createCategory(formData);
 
       if (error) {
-        setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setMessage({ type: 'error', text: t('categoriesErrorOccurred') + ': ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kategoriya muvaffaqiyatli yaratildi!' });
+        setMessage({ type: 'success', text: t('categoryCreated') });
         await loadCategories();
         onCategoriesChange?.();
         setTimeout(() => {
@@ -173,7 +175,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('categoriesErrorOccurred') });
     } finally {
       setIsSubmitting(false);
     }
@@ -194,9 +196,9 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
       });
 
       if (error) {
-        setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setMessage({ type: 'error', text: t('categoriesErrorOccurred') + ': ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kategoriya muvaffaqiyatli yangilandi!' });
+        setMessage({ type: 'success', text: t('categoryUpdated') });
         await loadCategories();
         onCategoriesChange?.();
         setTimeout(() => {
@@ -204,29 +206,29 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('categoriesErrorOccurred') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (categoryId: string, categoryName: string) => {
-    if (!confirm(`"${categoryName}" kategoriyasini o'chirishni xohlaysizmi? Bu kategoriyaga tegishli barcha maqolalar kategoriyasiz qoladi.`)) return;
+    if (!confirm(t('confirmDeleteCategory', { categoryName }))) return;
 
     setDeleteLoading(categoryId);
     setMessage({ type: '', text: '' });
-    
+
     try {
       const { error } = await deleteCategory(categoryId);
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kategoriya muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('categoryDeleted') });
         await loadCategories();
         onCategoriesChange?.();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('categoriesErrorOccurred') });
     } finally {
       setDeleteLoading(null);
     }
@@ -237,7 +239,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
       <div className="flex items-center justify-center py-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-          <p className="theme-text-muted text-sm">Kategoriyalar yuklanmoqda...</p>
+          <p className="theme-text-muted text-sm">{t('categoriesLoading')}</p>
         </div>
       </div>
     );
@@ -288,7 +290,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                 <button
                   onClick={() => openEditModal(category)}
                   className="p-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 rounded"
-                  title="Tahrirlash"
+                  title={t('editCategory')}
                 >
                   <Edit size={14} />
                 </button>
@@ -296,7 +298,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   onClick={() => handleDelete(category.id, category.name)}
                   disabled={deleteLoading === category.id}
                   className="p-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 rounded disabled:opacity-50"
-                  title="O'chirish"
+                  title={t('deleteCategory')}
                 >
                   {deleteLoading === category.id ? (
                     <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-red-600"></div>
@@ -318,7 +320,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 max-w-md w-full">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Yangi Kategoriya</h3>
+              <h3 className="text-xl font-bold theme-text">{t('newCategoryModal')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -346,7 +348,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
               )}
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Kategoriya nomi *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('categoryNameLabel')}</label>
                 <input
                   type="text"
                   name="name"
@@ -354,24 +356,24 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   onChange={handleInputChange}
                   required
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
-                  placeholder="Kategoriya nomi"
+                  placeholder={t('categoryNamePlaceholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Tavsif</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('descriptionLabel')}</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={2}
                   className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-none"
-                  placeholder="Kategoriya haqida qisqacha"
+                  placeholder={t('descriptionPlaceholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Rang</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('colorLabel')}</label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {predefinedColors.map((color) => (
                     <button
@@ -400,14 +402,14 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('cancelButton')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Yaratilmoqda...' : 'Yaratish'}
+                  {isSubmitting ? t('creatingCategory') : t('createCategory')}
                 </button>
               </div>
             </form>
@@ -420,7 +422,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 max-w-md w-full">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Kategoriyani Tahrirlash</h3>
+              <h3 className="text-xl font-bold theme-text">{t('editCategoryModal')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -448,7 +450,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
               )}
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Kategoriya nomi *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('categoryNameLabel')}</label>
                 <input
                   type="text"
                   name="name"
@@ -460,7 +462,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Tavsif</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('descriptionLabel')}</label>
                 <textarea
                   name="description"
                   value={formData.description}
@@ -471,7 +473,7 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Rang</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('colorLabel')}</label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {predefinedColors.map((color) => (
                     <button
@@ -500,14 +502,14 @@ const CategoriesManagement: React.FC<CategoriesManagementProps> = ({ onCategorie
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('cancelButton')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Saqlanmoqda...' : 'Saqlash'}
+                  {isSubmitting ? t('savingCategory') : t('saveCategory')}
                 </button>
               </div>
             </form>

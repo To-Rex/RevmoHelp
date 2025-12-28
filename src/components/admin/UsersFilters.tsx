@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, Filter, Users, Shield, Mail, Globe } from 'lucide-react';
 
 interface UsersFiltersProps {
@@ -24,18 +25,19 @@ const UsersFilters: React.FC<UsersFiltersProps> = ({
   onProviderChange,
   userCounts
 }) => {
+  const { t } = useTranslation();
   const roles = [
-    { value: 'all', label: 'Barcha rollar', count: userCounts.total },
-    { value: 'admin', label: 'Admin', count: userCounts.byRole.admin || 0 },
-    { value: 'moderator', label: 'Moderator', count: userCounts.byRole.moderator || 0 },
-    { value: 'doctor', label: 'Shifokor', count: userCounts.byRole.doctor || 0 },
-    { value: 'patient', label: 'Bemor', count: userCounts.byRole.patient || 0 },
+    { value: 'all', label: t('allRoles'), count: userCounts.total },
+    { value: 'admin', label: t('adminRole'), count: userCounts.byRole.admin || 0 },
+    { value: 'moderator', label: t('moderatorRole'), count: userCounts.byRole.moderator || 0 },
+    { value: 'doctor', label: t('doctorRole'), count: userCounts.byRole.doctor || 0 },
+    { value: 'patient', label: t('patientRole'), count: userCounts.byRole.patient || 0 },
   ];
 
   const providers = [
-    { value: 'all', label: 'Barcha providerlar', count: userCounts.total },
-    { value: 'email', label: 'Email', count: userCounts.byProvider.email || 0 },
-    { value: 'google', label: 'Google', count: userCounts.byProvider.google || 0 },
+    { value: 'all', label: t('allProviders'), count: userCounts.total },
+    { value: 'email', label: t('emailProvider'), count: userCounts.byProvider.email || 0 },
+    { value: 'google', label: t('googleProvider'), count: userCounts.byProvider.google || 0 },
   ];
 
   return (
@@ -47,7 +49,7 @@ const UsersFilters: React.FC<UsersFiltersProps> = ({
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
             <input
               type="text"
-              placeholder="Foydalanuvchilarni qidiring..."
+              placeholder={t('searchUsers')}
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"

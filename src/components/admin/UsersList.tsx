@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  UserCheck, 
-  Mail, 
-  Phone, 
+import { useTranslation } from 'react-i18next';
+import {
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  UserCheck,
+  Mail,
+  Phone,
   Calendar,
   Shield,
   Eye,
@@ -25,11 +26,12 @@ interface UsersListProps {
   selectedProvider: string;
 }
 
-const UsersList: React.FC<UsersListProps> = ({ 
-  searchTerm, 
-  selectedRole, 
-  selectedProvider 
+const UsersList: React.FC<UsersListProps> = ({
+  searchTerm,
+  selectedRole,
+  selectedProvider
 }) => {
+  const { t } = useTranslation();
   const [authUsers, setAuthUsers] = useState<AuthUser[]>([]);
   const [profiles, setProfiles] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,14 +59,14 @@ const UsersList: React.FC<UsersListProps> = ({
       }
     } catch (error) {
       console.error('Error loading users:', error);
-      setMessage({ type: 'error', text: 'Foydalanuvchilarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('errorLoadingUsers') });
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteUser = async (userId: string, userName: string) => {
-    if (!confirm(`${userName} foydalanuvchisini o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`${userName} ${t('confirmDeleteUser')}`)) return;
 
     setDeleteLoading(userId);
     setMessage({ type: '', text: '' });
@@ -74,11 +76,11 @@ const UsersList: React.FC<UsersListProps> = ({
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Foydalanuvchi muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('userDeleted') });
         await loadUsers();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('error') });
     } finally {
       setDeleteLoading(null);
     }
@@ -157,7 +159,7 @@ const UsersList: React.FC<UsersListProps> = ({
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Foydalanuvchilar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('usersLoading')}</p>
         </div>
       </div>
     );
@@ -190,25 +192,25 @@ const UsersList: React.FC<UsersListProps> = ({
             <thead className="theme-bg-secondary">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Foydalanuvchi
+                  {t('userTable')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Rol
+                  {t('role')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Provider
+                  {t('provider')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Telefon
+                  {t('phone')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Oxirgi kirish
+                  {t('lastLogin')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Holat
+                  {t('statusTable')}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Amallar
+                  {t('actionsTable')}
                 </th>
               </tr>
             </thead>
@@ -254,7 +256,7 @@ const UsersList: React.FC<UsersListProps> = ({
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm theme-text">
-                    {user.phone || 'Kiritilmagan'}
+                    {user.phone || t('notEntered')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm theme-text-muted">
                     {user.last_sign_in_at ? (
@@ -263,7 +265,7 @@ const UsersList: React.FC<UsersListProps> = ({
                         <span>{formatDate(user.last_sign_in_at)}</span>
                       </div>
                     ) : (
-                      'Hech qachon'
+                      t('never')
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -273,7 +275,7 @@ const UsersList: React.FC<UsersListProps> = ({
                           ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
                           : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
                       }`}>
-                        {user.email_confirmed_at ? 'Tasdiqlangan' : 'Tasdiqlanmagan'}
+                        {user.email_confirmed_at ? t('confirmedStatus') : t('unconfirmedStatus')}
                       </span>
                     </div>
                   </td>
@@ -312,10 +314,10 @@ const UsersList: React.FC<UsersListProps> = ({
             <Search size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Foydalanuvchi topilmadi
+            {t('userNotFound')}
           </h3>
           <p className="theme-text-muted">
-            Qidiruv so'zini o'zgartiring yoki filtrlarni qayta sozlang
+            {t('changeSearchOrFilters')}
           </p>
         </div>
       )}
@@ -323,17 +325,17 @@ const UsersList: React.FC<UsersListProps> = ({
       {/* Pagination */}
       <div className="flex items-center justify-between">
         <div className="text-sm theme-text-secondary">
-          {filteredUsers.length} ta foydalanuvchi ko'rsatilmoqda
+          {filteredUsers.length} {t('usersShown')}
         </div>
         <div className="flex space-x-2">
           <button className="px-4 py-2 theme-border border rounded-lg hover:theme-bg-tertiary transition-colors duration-200 theme-text-secondary">
-            Oldingi
+            {t('previous')}
           </button>
           <button className="px-4 py-2 theme-accent-bg text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
             1
           </button>
           <button className="px-4 py-2 theme-border border rounded-lg hover:theme-bg-tertiary transition-colors duration-200 theme-text-secondary">
-            Keyingi
+            {t('next')}
           </button>
         </div>
       </div>

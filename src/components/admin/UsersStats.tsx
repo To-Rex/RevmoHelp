@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Users, UserCheck, Mail, Globe, Clock, Shield } from 'lucide-react';
 
 interface UsersStatsProps {
@@ -13,9 +14,10 @@ interface UsersStatsProps {
 }
 
 const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
+  const { t } = useTranslation();
   const statCards = [
     {
-      name: 'Jami Foydalanuvchilar',
+      name: t('totalUsersStats'),
       value: stats.total.toLocaleString(),
       icon: Users,
       color: 'from-primary-500 to-primary-600',
@@ -23,7 +25,7 @@ const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Tasdiqlangan',
+      name: t('confirmed'),
       value: stats.confirmed.toLocaleString(),
       icon: UserCheck,
       color: 'from-primary-500 to-primary-600',
@@ -31,7 +33,7 @@ const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Email Foydalanuvchilar',
+      name: t('emailUsers'),
       value: stats.emailUsers.toLocaleString(),
       icon: Mail,
       color: 'from-primary-500 to-primary-600',
@@ -39,7 +41,7 @@ const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Google Foydalanuvchilar',
+      name: t('googleUsers'),
       value: stats.googleUsers.toLocaleString(),
       icon: Globe,
       color: 'from-primary-500 to-primary-600',
@@ -47,7 +49,7 @@ const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Oxirgi 7 kun',
+      name: t('last7Days'),
       value: stats.recentSignups.toLocaleString(),
       icon: Clock,
       color: 'from-primary-500 to-primary-600',
@@ -55,7 +57,7 @@ const UsersStats: React.FC<UsersStatsProps> = ({ stats }) => {
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Tasdiqlanmagan',
+      name: t('unconfirmed'),
       value: stats.unconfirmed.toLocaleString(),
       icon: Shield,
       color: 'from-primary-500 to-primary-600',

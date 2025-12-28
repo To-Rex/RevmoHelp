@@ -71,7 +71,7 @@ const AdminTopBar: React.FC<AdminTopBarProps> = ({
               className="flex items-center space-x-2 lg:space-x-3 p-2 rounded-xl hover:theme-bg-tertiary transition-all duration-200"
             >
               <div className="w-8 h-8 lg:w-9 lg:h-9 bg-gradient-to-r from-primary-100 to-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
-                <User size={16} className="theme-accent" />
+                <User size={16} className="text-white" />
               </div>
               <div className="hidden lg:block text-left min-w-0">
                 <div className="text-sm font-semibold theme-text truncate max-w-32">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, Clock, Phone, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
 
 interface ConsultationRequestsStatsProps {
@@ -13,9 +14,10 @@ interface ConsultationRequestsStatsProps {
 }
 
 const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ stats }) => {
+  const { t } = useTranslation();
   const statCards = [
     {
-      name: 'Jami So\'rovlar',
+      name: t('totalRequests'),
       value: stats.total.toLocaleString(),
       icon: MessageSquare,
       color: 'from-primary-500 to-primary-600',
@@ -23,7 +25,7 @@ const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ s
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Kutilmoqda',
+      name: t('pending'),
       value: stats.pending.toLocaleString(),
       icon: Clock,
       color: 'from-primary-500 to-primary-600',
@@ -31,7 +33,7 @@ const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ s
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Bog\'lanildi',
+      name: t('contacted'),
       value: stats.contacted.toLocaleString(),
       icon: Phone,
       color: 'from-primary-500 to-primary-600',
@@ -39,7 +41,7 @@ const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ s
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Yakunlandi',
+      name: t('completed'),
       value: stats.completed.toLocaleString(),
       icon: CheckCircle,
       color: 'from-primary-500 to-primary-600',
@@ -47,7 +49,7 @@ const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ s
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Bekor qilindi',
+      name: t('cancelled'),
       value: stats.cancelled.toLocaleString(),
       icon: XCircle,
       color: 'from-primary-500 to-primary-600',
@@ -55,7 +57,7 @@ const ConsultationRequestsStats: React.FC<ConsultationRequestsStatsProps> = ({ s
       textColor: 'text-primary-600 dark:text-primary-400',
     },
     {
-      name: 'Oxirgi 7 kun',
+      name: t('recentRequests'),
       value: stats.recent.toLocaleString(),
       icon: TrendingUp,
       color: 'from-primary-500 to-primary-600',

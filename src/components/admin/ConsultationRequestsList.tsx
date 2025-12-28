@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Eye, 
-  Phone, 
+import { useTranslation } from 'react-i18next';
+import {
+  Search,
+  Filter,
+  Eye,
+  Phone,
   Mail,
   Calendar,
   User,
@@ -28,10 +29,11 @@ interface ConsultationRequestsListProps {
   selectedStatus: string;
 }
 
-const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({ 
-  searchTerm, 
-  selectedStatus 
+const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
+  searchTerm,
+  selectedStatus
 }) => {
+  const { t } = useTranslation();
   const [requests, setRequests] = useState<ConsultationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [updateLoading, setUpdateLoading] = useState<string | null>(null);
@@ -51,7 +53,7 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
       }
     } catch (error) {
       console.error('Error loading consultation requests:', error);
-      setMessage({ type: 'error', text: 'Maslahat so\'rovlarini yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('errorLoadingConsultationRequests') });
     } finally {
       setLoading(false);
     }
@@ -70,7 +72,7 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Holat muvaffaqiyatli yangilandi!' });
+        setMessage({ type: 'success', text: t('statusUpdated') });
         await loadRequests();
       }
     } catch (error) {
@@ -81,7 +83,7 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
   };
 
   const handleDelete = async (requestId: string, patientName: string) => {
-    if (!confirm(`${patientName}ning so'rovini o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`${patientName}${t('confirmDeleteRequest')}`)) return;
 
     setDeleteLoading(requestId);
     setMessage({ type: '', text: '' });
@@ -91,11 +93,11 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'So\'rov muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('requestDeleted') });
         await loadRequests();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('error') });
     } finally {
       setDeleteLoading(null);
     }
@@ -144,15 +146,15 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'Kutilmoqda';
+        return t('pending');
       case 'contacted':
-        return 'Bog\'lanildi';
+        return t('contacted');
       case 'completed':
-        return 'Yakunlandi';
+        return t('completed');
       case 'cancelled':
-        return 'Bekor qilindi';
+        return t('cancelled');
       default:
-        return 'Noma\'lum';
+        return t('unknown');
     }
   };
 
@@ -171,7 +173,7 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Maslahat so'rovlari yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('consultationRequestsLoading')}</p>
         </div>
       </div>
     );
@@ -204,22 +206,22 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
             <thead className="theme-bg-secondary">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Bemor
+                  {t('patientTable')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Kasallik
+                  {t('disease')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Telefon
+                  {t('phone')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Holat
+                  {t('statusTable')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  So'ralgan vaqt
+                  {t('askedTime')}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Amallar
+                  {t('actionsTable')}
                 </th>
               </tr>
             </thead>
@@ -238,7 +240,7 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
                             {request.first_name} {request.last_name}
                           </div>
                           <div className="text-sm theme-text-muted">
-                            {request.age} yosh
+                            {request.age} {t('yearsOld')}
                           </div>
                         </div>
                       </div>
@@ -290,25 +292,25 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
                           disabled={updateLoading === request.id}
                           className="text-xs px-2 py-1 theme-border border rounded theme-bg theme-text disabled:opacity-50"
                         >
-                          <option value="pending">Kutilmoqda</option>
-                          <option value="contacted">Bog'lanildi</option>
-                          <option value="completed">Yakunlandi</option>
-                          <option value="cancelled">Bekor qilindi</option>
+                          <option value="pending">{t('pending')}</option>
+                          <option value="contacted">{t('contacted')}</option>
+                          <option value="completed">{t('completed')}</option>
+                          <option value="cancelled">{t('cancelled')}</option>
                         </select>
                         
                         <a
                           href={`tel:${request.phone}`}
                           className="text-green-600 hover:text-green-900 p-1 rounded"
-                          title="Qo'ng'iroq qilish"
+                          title={t('call')}
                         >
                           <Phone size={16} />
                         </a>
-                        
+
                         <button
                           onClick={() => handleDelete(request.id, `${request.first_name} ${request.last_name}`)}
                           disabled={deleteLoading === request.id}
                           className="text-red-600 hover:text-red-900 p-1 rounded disabled:opacity-50"
-                          title="O'chirish"
+                          title={t('deleteAction')}
                         >
                           {deleteLoading === request.id ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
@@ -333,10 +335,10 @@ const ConsultationRequestsList: React.FC<ConsultationRequestsListProps> = ({
             <MessageSquare size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Maslahat so'rovi topilmadi
+            {t('consultationRequestNotFound')}
           </h3>
           <p className="theme-text-muted">
-            Qidiruv so'zini o'zgartiring yoki filtrlarni qayta sozlang
+            {t('changeSearchOrFilters')}
           </p>
         </div>
       )}

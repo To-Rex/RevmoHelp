@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard,
   Users,
@@ -37,26 +38,41 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   collapsed,
   onToggleCollapse
 }) => {
+  const { t } = useTranslation();
+
+  // Get path without language prefix for consistent active state checking
+  const getPathWithoutLanguage = (pathname: string): string => {
+    const segments = pathname.split('/').filter(Boolean);
+    const firstSegment = segments[0];
+
+    if (['ru', 'en'].includes(firstSegment)) {
+      return '/' + segments.slice(1).join('/');
+    }
+    return pathname;
+  };
+
+  const cleanPath = getPathWithoutLanguage(currentPath);
+
   const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Adminlar', href: '/admin/admins', icon: Shield },
-    { name: 'Foydalanuvchilar', href: '/admin/users', icon: Users },
-    { name: 'Maqolalar', href: '/admin/posts', icon: FileText },
-    { name: 'Shifokorlar', href: '/admin/doctors', icon: Stethoscope },
-    { name: 'Kasalliklar', href: '/admin/diseases', icon: Activity },
-    { name: 'Sahifalar', href: '/admin/pages', icon: FileImage },
-    { name: 'Bemorlar Tarixi', href: '/admin/patient-stories', icon: Heart },
-    { name: 'Hamkorlar', href: '/admin/partners', icon: Building2 },
-   { name: 'Bildirishnomalar', href: '/admin/notifications', icon: Bell },
-    { name: 'Analitika', href: '/admin/analytics', icon: BarChart3 },
-    { name: 'Sozlamalar', href: '/admin/settings', icon: Settings },
+    { name: t('adminDashboard'), href: '/admin', icon: LayoutDashboard },
+    { name: t('adminAdmins'), href: '/admin/admins', icon: Shield },
+    { name: t('adminUsers'), href: '/admin/users', icon: Users },
+    { name: t('adminPosts'), href: '/admin/posts', icon: FileText },
+    { name: t('adminDoctors'), href: '/admin/doctors', icon: Stethoscope },
+    { name: t('adminDiseases'), href: '/admin/diseases', icon: Activity },
+    { name: t('adminPages'), href: '/admin/pages', icon: FileImage },
+    { name: t('adminPatientStories'), href: '/admin/patient-stories', icon: Heart },
+    { name: t('adminPartners'), href: '/admin/partners', icon: Building2 },
+    { name: t('adminNotifications'), href: '/admin/notifications', icon: Bell },
+    { name: t('adminAnalytics'), href: '/admin/analytics', icon: BarChart3 },
+    { name: t('adminSettings'), href: '/admin/settings', icon: Settings },
   ];
 
   const isActive = (href: string) => {
     if (href === '/admin') {
-      return currentPath === '/admin';
+      return cleanPath === '/admin';
     }
-    return currentPath.startsWith(href);
+    return cleanPath.startsWith(href);
   };
 
   return (
@@ -67,35 +83,54 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       ${isOpen ? 'translate-x-0' : '-translate-x-full'}
     `}>
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between h-16 lg:h-18 px-4 lg:px-6 theme-border border-b flex-shrink-0">
-        <Link to="/" className={`flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} group`}>
-          <img
-            src="/logo.png"
-            alt="Revmohelp Logo"
-            className="w-8 h-8 lg:w-9 lg:h-9 rounded-lg object-cover group-hover:scale-110 transition-transform duration-300"
-          />
-          {!collapsed && (
-            <div>
-              <span className="text-lg font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmohelp</span>
-              <div className="text-xs theme-text-muted hidden lg:block">Admin Panel</div>
+      <div className={`flex ${collapsed ? 'flex-col items-center space-y-2' : 'items-center justify-between'} h-16 lg:h-18 px-4 lg:px-6 theme-border border-b flex-shrink-0`}>
+        {collapsed ? (
+          <>
+            <button
+              onClick={onToggleCollapse}
+              className="p-2 theme-text-secondary hover:theme-text rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
+              title={t('adminExpandSidebar')}
+            >
+              <ChevronRight size={20} />
+            </button>
+            <Link to="/" className="flex items-center justify-center group">
+              <img
+                src="/logo.png"
+                alt="Revmohelp Logo"
+                className="w-[18px] h-[18px] rounded-lg object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/" className={`flex items-center space-x-3 group`}>
+              <img
+                src="/logo.png"
+                alt="Revmohelp Logo"
+                className="w-8 h-8 lg:w-9 lg:h-9 rounded-lg object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div>
+                <span className="text-lg font-bold theme-text group-hover:theme-accent transition-colors duration-300">Revmohelp</span>
+                <div className="text-xs theme-text-muted hidden lg:block">{t('adminPanel')}</div>
+              </div>
+            </Link>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={onToggleCollapse}
+                className="hidden lg:flex p-2 theme-text-secondary hover:theme-text rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
+                title={t('adminCollapseSidebar')}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={onClose}
+                className="lg:hidden p-2 theme-text-secondary hover:theme-text rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
+              >
+                <X size={20} />
+              </button>
             </div>
-          )}
-        </Link>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={onToggleCollapse}
-            className="hidden lg:flex p-2 theme-text-secondary hover:theme-text rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          </button>
-          <button
-            onClick={onClose}
-            className="lg:hidden p-2 theme-text-secondary hover:theme-text rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
-          >
-            <X size={20} />
-          </button>
-        </div>
+          </>
+        )}
       </div>
 
       {/* Navigation */}

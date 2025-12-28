@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Plus, CreditCard as Edit, Trash2, Eye, Calendar, User, Image, Video, FileText, Play, TrendingUp, Clock, Tag, Globe, Settings, AlertCircle, CheckCircle, ChevronDown } from 'lucide-react';
 import { Ban, Unlock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { getPosts, deletePost, updatePost } from '../../lib/posts';
 import { getCategories } from '../../lib/categories';
 import { getPostTypeIcon, getPostTypeLabel, getPostTypeColor } from '../../utils/postHelpers';
@@ -9,6 +10,7 @@ import type { Post } from '../../types';
 import CategoriesManagement from '../../components/admin/CategoriesManagement';
 
 const PostsManagement: React.FC = () => {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [authors, setAuthors] = useState<any[]>([]);
@@ -82,34 +84,34 @@ const PostsManagement: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'posts', label: 'Maqolalar', icon: FileText },
-    { id: 'categories', label: 'Kategoriyalar', icon: Tag }
+    { id: 'posts', label: t('articlesTab'), icon: FileText },
+    { id: 'categories', label: t('categoriesTab'), icon: Tag }
   ];
 
-  const pageTitle = activeTab === 'posts' ? 'Maqolalar Boshqaruvi' : 'Kategoriyalar';
-  const pageSubtitle = activeTab === 'posts' ? 'Maqolalarni yaratish va boshqarish' : 'Maqola kategoriyalarini boshqarish';
+  const pageTitle = activeTab === 'posts' ? t('postsManagementTitle') : t('categoriesManagementTitle');
+  const pageSubtitle = activeTab === 'posts' ? t('postsManagementDesc') : t('categoriesManagementDesc');
 
   const handleDelete = async (postId: string) => {
-    if (!confirm('Bu maqolani o\'chirishni xohlaysizmi?')) return;
+    if (!confirm(t('confirmDeletePost'))) return;
 
     setDeleteLoading(postId);
     try {
       const { error } = await deletePost(postId);
       if (error) {
-        alert('Xatolik: ' + error.message);
+        alert(t('postsErrorOccurred') + ': ' + error.message);
       } else {
         setPosts(prev => prev.filter(p => p.id !== postId));
       }
     } catch (error) {
-      alert('Xatolik yuz berdi');
+      alert(t('postsErrorOccurred'));
     } finally {
       setDeleteLoading(null);
     }
   };
 
   const handleBlockToggle = async (postId: string, title: string, isCurrentlyBlocked: boolean) => {
-    const action = isCurrentlyBlocked ? 'blokdan chiqarish' : 'bloklash';
-    if (!confirm(`"${title}" maqolasini ${action}ni xohlaysizmi?`)) return;
+    const confirmMessage = isCurrentlyBlocked ? t('confirmUnblockPost') : t('confirmBlockPost');
+    if (!confirm(`"${title}" ${confirmMessage}`)) return;
 
     setBlockLoading(postId);
     setMessage({ type: '', text: '' });
@@ -124,14 +126,14 @@ const PostsManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ 
-          type: 'success', 
-          text: `Maqola muvaffaqiyatli ${isCurrentlyBlocked ? 'blokdan chiqarildi va nashr etildi' : 'bloklandi'}!` 
+        setMessage({
+          type: 'success',
+          text: isCurrentlyBlocked ? t('postUnblocked') : t('postBlocked')
         });
         await loadData();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('postsErrorOccurred') });
     } finally {
       setBlockLoading(null);
     }
@@ -160,29 +162,29 @@ const PostsManagement: React.FC = () => {
   };
 
   const getSelectedCategoryName = () => {
-    if (selectedCategory === 'all') return 'Barcha kategoriyalar';
+    if (selectedCategory === 'all') return t('allCategories');
     const cat = categories.find(c => c.id === selectedCategory);
-    return cat ? cat.name : 'Barcha kategoriyalar';
+    return cat ? cat.name : t('allCategories');
   };
 
   const getSelectedAuthorName = () => {
-    if (selectedAuthor === 'all') return 'Barcha mualliflar';
+    if (selectedAuthor === 'all') return t('allAuthors');
     const auth = authors.find(a => a.id === selectedAuthor);
-    return auth ? `${auth.full_name} (${auth.role === 'doctor' ? 'Shifokor' : 'Admin'})` : 'Barcha mualliflar';
+    return auth ? `${auth.full_name} (${auth.role === 'doctor' ? t('postDoctorRole') : t('postAdminRole')})` : t('allAuthors');
   };
 
   const getSelectedStatusName = () => {
-    if (selectedStatus === 'all') return 'Barcha holatlar';
-    if (selectedStatus === 'published') return 'Nashr etilgan';
-    if (selectedStatus === 'draft') return 'Qoralama';
-    return 'Barcha holatlar';
+    if (selectedStatus === 'all') return t('allStatuses');
+    if (selectedStatus === 'published') return t('publishedStatus');
+    if (selectedStatus === 'draft') return t('draftStatus');
+    return t('allStatuses');
   };
 
   const getSelectedBlockStatusName = () => {
-    if (selectedBlockStatus === 'all') return 'Barcha maqolalar';
-    if (selectedBlockStatus === 'active') return 'Faol maqolalar';
-    if (selectedBlockStatus === 'blocked') return 'Bloklangan maqolalar';
-    return 'Barcha maqolalar';
+    if (selectedBlockStatus === 'all') return t('allPosts');
+    if (selectedBlockStatus === 'active') return t('activePosts');
+    if (selectedBlockStatus === 'blocked') return t('blockedPosts');
+    return t('allPosts');
   };
 
   if (loading) {
@@ -233,7 +235,7 @@ const PostsManagement: React.FC = () => {
                 className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
               >
                 <Plus size={18} />
-                <span>Yangi Maqola</span>
+                <span>{t('newArticle')}</span>
               </Link>
             )}
 
@@ -243,7 +245,7 @@ const PostsManagement: React.FC = () => {
                 className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
               >
                 <Plus size={18} />
-                <span>Yangi Kategoriya</span>
+                <span>{t('newCategory')}</span>
               </button>
             )}
           </div>
@@ -284,19 +286,19 @@ const PostsManagement: React.FC = () => {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
               <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
                 <div className="text-xl lg:text-2xl font-bold theme-text">{posts.length}</div>
-                <div className="text-xs lg:text-sm theme-text-secondary">Jami maqolalar</div>
+                <div className="text-xs lg:text-sm theme-text-secondary">{t('totalPosts')}</div>
               </div>
               <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
                 <div className="text-xl lg:text-2xl font-bold text-green-600">{posts.filter(p => p.published).length}</div>
-                <div className="text-xs lg:text-sm theme-text-secondary">Nashr etilgan</div>
+                <div className="text-xs lg:text-sm theme-text-secondary">{t('publishedPosts')}</div>
               </div>
               <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
                 <div className="text-xl lg:text-2xl font-bold text-yellow-600">{posts.filter(p => !p.published).length}</div>
-                <div className="text-xs lg:text-sm theme-text-secondary">Qoralama</div>
+                <div className="text-xs lg:text-sm theme-text-secondary">{t('draftPosts')}</div>
               </div>
               <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
                 <div className="text-xl lg:text-2xl font-bold text-blue-600">{posts.reduce((sum, p) => sum + (p.views_count || 0), 0).toLocaleString()}</div>
-                <div className="text-xs lg:text-sm theme-text-secondary">Jami ko'rishlar</div>
+                <div className="text-xs lg:text-sm theme-text-secondary">{t('totalViews')}</div>
               </div>
             </div>
 
@@ -309,7 +311,7 @@ const PostsManagement: React.FC = () => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
                     <input
                       type="text"
-                      placeholder="Maqolalarni qidiring..."
+                      placeholder={t('searchPosts')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
@@ -332,7 +334,7 @@ const PostsManagement: React.FC = () => {
                         onClick={() => { setSelectedCategory('all'); setCategoryDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Barcha kategoriyalar
+                        {t('allCategories')}
                       </div>
                       {categories.map((category) => (
                         <div
@@ -362,7 +364,7 @@ const PostsManagement: React.FC = () => {
                         onClick={() => { setSelectedAuthor('all'); setAuthorDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Barcha mualliflar
+                        {t('allAuthors')}
                       </div>
                       {authors.map((author) => (
                         <div
@@ -370,7 +372,7 @@ const PostsManagement: React.FC = () => {
                           onClick={() => { setSelectedAuthor(author.id); setAuthorDropdownOpen(false); }}
                           className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                         >
-                          {author.full_name} ({author.role === 'doctor' ? 'Shifokor' : 'Admin'})
+                          {author.full_name} ({author.role === 'doctor' ? t('postDoctorRole') : t('postAdminRole')})
                         </div>
                       ))}
                     </div>
@@ -392,19 +394,19 @@ const PostsManagement: React.FC = () => {
                         onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Barcha holatlar
+                        {t('allStatuses')}
                       </div>
                       <div
                         onClick={() => { setSelectedStatus('published'); setStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Nashr etilgan
+                        {t('publishedStatus')}
                       </div>
                       <div
                         onClick={() => { setSelectedStatus('draft'); setStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Qoralama
+                        {t('draftStatus')}
                       </div>
                     </div>
                   )}
@@ -425,19 +427,19 @@ const PostsManagement: React.FC = () => {
                         onClick={() => { setSelectedBlockStatus('all'); setBlockStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Barcha maqolalar
+                        {t('allPosts')}
                       </div>
                       <div
                         onClick={() => { setSelectedBlockStatus('active'); setBlockStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Faol maqolalar
+                        {t('activePosts')}
                       </div>
                       <div
                         onClick={() => { setSelectedBlockStatus('blocked'); setBlockStatusDropdownOpen(false); }}
                         className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                       >
-                        Bloklangan maqolalar
+                        {t('blockedPosts')}
                       </div>
                     </div>
                   )}
@@ -487,7 +489,7 @@ const PostsManagement: React.FC = () => {
                         <div className="w-full h-full theme-bg-tertiary flex items-center justify-center group-hover:theme-bg-quaternary transition-colors duration-300">
                           <div className="text-center">
                             <PostTypeIcon size={48} className="theme-text-muted mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-                            <p className="theme-text-muted text-sm font-medium">Matn Maqolasi</p>
+                            <p className="theme-text-muted text-sm font-medium">{t('textArticle')}</p>
                           </div>
                         </div>
                       )}
@@ -515,11 +517,11 @@ const PostsManagement: React.FC = () => {
                             isBlocked
                               ? 'bg-red-500 text-white'
                               : post.published
-                              ? 'bg-green-500 text-white'
-                              : 'bg-yellow-500 text-white'
+                            ? 'bg-green-500 text-white'
+                            : 'bg-yellow-500 text-white'
                           }`}
                         >
-                          {isBlocked ? 'Bloklangan' : 'Faol'}
+                          {isBlocked ? t('blockedStatus') : t('activeStatus')}
                         </span>
                       </div>
                     </div>
@@ -543,12 +545,12 @@ const PostsManagement: React.FC = () => {
                               {post.author?.full_name}
                               {post.author?.role === 'doctor' && (
                                 <span className="ml-1 px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded font-bold">
-                                  Dr
+                                  {t('doctorAbbr')}
                                 </span>
                               )}
                               {post.author?.role === 'admin' && (
                                 <span className="ml-1 px-2 py-0.5 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded font-bold">
-                                  Admin
+                                  {t('postAdminRole')}
                                 </span>
                               )}
                             </span>
@@ -586,7 +588,7 @@ const PostsManagement: React.FC = () => {
                         <div className="flex items-center space-x-3">
                           <div className="flex items-center space-x-1">
                             <Globe size={10} />
-                            <span>SEO: {post.meta_title ? '✅' : '❌'}</span>
+                            <span>{t('seoTitle')} {post.meta_title ? t('seoYes') : t('seoNo')}</span>
                           </div>
                           <div className="flex items-center space-x-1">
                             <Tag size={10} />
@@ -595,7 +597,7 @@ const PostsManagement: React.FC = () => {
                         </div>
                         <div className="flex items-center space-x-1">
                           <Clock size={10} />
-                          <span>{Math.ceil(post.content.length / 1000)} min</span>
+                          <span>{Math.ceil(post.content.length / 1000)} {t('minutesLabel')}</span>
                         </div>
                       </div>
 
@@ -611,7 +613,7 @@ const PostsManagement: React.FC = () => {
                                 ? 'text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20'
                                 : 'text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20'
                             } disabled:opacity-50 disabled:transform-none`}
-                            title={isBlocked ? 'Blokdan chiqarish va nashr etish' : 'Bloklash (nashrdan olib tashlash)'}
+                            title={isBlocked ? t('unblockAndPublish') : t('blockPostAction')}
                           >
                             {blockLoading === post.id ? (
                               <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-current"></div>
@@ -619,7 +621,7 @@ const PostsManagement: React.FC = () => {
                               <>
                                 {isBlocked ? <Unlock size={14} /> : <Ban size={14} />}
                                 <span className="text-xs font-medium hidden lg:inline">
-                                  {isBlocked ? 'Faollashtirish' : 'Bloklash'}
+                                  {isBlocked ? t('activatePost') : t('blockPost')}
                                 </span>
                               </>
                             )}
@@ -627,32 +629,32 @@ const PostsManagement: React.FC = () => {
                           <Link
                             to={`/admin/posts/edit/${post.id}`}
                             className="flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition-all duration-200 transform hover:scale-105"
-                            title="Tahrirlash"
+                            title={t('editPost')}
                           >
                             <Edit size={14} />
-                            <span className="text-xs font-medium hidden lg:inline">Tahrirlash</span>
+                            <span className="text-xs font-medium hidden lg:inline">{t('editPost')}</span>
                           </Link>
                           <Link
                             to={`/posts/${post.slug}`}
                             target="_blank"
                             className="flex items-center space-x-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900 transition-all duration-200 transform hover:scale-105"
-                            title="Ko'rish"
+                            title={t('viewPost')}
                           >
                             <Eye size={14} />
-                            <span className="text-xs font-medium hidden lg:inline">Ko'rish</span>
+                            <span className="text-xs font-medium hidden lg:inline">{t('viewPost')}</span>
                           </Link>
                           <button
                             onClick={() => handleDelete(post.id)}
                             disabled={deleteLoading === post.id}
                             className="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
-                            title="O'chirish"
+                            title={t('deletePost')}
                           >
                             {deleteLoading === post.id ? (
                               <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-red-600"></div>
                             ) : (
                               <>
                                 <Trash2 size={14} />
-                                <span className="text-xs font-medium hidden lg:inline">O'chirish</span>
+                                <span className="text-xs font-medium hidden lg:inline">{t('deletePost')}</span>
                               </>
                             )}
                           </button>
@@ -662,11 +664,11 @@ const PostsManagement: React.FC = () => {
                         <div className="flex items-center space-x-2 text-xs theme-text-muted">
                           <div className="flex items-center space-x-1">
                             <TrendingUp size={10} />
-                            <span>{post.tags.length} teg</span>
+                            <span>{post.tags.length} {t('tagsLabel')}</span>
                           </div>
                           <div className="flex items-center space-x-1">
                             <FileText size={10} />
-                            <span>{post.content.length > 1000 ? '1K+' : post.content.length} belgi</span>
+                            <span>{post.content.length > 1000 ? '1K+' : post.content.length} {t('charactersLabel')}</span>
                           </div>
                         </div>
                       </div>
@@ -683,17 +685,17 @@ const PostsManagement: React.FC = () => {
                   <Search size={48} className="mx-auto" />
                 </div>
                 <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-                  Maqola topilmadi
+                  {t('noPostsFound')}
                 </h3>
                 <p className="theme-text-muted mb-6">
-                  Qidiruv so'zini o'zgartiring yoki yangi maqola yarating
+                  {t('changeSearchOrCreate')}
                 </p>
                 <Link
                   to="/admin/posts/create"
                   className="inline-flex items-center space-x-2 theme-accent-bg text-white px-4 lg:px-6 py-2 lg:py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
                 >
                   <Plus size={18} />
-                  <span>Birinchi maqolani yaratish</span>
+                  <span>{t('createFirstPost')}</span>
                 </Link>
               </div>
             )}

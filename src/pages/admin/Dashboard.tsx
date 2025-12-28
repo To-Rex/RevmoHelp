@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Users, FileText, Eye, TrendingUp, Building2, MessageSquare, ArrowUpRight, Activity, Clock, CheckCircle, Stethoscope, Heart, Award, Calendar, User, Play, Image as ImageIcon, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getPosts } from '../../lib/posts';
@@ -13,6 +14,7 @@ import type { PatientStory } from '../../lib/patientStories';
 import type { Notification } from '../../lib/notifications';
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -60,6 +62,7 @@ const Dashboard: React.FC = () => {
     // Calculate growth (mock data for demonstration)
     const getGrowthPercentage = (current: number) => {
       const mockPrevious = Math.floor(current * 0.85); // Simulate 15% growth
+      if (mockPrevious === 0) return '0.0';
       return ((current - mockPrevious) / mockPrevious * 100).toFixed(1);
     };
 
@@ -110,7 +113,7 @@ const Dashboard: React.FC = () => {
     ...posts.slice(0, 2).map(post => ({
       id: `post-${post.id}`,
       user: post.author?.full_name || 'Noma\'lum muallif',
-      action: post.published ? 'maqola nashr etdi' : 'qoralama yaratdi',
+      action: post.published ? t('publishedArticle') : t('createdDraft'),
       target: post.title,
       time: getRelativeTime(post.published_at || post.created_at),
       color: post.published ? 'bg-green-500' : 'bg-yellow-500'
@@ -118,7 +121,7 @@ const Dashboard: React.FC = () => {
     ...users.slice(0, 2).map(user => ({
       id: `user-${user.id}`,
       user: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Foydalanuvchi',
-      action: 'ro\'yxatdan o\'tdi',
+      action: t('registered'),
       target: `${user.user_metadata?.role || 'patient'} sifatida`,
       time: getRelativeTime(user.created_at),
       color: 'bg-blue-500'
@@ -126,7 +129,7 @@ const Dashboard: React.FC = () => {
     ...stories.slice(0, 1).map(story => ({
       id: `story-${story.id}`,
       user: 'Admin',
-      action: 'bemor tarixi qo\'shdi',
+      action: t('addedPatientStory'),
       target: story.patient_name,
       time: getRelativeTime(story.created_at),
       color: 'bg-purple-500'
@@ -134,7 +137,7 @@ const Dashboard: React.FC = () => {
     ...notifications.slice(0, 1).map(notification => ({
       id: `notification-${notification.id}`,
       user: notification.creator?.full_name || 'System',
-      action: 'bildirishnoma yubordi',
+      action: t('sentNotification'),
       target: notification.title,
       time: getRelativeTime(notification.sent_at),
       color: 'bg-orange-500'
@@ -147,19 +150,19 @@ const Dashboard: React.FC = () => {
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
     if (diffInHours < 1) {
-      return `${Math.floor(diffInHours * 60)} daqiqa oldin`;
+      return `${Math.floor(diffInHours * 60)} ${t('minutesAgo')}`;
     } else if (diffInHours < 24) {
-      return `${Math.floor(diffInHours)} soat oldin`;
+      return `${Math.floor(diffInHours)} ${t('hoursAgo')}`;
     } else {
-      return `${Math.floor(diffInHours / 24)} kun oldin`;
+      return `${Math.floor(diffInHours / 24)} ${t('daysAgo')}`;
     }
   }
 
   const quickActions = [
-    { name: 'Yangi Maqola', icon: FileText, color: 'bg-gradient-to-r from-blue-500 to-cyan-500', href: '/admin/posts/create' },
-    { name: 'Foydalanuvchilar', icon: Users, color: 'bg-gradient-to-r from-emerald-500 to-green-500', href: '/admin/users' },
-    { name: 'Analitika', icon: TrendingUp, color: 'bg-gradient-to-r from-violet-500 to-purple-500', href: '/admin/analytics' },
-    { name: 'Bildirishnomalar', icon: MessageSquare, color: 'bg-gradient-to-r from-amber-500 to-orange-500', href: '/admin/notifications' },
+    { name: t('newArticle'), icon: FileText, color: 'bg-primary-500', href: '/admin/posts/create' },
+    { name: t('users'), icon: Users, color: 'bg-primary-500', href: '/admin/users' },
+    { name: t('analytics'), icon: TrendingUp, color: 'bg-primary-500', href: '/admin/analytics' },
+    { name: t('notifications'), icon: MessageSquare, color: 'bg-primary-500', href: '/admin/notifications' },
   ];
 
   const getPostTypeIcon = (type: string) => {
@@ -199,7 +202,7 @@ const Dashboard: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Dashboard yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('dashboardLoading')}</p>
         </div>
       </div>
     );
@@ -210,20 +213,20 @@ const Dashboard: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0">
         <div>
-          <h1 className="text-2xl lg:text-2xl font-bold theme-text">Dashboard</h1>
-          <p className="theme-text-secondary mt-1 text-sm lg:text-base">Platformangiz holatini kuzatib boring</p>
+          <h1 className="text-2xl lg:text-2xl font-bold theme-text">{t('dashboardTitle')}</h1>
+          <p className="theme-text-secondary mt-1 text-sm lg:text-base">{t('dashboardSubtitle')}</p>
         </div>
         <div className="flex items-center space-x-3 lg:space-x-4">
           <div className="flex items-center space-x-2 text-xs lg:text-sm theme-text-muted">
             <Clock size={16} />
-            <span>Oxirgi yangilanish: {lastUpdated.toLocaleTimeString('uz-UZ')}</span>
+            <span>{t('lastUpdate')} {lastUpdated.toLocaleTimeString('uz-UZ')}</span>
           </div>
           <button
             onClick={loadDashboardData}
             className="flex items-center space-x-2 theme-accent-bg text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm"
           >
             <Activity size={16} />
-            <span>Yangilash</span>
+            <span>{t('refresh')}</span>
           </button>
         </div>
       </div>
@@ -247,7 +250,7 @@ const Dashboard: React.FC = () => {
               {stats.totalUsers.toLocaleString()}
             </p>
             <p className="text-xs lg:text-sm theme-text-secondary">
-              Jami Foydalanuvchilar
+              {t('totalUsers')}
             </p>
           </div>
         </div>
@@ -269,7 +272,7 @@ const Dashboard: React.FC = () => {
               {stats.totalPosts}
             </p>
             <p className="text-xs lg:text-sm theme-text-secondary">
-              Nashr Etilgan Maqolalar
+              {t('publishedArticles')}
             </p>
           </div>
         </div>
@@ -291,7 +294,7 @@ const Dashboard: React.FC = () => {
               {stats.totalViews.toLocaleString()}
             </p>
             <p className="text-xs lg:text-sm theme-text-secondary">
-              Jami Ko'rishlar
+              {t('totalViews')}
             </p>
           </div>
         </div>
@@ -313,7 +316,7 @@ const Dashboard: React.FC = () => {
               {stats.totalDoctors}
             </p>
             <p className="text-xs lg:text-sm theme-text-secondary">
-              Faol Shifokorlar
+              {t('activeDoctors')}
             </p>
           </div>
         </div>
@@ -321,7 +324,7 @@ const Dashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
-        <h2 className="text-lg lg:text-xl font-bold theme-text mb-4 lg:mb-6">Tezkor Amallar</h2>
+        <h2 className="text-lg lg:text-xl font-bold theme-text mb-4 lg:mb-6">{t('quickActions')}</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {quickActions.map((action) => {
             const Icon = action.icon;
@@ -345,12 +348,12 @@ const Dashboard: React.FC = () => {
         <div className="theme-bg rounded-2xl theme-border border">
           <div className="p-4 lg:p-6 theme-border border-b">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg lg:text-xl font-bold theme-text">So'nggi Maqolalar</h2>
+              <h2 className="text-lg lg:text-xl font-bold theme-text">{t('recentArticles')}</h2>
               <Link
                 to="/admin/posts"
                 className="text-xs lg:text-sm theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium"
               >
-                Barchasini ko'rish
+                {t('viewAll')}
               </Link>
             </div>
           </div>
@@ -368,12 +371,12 @@ const Dashboard: React.FC = () => {
                         </p>
                       </div>
                       <p className="text-sm theme-text-muted mb-2">
-                        {post.author} tomonidan
+                        {post.author} {t('by')}
                       </p>
                       <div className="flex flex-wrap items-center gap-2 text-xs theme-text-muted">
                         <div className="flex items-center space-x-1">
                           <Eye size={12} />
-                          <span>{post.views.toLocaleString()} ko'rishlar</span>
+                          <span>{post.views.toLocaleString()} {t('views')}</span>
                         </div>
                         <span>{post.date}</span>
                       </div>
@@ -386,7 +389,7 @@ const Dashboard: React.FC = () => {
                             : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
                         }`}
                       >
-                        {post.status === 'published' ? 'Nashr etilgan' : 'Qoralama'}
+                        {post.status === 'published' ? t('published') : t('draft')}
                       </span>
                     </div>
                   </div>
@@ -394,7 +397,7 @@ const Dashboard: React.FC = () => {
               }) : (
                 <div className="text-center py-8">
                   <FileText size={32} className="theme-text-muted mx-auto mb-2 opacity-50" />
-                  <p className="theme-text-secondary text-sm">Hozircha maqolalar yo'q</p>
+                  <p className="theme-text-secondary text-sm">{t('noArticlesYet')}</p>
                 </div>
               )}
             </div>
@@ -405,12 +408,12 @@ const Dashboard: React.FC = () => {
         <div className="theme-bg rounded-2xl theme-border border">
           <div className="p-4 lg:p-6 theme-border border-b">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg lg:text-xl font-bold theme-text">So'nggi Foydalanuvchilar</h2>
+              <h2 className="text-lg lg:text-xl font-bold theme-text">{t('recentUsers')}</h2>
               <Link
                 to="/admin/users"
                 className="text-xs lg:text-sm theme-accent hover:text-blue-800 dark:hover:text-blue-300 font-medium"
               >
-                Barchasini ko'rish
+                {t('viewAll')}
               </Link>
             </div>
           </div>
@@ -419,8 +422,8 @@ const Dashboard: React.FC = () => {
               {recentUsers.length > 0 ? recentUsers.map((user) => (
                 <div key={user.id} className="flex items-center justify-between p-4 theme-bg-tertiary rounded-xl transition-all duration-200">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 lg:w-10 lg:h-10 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm font-semibold theme-accent">{user.avatar}</span>
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-semibold text-white">{user.avatar}</span>
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center space-x-2">
@@ -435,15 +438,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <span
-                      className={`px-3 py-1 text-xs font-medium rounded-full capitalize ${
-                        user.role === 'doctor'
-                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200'
-                          : user.role === 'admin'
-                          ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                      }`}
-                    >
+                    <span className="px-3 py-1 text-xs font-medium rounded-full capitalize bg-primary-500 text-white">
                       {user.role}
                     </span>
                     <div className="text-xs theme-text-muted mt-1 hidden lg:block">{user.joinDate}</div>
@@ -452,7 +447,7 @@ const Dashboard: React.FC = () => {
               )) : (
                 <div className="text-center py-8">
                   <Users size={32} className="theme-text-muted mx-auto mb-2 opacity-50" />
-                  <p className="theme-text-secondary text-sm">Hozircha foydalanuvchilar yo'q</p>
+                  <p className="theme-text-secondary text-sm">{t('noUsersYet')}</p>
                 </div>
               )}
             </div>
@@ -465,7 +460,7 @@ const Dashboard: React.FC = () => {
         <div className="p-4 lg:p-6 theme-border border-b">
           <div className="flex items-center space-x-2">
             <Activity size={18} className="lg:size-20 theme-accent" />
-            <h2 className="text-lg lg:text-xl font-bold theme-text">So'nggi Faollik</h2>
+            <h2 className="text-lg lg:text-xl font-bold theme-text">{t('recentActivity')}</h2>
           </div>
         </div>
         <div className="p-4 lg:p-6">
@@ -486,7 +481,7 @@ const Dashboard: React.FC = () => {
             )) : (
               <div className="text-center py-8">
                 <Activity size={32} className="theme-text-muted mx-auto mb-2 opacity-50" />
-                <p className="theme-text-secondary text-sm">Hozircha faollik yo'q</p>
+                <p className="theme-text-secondary text-sm">{t('noActivityYet')}</p>
               </div>
             )}
           </div>
@@ -497,62 +492,62 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base lg:text-lg font-semibold theme-text">Tizim Holati</h3>
+            <h3 className="text-base lg:text-lg font-semibold theme-text">{t('systemStatus')}</h3>
             <CheckCircle size={18} className="text-secondary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm theme-text-secondary">Server</span>
-              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">Onlayn</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">{t('online')}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Ma'lumotlar bazasi</span>
-              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">Ulangan</span>
+              <span className="text-sm theme-text-secondary">{t('database')}</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">{t('connected')}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Xotira</span>
-              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">78% ishlatilgan</span>
+              <span className="text-sm theme-text-secondary">{t('memory')}</span>
+              <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">78% {t('used')}</span>
             </div>
           </div>
         </div>
 
         <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base lg:text-lg font-semibold theme-text">Samaradorlik</h3>
+            <h3 className="text-base lg:text-lg font-semibold theme-text">{t('performance')}</h3>
             <TrendingUp size={18} className="text-primary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Javob vaqti</span>
+              <span className="text-sm theme-text-secondary">{t('responseTime')}</span>
               <span className="text-sm font-medium theme-text">245ms</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Uptime</span>
+              <span className="text-sm theme-text-secondary">{t('uptime')}</span>
               <span className="text-sm font-medium theme-text">99.9%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Yuklanish</span>
-              <span className="text-sm font-medium theme-text">Past</span>
+              <span className="text-sm theme-text-secondary">{t('load')}</span>
+              <span className="text-sm font-medium theme-text">{t('low')}</span>
             </div>
           </div>
         </div>
 
         <div className="theme-bg rounded-2xl theme-border border p-4 lg:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base lg:text-lg font-semibold theme-text">Kontent</h3>
+            <h3 className="text-base lg:text-lg font-semibold theme-text">{t('content')}</h3>
             <Heart size={18} className="text-secondary-500" />
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Bemor tarixi</span>
+              <span className="text-sm theme-text-secondary">{t('patientStories')}</span>
               <span className="text-sm font-medium theme-text">{stories.filter(s => s.published).length}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Kategoriyalar</span>
+              <span className="text-sm theme-text-secondary">{t('categories')}</span>
               <span className="text-sm font-medium theme-text">6</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm theme-text-secondary">Bildirishnomalar</span>
+              <span className="text-sm theme-text-secondary">{t('notifications')}</span>
               <span className="text-sm font-medium theme-text">{notifications.filter(n => n.active).length}</span>
             </div>
           </div>

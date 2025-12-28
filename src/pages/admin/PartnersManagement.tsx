@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Building2, 
-  ExternalLink, 
+import { useTranslation } from 'react-i18next';
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Building2,
+  ExternalLink,
   Upload,
   Eye,
   Star,
@@ -24,18 +25,20 @@ import {
   Briefcase,
   GraduationCap,
   Cpu,
-  Heart
+  Heart,
+  ChevronDown
 } from 'lucide-react';
-import { 
-  getPartners, 
-  createPartner, 
-  updatePartner, 
-  deletePartner, 
-  checkPartnerSlugUniqueness 
+import {
+  getPartners,
+  createPartner,
+  updatePartner,
+  deletePartner,
+  checkPartnerSlugUniqueness
 } from '../../lib/partners';
 import type { Partner, CreatePartnerData } from '../../lib/partners';
 
 const PartnersManagement: React.FC = () => {
+  const { t } = useTranslation();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,6 +50,7 @@ const PartnersManagement: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState<CreatePartnerData>({
     name: '',
@@ -64,12 +68,12 @@ const PartnersManagement: React.FC = () => {
   });
 
   const partnershipTypes = [
-    { value: 'all', label: 'Barcha turlar', icon: Building2, color: 'bg-gray-100 text-gray-600' },
-    { value: 'medical', label: 'Tibbiy muassasa', icon: Heart, color: 'bg-red-100 text-red-600' },
-    { value: 'education', label: 'Ta\'lim muassasasi', icon: GraduationCap, color: 'bg-blue-100 text-blue-600' },
-    { value: 'technology', label: 'Texnologiya', icon: Cpu, color: 'bg-purple-100 text-purple-600' },
-    { value: 'association', label: 'Assotsiatsiya', icon: Users, color: 'bg-green-100 text-green-600' },
-    { value: 'general', label: 'Umumiy', icon: Briefcase, color: 'bg-orange-100 text-orange-600' }
+    { value: 'all', label: t('allTypes'), icon: Building2, color: 'bg-gray-100 text-gray-600' },
+    { value: 'medical', label: t('medicalType'), icon: Heart, color: 'bg-red-100 text-red-600' },
+    { value: 'education', label: t('educationType'), icon: GraduationCap, color: 'bg-blue-100 text-blue-600' },
+    { value: 'technology', label: t('technologyType'), icon: Cpu, color: 'bg-purple-100 text-purple-600' },
+    { value: 'association', label: t('associationType'), icon: Users, color: 'bg-green-100 text-green-600' },
+    { value: 'general', label: t('generalType'), icon: Briefcase, color: 'bg-orange-100 text-orange-600' }
   ];
 
   useEffect(() => {
@@ -84,7 +88,7 @@ const PartnersManagement: React.FC = () => {
         setPartners(data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Hamkorlarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('errorLoadingPartners') });
     } finally {
       setLoading(false);
     }
@@ -166,22 +170,22 @@ const PartnersManagement: React.FC = () => {
 
   const validateForm = async () => {
     if (!formData.name.trim()) {
-      setMessage({ type: 'error', text: 'Hamkor nomi kiritilishi shart' });
+      setMessage({ type: 'error', text: t('nameRequired') });
       return false;
     }
     if (!formData.slug.trim()) {
-      setMessage({ type: 'error', text: 'URL slug kiritilishi shart' });
+      setMessage({ type: 'error', text: t('slugRequired') });
       return false;
     }
 
     // Slug noyobligini tekshirish
     const { isUnique } = await checkPartnerSlugUniqueness(
-      formData.slug, 
+      formData.slug,
       editingPartner?.id
     );
-    
+
     if (!isUnique) {
-      setMessage({ type: 'error', text: 'Bu URL (slug) allaqachon mavjud. Boshqa nom yozing yoki URL ni o\'zgartiring.' });
+      setMessage({ type: 'error', text: t('slugExists') });
       return false;
     }
 
@@ -200,16 +204,16 @@ const PartnersManagement: React.FC = () => {
       const { data, error } = await createPartner(formData);
 
       if (error) {
-        setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setMessage({ type: 'error', text: t('partnersError') + ': ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Hamkor muvaffaqiyatli yaratildi!' });
+        setMessage({ type: 'success', text: t('partnerCreated') });
         await loadPartners();
         setTimeout(() => {
           closeModals();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('generalError') });
     } finally {
       setIsSubmitting(false);
     }
@@ -230,37 +234,37 @@ const PartnersManagement: React.FC = () => {
       });
 
       if (error) {
-        setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
+        setMessage({ type: 'error', text: t('partnersError') + ': ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Hamkor muvaffaqiyatli yangilandi!' });
+        setMessage({ type: 'success', text: t('partnerUpdated') });
         await loadPartners();
         setTimeout(() => {
           closeModals();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('generalError') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (partnerId: string, partnerName: string) => {
-    if (!confirm(`${partnerName} hamkorni o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`${partnerName} ${t('confirmDelete')}`)) return;
 
     setDeleteLoading(partnerId);
     setMessage({ type: '', text: '' });
-    
+
     try {
       const { error } = await deletePartner(partnerId);
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Hamkor muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('partnerDeleted') });
         await loadPartners();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('partnersError') });
     } finally {
       setDeleteLoading(null);
     }
@@ -289,7 +293,7 @@ const PartnersManagement: React.FC = () => {
 
   const getTypeLabel = (type: string) => {
     const typeData = partnershipTypes.find(t => t.value === type);
-    return typeData?.label || 'Umumiy';
+    return typeData?.label || t('general');
   };
 
   const formatDate = (dateString: string) => {
@@ -305,7 +309,7 @@ const PartnersManagement: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Hamkorlar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('loadingPartners')}</p>
         </div>
       </div>
     );
@@ -316,15 +320,15 @@ const PartnersManagement: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold theme-text">Hamkorlar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Hamkor tashkilotlar va logolarni boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">{t('partnersManagementTitle')}</h1>
+          <p className="theme-text-secondary">{t('partnersManagementDesc')}</p>
         </div>
         <button
           onClick={openCreateModal}
           className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           <Plus size={20} />
-          <span>Yangi Hamkor</span>
+          <span>{t('newPartner')}</span>
         </button>
       </div>
 
@@ -350,39 +354,39 @@ const PartnersManagement: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold theme-text">{partners.length}</div>
-          <div className="text-sm theme-text-secondary">Jami hamkorlar</div>
+          <div className="text-sm theme-text-secondary">{t('totalPartners')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-green-600">{partners.filter(p => p.active).length}</div>
-          <div className="text-sm theme-text-secondary">Faol</div>
+          <div className="text-sm theme-text-secondary">{t('activePartners')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-yellow-600">{partners.filter(p => p.featured).length}</div>
-          <div className="text-sm theme-text-secondary">Asosiy</div>
+          <div className="text-sm theme-text-secondary">{t('featuredPartners')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-blue-600">{partners.filter(p => p.website_url).length}</div>
-          <div className="text-sm theme-text-secondary">Veb-sayt bilan</div>
+          <div className="text-sm theme-text-secondary">{t('partnersWithWebsite')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-red-600">{partners.filter(p => !p.active).length}</div>
-          <div className="text-sm theme-text-secondary">Faol emas</div>
+          <div className="text-sm theme-text-secondary">{t('inactivePartners')}</div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="theme-bg rounded-xl theme-shadow theme-border border p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
-                placeholder="Hamkorlarni qidiring..."
+                placeholder={t('searchPartners')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
               />
             </div>
           </div>
@@ -392,7 +396,7 @@ const PartnersManagement: React.FC = () => {
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
             >
               {partnershipTypes.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -403,17 +407,45 @@ const PartnersManagement: React.FC = () => {
           </div>
 
           {/* Status Filter */}
-          <div className="lg:w-48">
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+          <div className="lg:w-48 relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setStatusDropdownOpen(!statusDropdownOpen); }}
+              className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <option value="all">Barcha holatlar</option>
-              <option value="active">Faol</option>
-              <option value="inactive">Faol emas</option>
-              <option value="featured">Asosiy hamkorlar</option>
-            </select>
+              <span>{selectedStatus === 'all' ? t('allStatuses') :
+                    selectedStatus === 'active' ? t('activeStatus') :
+                    selectedStatus === 'inactive' ? t('inactiveStatus') :
+                    t('featuredStatus')}</span>
+              <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+            </button>
+            {statusDropdownOpen && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div
+                  onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('allStatuses')}
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('active'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('activeStatus')}
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('inactive'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('inactiveStatus')}
+                </div>
+                <div
+                  onClick={() => { setSelectedStatus('featured'); setStatusDropdownOpen(false); }}
+                  className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
+                >
+                  {t('featuredStatus')}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -438,7 +470,7 @@ const PartnersManagement: React.FC = () => {
                 ) : (
                   <div className="text-center">
                     <Building2 size={48} className="theme-text-muted mx-auto mb-2 opacity-50" />
-                    <p className="theme-text-muted text-sm">Logo yo'q</p>
+                    <p className="theme-text-muted text-sm">{t('noLogo')}</p>
                   </div>
                 )}
                 
@@ -452,12 +484,12 @@ const PartnersManagement: React.FC = () => {
                       ? 'bg-green-500 text-white'
                       : 'bg-red-500 text-white'
                   }`}>
-                    {partner.active ? 'Faol' : 'Faol emas'}
+                    {partner.active ? t('partnersActive') : t('inactivePartners')}
                   </span>
                   {partner.featured && (
                     <span className="px-3 py-1 text-xs font-semibold bg-yellow-500 text-white rounded-full flex items-center space-x-1">
                       <Star size={12} />
-                      <span>Asosiy</span>
+                      <span>{t('featuredPartners')}</span>
                     </span>
                   )}
                 </div>
@@ -523,8 +555,8 @@ const PartnersManagement: React.FC = () => {
                 {/* Partner Meta */}
                 <div className="text-xs theme-text-muted mb-6 p-3 theme-bg-secondary rounded-lg">
                   <div className="flex items-center justify-between">
-                    <span>Yaratilgan: {formatDate(partner.created_at)}</span>
-                    <span>Yangilangan: {formatDate(partner.updated_at)}</span>
+                    <span>{t('partnersCreated')}: {formatDate(partner.created_at)}</span>
+                    <span>{t('partnersUpdated')}: {formatDate(partner.updated_at)}</span>
                   </div>
                 </div>
 
@@ -534,10 +566,10 @@ const PartnersManagement: React.FC = () => {
                     <button
                       onClick={() => openEditModal(partner)}
                       className="flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition-all duration-200 transform hover:scale-105"
-                      title="Tahrirlash"
+                      title={t('partnersEdit')}
                     >
                       <Edit size={16} />
-                      <span className="text-xs font-medium hidden sm:inline">Tahrirlash</span>
+                      <span className="text-xs font-medium hidden sm:inline">{t('partnersEdit')}</span>
                     </button>
                     {partner.website_url && (
                       <a
@@ -545,24 +577,24 @@ const PartnersManagement: React.FC = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center space-x-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900 transition-all duration-200 transform hover:scale-105"
-                        title="Veb-saytni ochish"
+                        title={t('partnersOpen')}
                       >
                         <ExternalLink size={16} />
-                        <span className="text-xs font-medium hidden sm:inline">Ochish</span>
+                        <span className="text-xs font-medium hidden sm:inline">{t('partnersOpen')}</span>
                       </a>
                     )}
                     <button
                       onClick={() => handleDelete(partner.id, partner.name)}
                       disabled={deleteLoading === partner.id}
                       className="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
-                      title="O'chirish"
+                      title={t('partnersDelete')}
                     >
                       {deleteLoading === partner.id ? (
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
                       ) : (
                         <>
                           <Trash2 size={16} />
-                          <span className="text-xs font-medium hidden sm:inline">O'chirish</span>
+                          <span className="text-xs font-medium hidden sm:inline">{t('partnersDelete')}</span>
                         </>
                       )}
                     </button>
@@ -587,17 +619,17 @@ const PartnersManagement: React.FC = () => {
             <Search size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Hamkor topilmadi
+            {t('partnerNotFound')}
           </h3>
           <p className="theme-text-muted mb-6">
-            Qidiruv so'zini o'zgartiring yoki yangi hamkor qo'shing
+            {t('changeSearchOrAdd')}
           </p>
           <button
             onClick={openCreateModal}
             className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <Plus size={20} />
-            <span>Birinchi hamkorni qo'shish</span>
+            <span>{t('addFirstPartner')}</span>
           </button>
         </div>
       )}
@@ -607,7 +639,7 @@ const PartnersManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Yangi Hamkor Qo'shish</h3>
+              <h3 className="text-xl font-bold theme-text">{t('addNewPartner')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -636,7 +668,7 @@ const PartnersManagement: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Hamkor nomi *</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('partnerName')} *</label>
                   <input
                     type="text"
                     name="name"
@@ -644,12 +676,12 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="Hamkor tashkilot nomi"
+                    placeholder={t('partnerNamePlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">URL Slug *</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('urlSlug')} *</label>
                   <input
                     type="text"
                     name="slug"
@@ -657,60 +689,60 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="url-slug"
+                    placeholder={t('slugPlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Logo URL</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('logoUrl')}</label>
                   <input
                     type="url"
                     name="logo_url"
                     value={formData.logo_url}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="https://example.com/logo.png"
+                    placeholder={t('logoPlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Veb-sayt</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('website')}</label>
                   <input
                     type="url"
                     name="website_url"
                     value={formData.website_url}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="https://example.com"
+                    placeholder={t('websitePlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Email</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('email')}</label>
                   <input
                     type="email"
                     name="contact_email"
                     value={formData.contact_email}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="info@example.com"
+                    placeholder={t('emailPlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Telefon</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('phone')}</label>
                   <input
                     type="tel"
                     name="contact_phone"
                     value={formData.contact_phone}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    placeholder="+998 71 123 45 67"
+                    placeholder={t('phonePlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Hamkorlik turi</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('partnershipType')}</label>
                   <select
                     name="partnership_type"
                     value={formData.partnership_type}
@@ -726,7 +758,7 @@ const PartnersManagement: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Tartib raqami</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('orderIndex')}</label>
                   <input
                     type="number"
                     name="order_index"
@@ -739,26 +771,26 @@ const PartnersManagement: React.FC = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Manzil</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('address')}</label>
                 <input
                   type="text"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                  placeholder="Toshkent, ko'cha nomi"
+                  placeholder={t('addressPlaceholder')}
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Tavsif</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('description')}</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={3}
                   className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
-                  placeholder="Hamkor haqida qisqacha ma'lumot"
+                  placeholder={t('descriptionPlaceholder')}
                 />
               </div>
 
@@ -771,7 +803,7 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Faol</span>
+                  <span className="text-sm theme-text-secondary">{t('partnersActive')}</span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -781,7 +813,7 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Asosiy hamkor</span>
+                  <span className="text-sm theme-text-secondary">{t('featuredPartner')}</span>
                 </label>
               </div>
 
@@ -791,14 +823,14 @@ const PartnersManagement: React.FC = () => {
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('partnersCancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Yaratilmoqda...' : 'Yaratish'}
+                  {isSubmitting ? t('creating') : t('create')}
                 </button>
               </div>
             </form>
@@ -811,7 +843,7 @@ const PartnersManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Hamkorni Tahrirlash</h3>
+              <h3 className="text-xl font-bold theme-text">{t('editPartner')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -840,7 +872,7 @@ const PartnersManagement: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">Hamkor nomi *</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('partnerName')} *</label>
                   <input
                     type="text"
                     name="name"
@@ -852,7 +884,7 @@ const PartnersManagement: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium theme-text-secondary mb-2">URL Slug *</label>
+                  <label className="block text-sm font-medium theme-text-secondary mb-2">{t('urlSlug')} *</label>
                   <input
                     type="text"
                     name="slug"
@@ -967,7 +999,7 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Faol</span>
+                  <span className="text-sm theme-text-secondary">{t('partnersActive')}</span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -977,7 +1009,7 @@ const PartnersManagement: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Asosiy hamkor</span>
+                  <span className="text-sm theme-text-secondary">{t('featuredPartner')}</span>
                 </label>
               </div>
 
@@ -987,14 +1019,14 @@ const PartnersManagement: React.FC = () => {
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('partnersCancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Saqlanmoqda...' : 'Saqlash'}
+                  {isSubmitting ? t('saving') : t('partnersSave')}
                 </button>
               </div>
             </form>

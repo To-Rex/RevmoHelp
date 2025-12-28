@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Shield, 
-  User, 
-  Eye, 
+import { useTranslation } from 'react-i18next';
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Shield,
+  User,
+  Eye,
   EyeOff,
   CheckCircle,
   AlertCircle,
@@ -20,6 +21,7 @@ import { getAdmins, createAdmin, updateAdmin, deleteAdmin } from '../../lib/admi
 import type { AdminUser } from '../../lib/adminAuth';
 
 const AdminsManagement: React.FC = () => {
+  const { t } = useTranslation();
   const { admin: currentAdmin } = useAdminAuth();
   const [admins, setAdmins] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +54,7 @@ const AdminsManagement: React.FC = () => {
         setAdmins(data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Adminlarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('errorLoadingAdmins') });
     } finally {
       setLoading(false);
     }
@@ -104,17 +106,17 @@ const AdminsManagement: React.FC = () => {
     e.preventDefault();
     
     if (!formData.login.trim()) {
-      setMessage({ type: 'error', text: 'Login kiritilishi shart' });
+      setMessage({ type: 'error', text: t('loginRequiredForm') });
       return;
     }
-    
+
     if (!formData.password.trim()) {
-      setMessage({ type: 'error', text: 'Parol kiritilishi shart' });
+      setMessage({ type: 'error', text: t('passwordRequired') });
       return;
     }
-    
+
     if (!formData.full_name.trim()) {
-      setMessage({ type: 'error', text: 'To\'liq ism kiritilishi shart' });
+      setMessage({ type: 'error', text: t('fullNameRequired') });
       return;
     }
 
@@ -133,14 +135,14 @@ const AdminsManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Admin muvaffaqiyatli yaratildi!' });
+        setMessage({ type: 'success', text: t('adminCreated') });
         await loadAdmins();
         setTimeout(() => {
           closeModals();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('error') });
     } finally {
       setIsSubmitting(false);
     }
@@ -166,14 +168,14 @@ const AdminsManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Admin muvaffaqiyatli yangilandi!' });
+        setMessage({ type: 'success', text: t('adminUpdated') });
         await loadAdmins();
         setTimeout(() => {
           closeModals();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('error') });
     } finally {
       setIsSubmitting(false);
     }
@@ -181,11 +183,11 @@ const AdminsManagement: React.FC = () => {
 
   const handleDelete = async (adminId: string, adminName: string) => {
     if (adminId === currentAdmin?.id) {
-      setMessage({ type: 'error', text: 'O\'zingizni o\'chira olmaysiz!' });
+      setMessage({ type: 'error', text: t('cannotDeleteSelf') });
       return;
     }
 
-    if (!confirm(`${adminName} adminni o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`${adminName} ${t('confirmDeleteAdmin')}`)) return;
 
     setDeleteLoading(adminId);
     setMessage({ type: '', text: '' });
@@ -195,11 +197,11 @@ const AdminsManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Admin muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('adminDeleted') });
         await loadAdmins();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('error') });
     } finally {
       setDeleteLoading(null);
     }
@@ -240,7 +242,7 @@ const AdminsManagement: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Adminlar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('adminsLoading')}</p>
         </div>
       </div>
     );
@@ -251,8 +253,8 @@ const AdminsManagement: React.FC = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold theme-text">Adminlar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Admin panel foydalanuvchilarini boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">{t('adminsManagement')}</h1>
+          <p className="theme-text-secondary">{t('manageAdminsDesc')}</p>
         </div>
         {currentAdmin?.role === 'admin' && (
           <button
@@ -260,7 +262,7 @@ const AdminsManagement: React.FC = () => {
             className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <Plus size={20} />
-            <span>Yangi Admin</span>
+            <span>{t('newAdmin')}</span>
           </button>
         )}
       </div>
@@ -287,19 +289,19 @@ const AdminsManagement: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold theme-text">{admins.length}</div>
-          <div className="text-sm theme-text-secondary">Jami adminlar</div>
+          <div className="text-sm theme-text-secondary">{t('totalAdmins')}</div>
         </div>
         <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-red-600">{admins.filter(a => a.role === 'admin').length}</div>
-          <div className="text-sm theme-text-secondary">Super adminlar</div>
+          <div className="text-sm theme-text-secondary">{t('superAdmins')}</div>
         </div>
         <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-orange-600">{admins.filter(a => a.role === 'moderator').length}</div>
-          <div className="text-sm theme-text-secondary">Moderatorlar</div>
+          <div className="text-sm theme-text-secondary">{t('moderators')}</div>
         </div>
         <div className="theme-bg rounded-lg theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-green-600">{admins.filter(a => a.active).length}</div>
-          <div className="text-sm theme-text-secondary">Faol adminlar</div>
+          <div className="text-sm theme-text-secondary">{t('activeAdmins')}</div>
         </div>
       </div>
 
@@ -309,7 +311,7 @@ const AdminsManagement: React.FC = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
           <input
             type="text"
-            placeholder="Adminlarni qidiring..."
+            placeholder={t('searchAdmins')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
@@ -324,25 +326,25 @@ const AdminsManagement: React.FC = () => {
             <thead className="theme-bg-secondary">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Admin
+                  {t('adminTable')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Login
+                  {t('login')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Rol
+                  {t('role')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Telefon
+                  {t('phone')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Holat
+                  {t('status')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Yaratilgan
+                  {t('created')}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium theme-text-muted uppercase tracking-wider">
-                  Amallar
+                  {t('actions')}
                 </th>
               </tr>
             </thead>
@@ -370,7 +372,7 @@ const AdminsManagement: React.FC = () => {
                           </div>
                           <div className="text-sm theme-text-muted">
                             {admin.id === currentAdmin?.id && (
-                              <span className="text-blue-600 dark:text-blue-400 font-medium">(Siz)</span>
+                              <span className="text-blue-600 dark:text-blue-400 font-medium">{t('you')}</span>
                             )}
                           </div>
                         </div>
@@ -385,7 +387,7 @@ const AdminsManagement: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm theme-text">
-                      {admin.phone || 'Kiritilmagan'}
+                      {admin.phone || t('notEntered')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-3 py-1 text-xs font-medium rounded-full ${
@@ -393,7 +395,7 @@ const AdminsManagement: React.FC = () => {
                           ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
                           : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                       }`}>
-                        {admin.active ? 'Faol' : 'Faol emas'}
+                        {admin.active ? t('active') : t('inactive')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm theme-text-muted">
@@ -444,10 +446,10 @@ const AdminsManagement: React.FC = () => {
             <Search size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Admin topilmadi
+            {t('adminNotFound')}
           </h3>
           <p className="theme-text-muted">
-            Qidiruv so'zini o'zgartiring
+            {t('changeSearchTerm')}
           </p>
         </div>
       )}
@@ -457,7 +459,7 @@ const AdminsManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Yangi Admin Qo'shish</h3>
+              <h3 className="text-xl font-bold theme-text">{t('addNewAdmin')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text"
@@ -485,7 +487,7 @@ const AdminsManagement: React.FC = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Login *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('login')} *</label>
                 <input
                   type="text"
                   name="login"
@@ -498,7 +500,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Parol *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('password')} *</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -520,7 +522,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">To'liq ism *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('fullName')} *</label>
                 <input
                   type="text"
                   name="full_name"
@@ -533,7 +535,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Telefon</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('phone')}</label>
                 <input
                   type="tel"
                   name="phone"
@@ -545,15 +547,15 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Rol *</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('role')} *</label>
                 <select
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none"
                 >
-                  <option value="moderator">Moderator</option>
-                  <option value="admin">Admin</option>
+                  <option value="moderator">{t('moderatorRole')}</option>
+                  <option value="admin">{t('adminRole')}</option>
                 </select>
               </div>
 
@@ -563,14 +565,14 @@ const AdminsManagement: React.FC = () => {
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Yaratilmoqda...' : 'Yaratish'}
+                  {isSubmitting ? t('creating') : t('create')}
                 </button>
               </div>
             </form>
@@ -583,7 +585,7 @@ const AdminsManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Admin Tahrirlash</h3>
+              <h3 className="text-xl font-bold theme-text">{t('editAdmin')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text"
@@ -611,7 +613,7 @@ const AdminsManagement: React.FC = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Login</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('login')}</label>
                 <input
                   type="text"
                   name="login"
@@ -624,7 +626,7 @@ const AdminsManagement: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium theme-text-secondary mb-2">
-                  Yangi parol (bo'sh qoldiring agar o'zgartirmoqchi bo'lmasangiz)
+                  {t('newPasswordHint')}
                 </label>
                 <div className="relative">
                   <input
@@ -633,7 +635,7 @@ const AdminsManagement: React.FC = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
-                    placeholder="Yangi parol"
+                    placeholder={t('newPassword')}
                   />
                   <button
                     type="button"
@@ -646,7 +648,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">To'liq ism</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('fullName')}</label>
                 <input
                   type="text"
                   name="full_name"
@@ -658,7 +660,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Telefon</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('phone')}</label>
                 <input
                   type="tel"
                   name="phone"
@@ -669,7 +671,7 @@ const AdminsManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium theme-text-secondary mb-2">Rol</label>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">{t('role')}</label>
                 <select
                   name="role"
                   value={formData.role}
@@ -677,11 +679,11 @@ const AdminsManagement: React.FC = () => {
                   disabled={editingAdmin?.id === currentAdmin?.id}
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none disabled:opacity-50"
                 >
-                  <option value="moderator">Moderator</option>
-                  <option value="admin">Admin</option>
+                  <option value="moderator">{t('moderatorRole')}</option>
+                  <option value="admin">{t('adminRole')}</option>
                 </select>
                 {editingAdmin?.id === currentAdmin?.id && (
-                  <p className="text-xs theme-text-muted mt-1">O'z rolingizni o'zgartira olmaysiz</p>
+                  <p className="text-xs theme-text-muted mt-1">{t('cannotChangeOwnRole')}</p>
                 )}
               </div>
 
@@ -691,14 +693,14 @@ const AdminsManagement: React.FC = () => {
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-2 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Saqlanmoqda...' : 'Saqlash'}
+                  {isSubmitting ? t('saving') : t('save')}
                 </button>
               </div>
             </form>
@@ -712,10 +714,9 @@ const AdminsManagement: React.FC = () => {
           <div className="flex items-center space-x-3">
             <Shield size={20} className="text-orange-600" />
             <div>
-              <h3 className="text-lg font-semibold theme-text">Cheklangan Ruxsat</h3>
+              <h3 className="text-lg font-semibold theme-text">{t('limitedPermission')}</h3>
               <p className="theme-text-secondary text-sm">
-                Siz moderator sifatida faqat adminlar ro'yxatini ko'rishingiz mumkin. 
-                Yangi admin qo'shish yoki tahrirlash uchun admin huquqi kerak.
+                {t('moderatorPermissionDesc')}
               </p>
             </div>
           </div>

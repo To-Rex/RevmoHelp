@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Search,
   Plus,
@@ -39,6 +40,7 @@ import {
 import type { Disease, CreateDiseaseData } from '../../lib/diseases';
 
 const DiseasesManagement: React.FC = () => {
+  const { t } = useTranslation();
   const [diseases, setDiseases] = useState<Disease[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -123,7 +125,7 @@ const DiseasesManagement: React.FC = () => {
         setDiseases(data);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Kasalliklarni yuklashda xatolik' });
+      setMessage({ type: 'error', text: t('diseasesErrorLoading') });
     } finally {
       setLoading(false);
     }
@@ -152,7 +154,7 @@ const DiseasesManagement: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setMessage({ type: 'error', text: 'Rasm hajmi 5MB dan kichik bo\'lishi kerak' });
+        setMessage({ type: 'error', text: t('diseasesImageSizeError') });
         return;
       }
 
@@ -621,22 +623,22 @@ const DiseasesManagement: React.FC = () => {
 
   const validateForm = async () => {
     if (!formData.name.trim()) {
-      setMessage({ type: 'error', text: 'Kasallik nomi kiritilishi shart' });
+      setMessage({ type: 'error', text: t('diseasesNameRequired') });
       return false;
     }
     if (!formData.description.trim()) {
-      setMessage({ type: 'error', text: 'Tavsif kiritilishi shart' });
+      setMessage({ type: 'error', text: t('diseasesDescriptionRequired') });
       return false;
     }
     if (formData.symptoms.length === 0) {
-      setMessage({ type: 'error', text: 'Kamida bitta belgi kiritilishi shart' });
+      setMessage({ type: 'error', text: t('diseasesAtLeastOneSymptom') });
       return false;
     }
 
     // Check slug uniqueness
     const { isUnique } = await checkDiseaseSlugUniqueness(formData.slug, 'uz', editingDisease?.id);
     if (!isUnique) {
-      setMessage({ type: 'error', text: 'Bu URL (slug) allaqachon mavjud. Boshqa nom yozing yoki URL ni o\'zgartiring.' });
+      setMessage({ type: 'error', text: t('diseasesSlugExists') });
       return false;
     }
 
@@ -657,7 +659,7 @@ const DiseasesManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kasallik muvaffaqiyatli yaratildi!' });
+        setMessage({ type: 'success', text: t('diseasesCreated') });
         await loadDiseases();
         setTimeout(() => {
           closeModals();
@@ -687,21 +689,21 @@ const DiseasesManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: 'Xatolik: ' + error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kasallik muvaffaqiyatli yangilandi!' });
+        setMessage({ type: 'success', text: t('diseasesUpdated') });
         await loadDiseases();
         setTimeout(() => {
           closeModals();
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi. Qaytadan urinib ko\'ring.' });
+      setMessage({ type: 'error', text: t('diseasesError') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (diseaseId: string, diseaseName: string) => {
-    if (!confirm(`${diseaseName} kasalligini o'chirishni xohlaysizmi?`)) return;
+    if (!confirm(`${diseaseName} ${t('diseasesConfirmDelete')}`)) return;
 
     setDeleteLoading(diseaseId);
     setMessage({ type: '', text: '' });
@@ -711,11 +713,11 @@ const DiseasesManagement: React.FC = () => {
       if (error) {
         setMessage({ type: 'error', text: error.message });
       } else {
-        setMessage({ type: 'success', text: 'Kasallik muvaffaqiyatli o\'chirildi!' });
+        setMessage({ type: 'success', text: t('diseasesDeleted') });
         await loadDiseases();
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Xatolik yuz berdi' });
+      setMessage({ type: 'error', text: t('diseasesError') });
     } finally {
       setDeleteLoading(null);
     }
@@ -744,7 +746,7 @@ const DiseasesManagement: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Kasalliklar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('diseasesLoading')}</p>
         </div>
       </div>
     );
@@ -755,15 +757,15 @@ const DiseasesManagement: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold theme-text">Kasalliklar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Revmatik kasalliklar ma'lumotlarini boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">{t('diseasesManagementTitle')}</h1>
+          <p className="theme-text-secondary">{t('diseasesManagementDesc')}</p>
         </div>
         <button
           onClick={openCreateModal}
           className="flex items-center space-x-2 theme-accent-bg text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           <Plus size={20} />
-          <span>Yangi Kasallik</span>
+          <span>{t('diseasesNewDisease')}</span>
         </button>
       </div>
 
@@ -789,19 +791,19 @@ const DiseasesManagement: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold theme-text">{diseases.length}</div>
-          <div className="text-sm theme-text-secondary">Jami kasalliklar</div>
+          <div className="text-sm theme-text-secondary">{t('diseasesTotal')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-green-600">{diseases.filter(d => d.active).length}</div>
-          <div className="text-sm theme-text-secondary">Faol</div>
+          <div className="text-sm theme-text-secondary">{t('diseasesActive')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-yellow-600">{diseases.filter(d => d.featured).length}</div>
-          <div className="text-sm theme-text-secondary">Asosiy</div>
+          <div className="text-sm theme-text-secondary">{t('diseasesFeatured')}</div>
         </div>
         <div className="theme-bg rounded-xl theme-shadow theme-border border p-4">
           <div className="text-2xl font-bold text-blue-600">{diseases.filter(d => d.youtube_url).length}</div>
-          <div className="text-sm theme-text-secondary">Video bilan</div>
+          <div className="text-sm theme-text-secondary">{t('diseasesWithVideo')}</div>
         </div>
       </div>
 
@@ -814,7 +816,7 @@ const DiseasesManagement: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
               <input
                 type="text"
-                placeholder="Kasalliklarni qidiring..."
+                placeholder={t('diseasesSearch')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
@@ -828,10 +830,10 @@ const DiseasesManagement: React.FC = () => {
               onClick={(e) => { e.stopPropagation(); setStatusDropdownOpen(!statusDropdownOpen); }}
               className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm text-left flex items-center justify-between"
             >
-              <span>{selectedStatus === 'all' ? 'Barcha holatlar' :
-                    selectedStatus === 'active' ? 'Faol' :
-                    selectedStatus === 'inactive' ? 'Faol emas' :
-                    'Asosiy kasalliklar'}</span>
+              <span>{selectedStatus === 'all' ? t('diseasesAllStatuses') :
+                    selectedStatus === 'active' ? t('diseasesActiveStatus') :
+                    selectedStatus === 'inactive' ? t('diseasesInactiveStatus') :
+                    t('diseasesFeaturedStatus')}</span>
               <ChevronDown className={`theme-text-muted transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} size={16} />
             </button>
             {statusDropdownOpen && (
@@ -840,25 +842,25 @@ const DiseasesManagement: React.FC = () => {
                   onClick={() => { setSelectedStatus('all'); setStatusDropdownOpen(false); }}
                   className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                 >
-                  Barcha holatlar
+                  {t('diseasesAllStatuses')}
                 </div>
                 <div
                   onClick={() => { setSelectedStatus('active'); setStatusDropdownOpen(false); }}
                   className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                 >
-                  Faol
+                  {t('diseasesActiveStatus')}
                 </div>
                 <div
                   onClick={() => { setSelectedStatus('inactive'); setStatusDropdownOpen(false); }}
                   className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                 >
-                  Faol emas
+                  {t('diseasesInactiveStatus')}
                 </div>
                 <div
                   onClick={() => { setSelectedStatus('featured'); setStatusDropdownOpen(false); }}
                   className="px-4 py-2 hover:bg-gray-50 cursor-pointer theme-text"
                 >
-                  Asosiy kasalliklar
+                  {t('diseasesFeaturedStatus')}
                 </div>
               </div>
             )}
@@ -902,7 +904,7 @@ const DiseasesManagement: React.FC = () => {
                 <div className="w-full h-full theme-bg-tertiary flex items-center justify-center group-hover:theme-bg-quaternary transition-colors duration-300">
                   <div className="text-center">
                     <Activity size={48} className="theme-text-muted mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-                    <p className="theme-text-muted text-sm font-medium">Kasallik Ma'lumotlari</p>
+                    <p className="theme-text-muted text-sm font-medium">{t('diseasesData')}</p>
                   </div>
                 </div>
               )}
@@ -914,12 +916,12 @@ const DiseasesManagement: React.FC = () => {
                     ? 'bg-green-500 text-white'
                     : 'bg-red-500 text-white'
                 }`}>
-                  {disease.active ? 'Faol' : 'Faol emas'}
+                  {disease.active ? t('diseasesActive') : t('diseasesInactiveStatus')}
                 </span>
                 {disease.featured && (
                   <span className="px-3 py-1 text-xs font-semibold bg-yellow-500 text-white rounded-full flex items-center space-x-1">
                     <Star size={12} />
-                    <span>Asosiy</span>
+                    <span>{t('diseasesFeatured')}</span>
                   </span>
                 )}
               </div>
@@ -945,9 +947,9 @@ const DiseasesManagement: React.FC = () => {
               {/* Quick Stats */}
               <div className="flex items-center justify-between text-xs theme-text-muted mb-4 p-3 theme-bg-secondary rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <span>{disease.symptoms?.length || 0} belgi</span>
-                  <span>{disease.treatment_methods?.length || 0} usul</span>
-                  <span>{disease.prevention_tips?.length || 0} maslahat</span>
+                  <span>{disease.symptoms?.length || 0} {t('diseasesSymptomsCount')}</span>
+                  <span>{disease.treatment_methods?.length || 0} {t('diseasesMethodsCount')}</span>
+                  <span>{disease.prevention_tips?.length || 0} {t('diseasesTipsCount')}</span>
                 </div>
               </div>
 
@@ -957,33 +959,33 @@ const DiseasesManagement: React.FC = () => {
                   <button
                     onClick={() => openEditModal(disease)}
                     className="flex items-center space-x-1 theme-accent hover:text-blue-800 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition-all duration-200 transform hover:scale-105"
-                    title="Tahrirlash"
+                    title={t('diseasesEditBtn')}
                   >
                     <Edit size={16} />
-                    <span className="text-xs font-medium hidden sm:inline">Tahrirlash</span>
+                    <span className="text-xs font-medium hidden sm:inline">{t('diseasesEditBtn')}</span>
                   </button>
                   <a
                     href={`/diseases/${disease.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900 transition-all duration-200 transform hover:scale-105"
-                    title="Ko'rish"
+                    title={t('diseasesView')}
                   >
                     <Eye size={16} />
-                    <span className="text-xs font-medium hidden sm:inline">Ko'rish</span>
+                    <span className="text-xs font-medium hidden sm:inline">{t('diseasesView')}</span>
                   </a>
                   <button
                     onClick={() => handleDelete(disease.id, disease.name)}
                     disabled={deleteLoading === disease.id}
                     className="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
-                    title="O'chirish"
+                    title={t('diseasesDelete')}
                   >
                     {deleteLoading === disease.id ? (
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
                     ) : (
                       <>
                         <Trash2 size={16} />
-                        <span className="text-xs font-medium hidden sm:inline">O'chirish</span>
+                        <span className="text-xs font-medium hidden sm:inline">{t('diseasesDelete')}</span>
                       </>
                     )}
                   </button>
@@ -1007,17 +1009,17 @@ const DiseasesManagement: React.FC = () => {
             <Search size={48} className="mx-auto" />
           </div>
           <h3 className="text-xl font-semibold theme-text-secondary mb-2">
-            Kasallik topilmadi
+            {t('diseasesNotFound')}
           </h3>
           <p className="theme-text-muted mb-6">
-            Qidiruv so'zini o'zgartiring yoki yangi kasallik qo'shing
+            {t('diseasesChangeSearchOrAdd')}
           </p>
           <button
             onClick={openCreateModal}
             className="inline-flex items-center space-x-2 theme-accent-bg text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             <Plus size={20} />
-            <span>Birinchi kasallikni qo'shish</span>
+            <span>{t('diseasesAddFirst')}</span>
           </button>
         </div>
       )}
@@ -1035,7 +1037,7 @@ const DiseasesManagement: React.FC = () => {
                 `
               }} />
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold theme-text">Yangi Kasallik Qo'shish</h3>
+                <h3 className="text-xl font-bold theme-text">{t('diseasesAddNew')}</h3>
                 <button
                   onClick={closeModals}
                   className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -1064,7 +1066,7 @@ const DiseasesManagement: React.FC = () => {
 
               {/* Language Tabs */}
               <div className="flex items-center justify-between">
-                <h4 className="text-lg font-semibold theme-text">Kasallik Ma'lumotlari</h4>
+                <h4 className="text-lg font-semibold theme-text">{t('diseasesInformation')}</h4>
                 <div className="flex space-x-1 bg-gray-50 rounded-lg p-1 overflow-x-auto">
                   {[
                     { code: 'uz', label: 'O\'zbek', flag: '🇺🇿', bgClass: 'bg-nav-500', textClass: 'text-white' },
@@ -1091,7 +1093,7 @@ const DiseasesManagement: React.FC = () => {
               {/* Basic Information */}
               <div>
                 <label className="block text-sm font-medium theme-text-secondary mb-2">
-                  Kasallik nomi ({languages.find(l => l.code === activeLanguageTab)?.label}) *
+                  {t('diseasesName')} ({languages.find(l => l.code === activeLanguageTab)?.label}) *
                 </label>
                 {activeLanguageTab === 'uz' ? (
                   <input
@@ -1100,7 +1102,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     required
                     className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200"
-                    placeholder="Kasallik nomi"
+                    placeholder={t('diseasesName')}
                   />
                 ) : (
                   <input
@@ -1116,7 +1118,7 @@ const DiseasesManagement: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium theme-text-secondary mb-2">
-                  Tavsif ({languages.find(l => l.code === activeLanguageTab)?.label}) *
+                  {t('diseasesDescription')} ({languages.find(l => l.code === activeLanguageTab)?.label}) *
                 </label>
                 {activeLanguageTab === 'uz' ? (
                   <textarea
@@ -1125,7 +1127,7 @@ const DiseasesManagement: React.FC = () => {
                     required
                     rows={4}
                     className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
-                    placeholder="Kasallik haqida batafsil ma'lumot"
+                    placeholder={t('diseasesDetailedInfo')}
                   />
                 ) : (
                   <textarea
@@ -1240,7 +1242,7 @@ const DiseasesManagement: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Kasallik rasmi
+                    {t('diseasesImage')}
                   </label>
                   {imagePreview ? (
                     <div className="relative">
@@ -1260,7 +1262,7 @@ const DiseasesManagement: React.FC = () => {
                   ) : (
                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 theme-border border-dashed rounded-lg cursor-pointer theme-bg-tertiary hover:theme-bg-quaternary transition-colors duration-200">
                       <Upload className="w-6 h-6 mb-2 theme-text-muted" />
-                      <p className="text-xs theme-text-secondary">Rasm yuklash</p>
+                      <p className="text-xs theme-text-secondary">{t('diseasesUploadImage')}</p>
                       <input
                         type="file"
                         className="hidden"
@@ -1273,7 +1275,7 @@ const DiseasesManagement: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    YouTube Video URL
+                    {t('diseasesYoutubeUrl')}
                   </label>
                   <input
                     type="url"
@@ -1290,13 +1292,13 @@ const DiseasesManagement: React.FC = () => {
                 {/* Symptoms */}
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Kasallik Belgilari
+                    {t('diseasesSymptoms')}
                   </label>
                   <div className="space-y-2">
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Yangi belgi (vergul bilan ajrating)"
+                        placeholder={t('diseasesNewSymptom')}
                         value={activeLanguageTab === 'uz' ? newSymptomUz : activeLanguageTab === 'ru' ? newSymptomRu : newSymptomEn}
                         onChange={(e) => {
                           if (activeLanguageTab === 'uz') setNewSymptomUz(e.target.value);
@@ -1338,13 +1340,13 @@ const DiseasesManagement: React.FC = () => {
                 {/* Treatment Methods */}
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Davolash Usullari
+                    {t('diseasesTreatmentMethods')}
                   </label>
                   <div className="space-y-2">
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Davolash usuli (vergul bilan ajrating)"
+                        placeholder={t('diseasesNewTreatment')}
                         value={activeLanguageTab === 'uz' ? newTreatmentUz : activeLanguageTab === 'ru' ? newTreatmentRu : newTreatmentEn}
                         onChange={(e) => {
                           if (activeLanguageTab === 'uz') setNewTreatmentUz(e.target.value);
@@ -1386,13 +1388,13 @@ const DiseasesManagement: React.FC = () => {
                 {/* Prevention Tips */}
                 <div>
                   <label className="block text-sm font-medium theme-text-secondary mb-2">
-                    Profilaktika
+                    {t('diseasesPreventionTips')}
                   </label>
                   <div className="space-y-2">
                     <div className="flex space-x-2">
                       <input
                         type="text"
-                        placeholder="Profilaktika maslahati (vergul bilan ajrating)"
+                        placeholder={t('diseasesNewPrevention')}
                         value={activeLanguageTab === 'uz' ? newPreventionUz : activeLanguageTab === 'ru' ? newPreventionRu : newPreventionEn}
                         onChange={(e) => {
                           if (activeLanguageTab === 'uz') setNewPreventionUz(e.target.value);
@@ -1442,7 +1444,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('active', e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Faol</span>
+                  <span className="text-sm theme-text-secondary">{t('diseasesActiveCheckbox')}</span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -1451,7 +1453,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('featured', e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Asosiy kasallik</span>
+                  <span className="text-sm theme-text-secondary">{t('diseasesFeaturedCheckbox')}</span>
                 </label>
               </div>
 
@@ -1461,7 +1463,7 @@ const DiseasesManagement: React.FC = () => {
                   onClick={closeModals}
                   className="flex-1 theme-border border theme-text-secondary px-4 py-3 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
                 >
-                  Bekor qilish
+                  {t('diseasesCancel')}
                 </button>
                 <button
                   type="submit"
@@ -1469,7 +1471,7 @@ const DiseasesManagement: React.FC = () => {
                   className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 flex items-center justify-center space-x-2"
                 >
                   <Save size={18} />
-                  <span>{isSubmitting ? 'Yaratilmoqda...' : 'Yaratish'}</span>
+                  <span>{isSubmitting ? t('diseasesCreating') : t('diseasesCreate')}</span>
                 </button>
               </div>
             </form>
@@ -1483,7 +1485,7 @@ const DiseasesManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold theme-text">Kasallikni Tahrirlash</h3>
+              <h3 className="text-xl font-bold theme-text">{t('diseasesEdit')}</h3>
               <button
                 onClick={closeModals}
                 className="theme-text-secondary hover:theme-text p-1 rounded-lg hover:theme-bg-tertiary transition-colors duration-200"
@@ -1820,7 +1822,7 @@ const DiseasesManagement: React.FC = () => {
                   className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 flex items-center justify-center space-x-2"
                 >
                   <Save size={18} />
-                  <span>{isSubmitting ? 'Saqlanmoqda...' : 'Saqlash'}</span>
+                  <span>{isSubmitting ? t('diseasesSaving') : t('diseasesSave')}</span>
                 </button>
               </div>
             </form>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, Search, Filter } from 'lucide-react';
 import { useAdminAuth } from '../../hooks/useAdminAuth';
 import { getAuthUsers } from '../../lib/adminUsers';
@@ -12,6 +13,7 @@ import ConsultationRequestsList from '../../components/admin/ConsultationRequest
 import ConsultationRequestsStats from '../../components/admin/ConsultationRequestsStats';
 
 const UsersManagement: React.FC = () => {
+  const { t } = useTranslation();
   const { admin } = useAdminAuth();
   const [authUsers, setAuthUsers] = useState<AuthUser[]>([]);
   const [consultationRequests, setConsultationRequests] = useState<ConsultationRequest[]>([]);
@@ -104,7 +106,7 @@ const UsersManagement: React.FC = () => {
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="theme-text-muted">Foydalanuvchilar yuklanmoqda...</p>
+          <p className="theme-text-muted">{t('usersLoading')}</p>
         </div>
       </div>
     );
@@ -115,8 +117,8 @@ const UsersManagement: React.FC = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold theme-text">Foydalanuvchilar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Supabase Auth foydalanuvchilarini boshqarish</p>
+          <h1 className="text-2xl font-bold theme-text">{t('usersManagement')}</h1>
+          <p className="theme-text-secondary">{t('manageUsersDesc')}</p>
         </div>
       </div>
 
@@ -148,9 +150,9 @@ const UsersManagement: React.FC = () => {
           <div>
             <h2 className="text-xl font-bold theme-text flex items-center space-x-2">
               <MessageSquare size={20} className="text-primary-600" />
-              <span>Bepul Maslahat So'rovlari</span>
+              <span>{t('freeConsultationRequests')}</span>
             </h2>
-            <p className="theme-text-secondary text-sm">Saytdan kelgan maslahat so'rovlari</p>
+            <p className="theme-text-secondary text-sm">{t('consultationRequestsDesc')}</p>
           </div>
         </div>
 
@@ -166,7 +168,7 @@ const UsersManagement: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
                 <input
                   type="text"
-                  placeholder="Maslahat so'rovlarini qidiring..."
+                  placeholder={t('searchConsultationRequests')}
                   value={consultationSearchTerm}
                   onChange={(e) => setConsultationSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
@@ -183,11 +185,11 @@ const UsersManagement: React.FC = () => {
                   onChange={(e) => setSelectedConsultationStatus(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none theme-text"
                 >
-                  <option value="all">Barcha holatlar ({consultationStatusCounts.total})</option>
-                  <option value="pending">Kutilmoqda ({consultationStatusCounts.pending})</option>
-                  <option value="contacted">Bog'lanildi ({consultationStatusCounts.contacted})</option>
-                  <option value="completed">Yakunlandi ({consultationStatusCounts.completed})</option>
-                  <option value="cancelled">Bekor qilindi ({consultationStatusCounts.cancelled})</option>
+                  <option value="all">{t('allStatuses')} ({consultationStatusCounts.total})</option>
+                  <option value="pending">{t('pending')} ({consultationStatusCounts.pending})</option>
+                  <option value="contacted">{t('contacted')} ({consultationStatusCounts.contacted})</option>
+                  <option value="completed">{t('completed')} ({consultationStatusCounts.completed})</option>
+                  <option value="cancelled">{t('cancelled')} ({consultationStatusCounts.cancelled})</option>
                 </select>
               </div>
             </div>
