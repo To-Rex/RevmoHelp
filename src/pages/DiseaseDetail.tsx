@@ -257,6 +257,25 @@ const DiseaseDetail: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
+              {/* Full Description */}
+              {disease.full_description && (
+                <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 animate-slide-up mt-8 mb-8" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-12 h-12 bg-primary-50 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center">
+                      <FileText size={24} className="text-primary-600" />
+                    </div>
+                    <h2 className="text-2xl font-bold theme-text">{t('fullDescription')}</h2>
+                  </div>
+                  <div className="prose prose-sm max-w-none theme-text-secondary leading-relaxed">
+                    {disease.full_description.split('\n').map((paragraph, idx) => (
+                      <p key={idx} className="mb-4">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Symptoms */}
               {disease.symptoms && disease.symptoms.length > 0 && (
                 <div className="theme-bg rounded-3xl theme-shadow-lg theme-border border p-8 mt-8 animate-slide-up" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
