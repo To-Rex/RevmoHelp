@@ -26,20 +26,17 @@ const Settings: React.FC = () => {
     {
       title: 'Tizim Sozlamalari',
       description: 'Umumiy tizim konfiguratsiyasi',
-      icon: SettingsIcon,
-      color: 'bg-blue-100 text-blue-600'
+      icon: SettingsIcon
     },
     {
       title: 'Xavfsizlik',
       description: 'Autentifikatsiya va ruxsatlar',
-      icon: Shield,
-      color: 'bg-red-100 text-red-600'
+      icon: Shield
     },
     {
       title: 'Ma\'lumotlar Bazasi',
       description: 'Database sozlamalari',
-      icon: Database,
-      color: 'bg-green-100 text-green-600'
+      icon: Database
     }
   ];
 
@@ -88,8 +85,8 @@ const Settings: React.FC = () => {
               className="theme-bg rounded-2xl theme-shadow-lg theme-border border p-6 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`w-12 h-12 ${section.color} rounded-xl flex items-center justify-center mb-4`}>
-                <Icon size={24} />
+              <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20 mb-4">
+                <Icon size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
               </div>
               <h3 className="text-lg font-bold theme-text mb-2">{section.title}</h3>
               <p className="theme-text-secondary text-sm">{section.description}</p>
@@ -116,13 +113,13 @@ const Settings: React.FC = () => {
             </div>
             <div className="flex items-center justify-between">
               <span className="theme-text-secondary">Environment</span>
-              <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
+              <span className="px-2 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
                 Production
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="theme-text-secondary">Database</span>
-              <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
+              <span className="px-2 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
                 Supabase
               </span>
             </div>
@@ -134,8 +131,8 @@ const Settings: React.FC = () => {
           <h3 className="text-lg font-semibold theme-text mb-4">Aloqa Ma'lumotlari</h3>
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
-                <Mail size={16} className="text-blue-600 dark:text-blue-400" />
+              <div className="p-1 lg:p-2 rounded-lg bg-primary-100 dark:bg-primary-900/20">
+                <Mail size={16} className="text-primary-600 dark:text-primary-400" />
               </div>
               <div>
                 <p className="text-sm font-medium theme-text">Email</p>
@@ -144,8 +141,8 @@ const Settings: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center">
-                <Phone size={16} className="text-green-600 dark:text-green-400" />
+              <div className="p-1 lg:p-2 rounded-lg bg-primary-100 dark:bg-primary-900/20">
+                <Phone size={16} className="text-primary-600 dark:text-primary-400" />
               </div>
               <div>
                 <p className="text-sm font-medium theme-text">Telefon</p>
@@ -154,8 +151,8 @@ const Settings: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center">
-                <MapPin size={16} className="text-purple-600 dark:text-purple-400" />
+              <div className="p-1 lg:p-2 rounded-lg bg-primary-100 dark:bg-primary-900/20">
+                <MapPin size={16} className="text-primary-600 dark:text-primary-400" />
               </div>
               <div>
                 <p className="text-sm font-medium theme-text">Manzil</p>
@@ -175,15 +172,15 @@ const Settings: React.FC = () => {
             <div className="space-y-3">
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">Yangi foydalanuvchi ro'yxati</span>
-                <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded" />
+                <input type="checkbox" defaultChecked className="w-4 h-4 text-primary-600 rounded" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">Email bildirishnomalar</span>
-                <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded" />
+                <input type="checkbox" defaultChecked className="w-4 h-4 text-primary-600 rounded" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">Avtomatik zaxira</span>
-                <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded" />
+                <input type="checkbox" defaultChecked className="w-4 h-4 text-primary-600 rounded" />
               </label>
             </div>
           </div>
@@ -193,7 +190,7 @@ const Settings: React.FC = () => {
             <div className="space-y-3">
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">2FA majburiy</span>
-                <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
+                <input type="checkbox" className="w-4 h-4 text-primary-600 rounded" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">Session timeout</span>
@@ -205,7 +202,7 @@ const Settings: React.FC = () => {
               </label>
               <label className="flex items-center justify-between">
                 <span className="theme-text-secondary">Login loglar</span>
-                <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded" />
+                <input type="checkbox" defaultChecked className="w-4 h-4 text-primary-600 rounded" />
               </label>
             </div>
           </div>

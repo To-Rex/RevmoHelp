@@ -18,6 +18,9 @@ const StaticPagesManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('homepage');
 
+  const pageTitle = activeTab === 'homepage' ? 'Bosh Sahifa' : 'Statik Sahifalar';
+  const pageSubtitle = activeTab === 'homepage' ? 'Bosh sahifa kontentini boshqarish' : 'Statik sahifalar kontentini boshqarish';
+
   // Mock data - in real app, this would come from Supabase
   const pages: StaticPage[] = [
     {
@@ -120,33 +123,28 @@ const StaticPagesManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-        <div>
-          <h1 className="text-2xl font-bold theme-text">Sahifalar Boshqaruvi</h1>
-          <p className="theme-text-secondary">Bosh sahifa va boshqa sahifalar kontentini boshqarish</p>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="theme-bg rounded-lg theme-shadow theme-border border">
-        <div className="flex overflow-x-auto">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-6 py-4 font-semibold transition-colors duration-200 whitespace-nowrap border-b-2 ${
-                  activeTab === tab.id
-                    ? 'theme-accent border-blue-600 bg-blue-50 dark:bg-blue-900/20'
-                    : 'theme-text-secondary hover:theme-accent border-transparent hover:bg-gray-50 dark:hover:bg-gray-800'
-                }`}
-              >
-                <Icon size={18} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+      <div className="space-y-4">
+        <div className="flex items-center justify-center">
+          {/* Tabs */}
+          <div className="inline-flex rounded-lg theme-bg-secondary p-1">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-4 lg:px-6 py-2 lg:py-3 font-semibold transition-all duration-200 whitespace-nowrap rounded-md text-sm ${
+                    activeTab === tab.id
+                      ? 'theme-accent-bg text-white shadow-sm'
+                      : 'theme-text-secondary hover:theme-accent'
+                  }`}
+                >
+                  <Icon size={16} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -169,15 +167,15 @@ const StaticPagesManagement: React.FC = () => {
             </div>
 
             {/* Search */}
-            <div className="theme-bg rounded-lg theme-shadow theme-border border p-6">
+            <div className="theme-bg rounded-lg theme-shadow theme-border border p-4 lg:p-6">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={18} />
                 <input
                   type="text"
                   placeholder="Sahifalarni qidiring..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                  className="w-full pl-10 pr-4 py-2 lg:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
                 />
               </div>
             </div>

@@ -348,6 +348,8 @@ const resources = {
       diseasesSeoTitle: 'SEO uchun sarlavha',
       diseasesSeoDescription: 'SEO uchun tavsif',
       diseasesCharacters: 'belgidan iborat',
+      diseasesActiveCheckbox: 'Faol',
+      diseasesFeaturedCheckbox: 'Asosiy kasallik',
 
       // Dashboard
       dashboardLoading: 'Dashboard yuklanmoqda...',

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { 
-  getUserNotifications, 
-  getUnreadNotificationsCount, 
-  markNotificationAsRead 
+import { supabase } from '../lib/supabase';
+import {
+  getUserNotifications,
+  getUnreadNotificationsCount,
+  markNotificationAsRead
 } from '../lib/notifications';
 import type { Notification } from '../lib/notifications';
 
@@ -22,13 +23,31 @@ export const useNotifications = () => {
 
     loadNotifications();
     loadUnreadCount();
-    
+
     // Poll for new notifications every 30 seconds
     const interval = setInterval(() => {
       loadUnreadCount();
     }, 30000);
 
-    return () => clearInterval(interval);
+    // Subscribe to real-time notification changes
+    if (!supabase) {
+      return () => clearInterval(interval);
+    }
+
+    const channel = supabase
+      .channel('notifications')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, () => {
+        loadNotifications();
+        loadUnreadCount();
+      })
+      .subscribe();
+
+    return () => {
+      clearInterval(interval);
+      if (supabase) {
+        supabase.removeChannel(channel);
+      }
+    };
   }, [user, authLoading]);
 
   const loadNotifications = async () => {

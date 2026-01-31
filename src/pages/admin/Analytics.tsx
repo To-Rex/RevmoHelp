@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  TrendingUp, 
-  Users, 
-  Eye, 
-  FileText, 
+import {
+  TrendingUp,
+  Users,
+  Eye,
+  FileText,
   Calendar,
   BarChart3,
   PieChart,
@@ -15,7 +15,9 @@ import {
   Smartphone,
   Monitor,
   Tablet,
-  RefreshCw
+  RefreshCw,
+  Stethoscope,
+  Heart
 } from 'lucide-react';
 import { getPosts } from '../../lib/posts';
 import { getAuthUsers } from '../../lib/adminUsers';
@@ -43,7 +45,7 @@ const Analytics: React.FC = () => {
     setLoading(true);
     try {
       const [postsResult, usersResult, doctorsResult, storiesResult] = await Promise.all([
-        getPosts('uz'),
+        getPosts('uz', {}),
         getAuthUsers(),
         getDoctors('uz'),
         getPatientStories('uz')
@@ -71,7 +73,9 @@ const Analytics: React.FC = () => {
     
     // Calculate growth (mock data for demonstration)
     const getGrowthPercentage = (current: number) => {
+      if (!current || isNaN(current)) return '0.0';
       const mockPrevious = Math.floor(current * 0.85); // Simulate 15% growth
+      if (mockPrevious === 0) return '0.0';
       return ((current - mockPrevious) / mockPrevious * 100).toFixed(1);
     };
 
@@ -112,11 +116,11 @@ const Analytics: React.FC = () => {
   }, {} as Record<string, number>);
 
   const userRoleDistribution = [
-    { role: 'Bemorlar', count: usersByRole.patient || 0, percentage: ((usersByRole.patient || 0) / users.length * 100).toFixed(1), color: 'bg-blue-500' },
-    { role: 'Shifokorlar', count: usersByRole.doctor || 0, percentage: ((usersByRole.doctor || 0) / users.length * 100).toFixed(1), color: 'bg-green-500' },
-    { role: 'Moderatorlar', count: usersByRole.moderator || 0, percentage: ((usersByRole.moderator || 0) / users.length * 100).toFixed(1), color: 'bg-orange-500' },
-    { role: 'Adminlar', count: usersByRole.admin || 0, percentage: ((usersByRole.admin || 0) / users.length * 100).toFixed(1), color: 'bg-red-500' },
-    { role: 'Mehmonlar', count: usersByRole.guest || 0, percentage: ((usersByRole.guest || 0) / users.length * 100).toFixed(1), color: 'bg-gray-500' }
+    { role: 'Bemorlar', count: usersByRole.patient || 0, percentage: users.length > 0 ? ((usersByRole.patient || 0) / users.length * 100).toFixed(1) : '0.0', color: 'bg-blue-500' },
+    { role: 'Shifokorlar', count: usersByRole.doctor || 0, percentage: users.length > 0 ? ((usersByRole.doctor || 0) / users.length * 100).toFixed(1) : '0.0', color: 'bg-green-500' },
+    { role: 'Moderatorlar', count: usersByRole.moderator || 0, percentage: users.length > 0 ? ((usersByRole.moderator || 0) / users.length * 100).toFixed(1) : '0.0', color: 'bg-orange-500' },
+    { role: 'Adminlar', count: usersByRole.admin || 0, percentage: users.length > 0 ? ((usersByRole.admin || 0) / users.length * 100).toFixed(1) : '0.0', color: 'bg-red-500' },
+    { role: 'Mehmonlar', count: usersByRole.guest || 0, percentage: users.length > 0 ? ((usersByRole.guest || 0) / users.length * 100).toFixed(1) : '0.0', color: 'bg-gray-500' }
   ].filter(item => item.count > 0);
 
   // Calculate traffic sources (mock data based on real patterns)
@@ -238,8 +242,8 @@ const Analytics: React.FC = () => {
                 {stats.totalUsers.toLocaleString()}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900/50">
-              <Users size={24} className="text-blue-600 dark:text-blue-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Users size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -259,8 +263,8 @@ const Analytics: React.FC = () => {
                 {stats.totalViews.toLocaleString()}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-green-100 dark:bg-green-900/50">
-              <Eye size={24} className="text-green-600 dark:text-green-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Eye size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -280,8 +284,8 @@ const Analytics: React.FC = () => {
                 {stats.totalPosts}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-purple-100 dark:bg-purple-900/50">
-              <FileText size={24} className="text-purple-600 dark:text-purple-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <FileText size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -301,8 +305,8 @@ const Analytics: React.FC = () => {
                 {stats.totalDoctors}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-orange-100 dark:bg-orange-900/50">
-              <Activity size={24} className="text-orange-600 dark:text-orange-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Stethoscope size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -322,8 +326,8 @@ const Analytics: React.FC = () => {
                 {stats.totalStories}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-teal-100 dark:bg-teal-900/50">
-              <Activity size={24} className="text-teal-600 dark:text-teal-400" />
+            <div className="p-2 lg:p-3 rounded-xl bg-primary-100 dark:bg-primary-900/20">
+              <Heart size={20} className="lg:size-22 text-primary-600 dark:text-primary-400" />
             </div>
           </div>
           <div className="mt-4 flex items-center">
@@ -476,8 +480,8 @@ const Analytics: React.FC = () => {
                 return (
                   <div key={device.device} className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
-                        <Icon size={16} className="theme-accent" />
+                      <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+                        <Icon size={16} className="text-primary-600 dark:text-primary-400" />
                       </div>
                       <span className="text-sm font-medium theme-text">{device.device}</span>
                     </div>

@@ -148,8 +148,8 @@ const Header: React.FC = () => {
                       className="w-10 h-10 rounded-full object-cover border-2 border-[#A6BAB4]"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-gradient-to-r from-[#CAD8D6] to-[#B8C9C5] rounded-full flex items-center justify-center">
-                      <User size={16} className="theme-accent" />
+                    <div className="w-10 h-10 bg-[#62B6CB] rounded-full flex items-center justify-center">
+                      <User size={16} className="text-white" />
                     </div>
                   )}
                 </button>
@@ -312,8 +312,8 @@ const Header: React.FC = () => {
                         className="w-8 h-8 rounded-full object-cover border border-[#A6BAB4]"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-gradient-to-r from-[#CAD8D6] to-[#B8C9C5] rounded-full flex items-center justify-center">
-                        <User size={14} className="theme-accent" />
+                      <div className="w-8 h-8 bg-[#62B6CB] rounded-full flex items-center justify-center">
+                        <User size={14} className="text-white" />
                       </div>
                     )}
                     <div>

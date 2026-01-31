@@ -1,4 +1,5 @@
 import { supabase, isSupabaseAvailable } from './supabase';
+import { getCurrentAdmin } from './adminAuth';
 
 export interface Notification {
   id: string;
@@ -8,7 +9,7 @@ export interface Notification {
   target_type: 'individual' | 'broadcast';
   target_user_id?: string;
   post_id?: string;
-  created_by: string;
+  created_by?: string;
   read_by: string[];
   sent_at: string;
   expires_at?: string;
@@ -52,7 +53,7 @@ export const getUserNotifications = async (): Promise<{ data: Notification[] | n
       return { data: [], error: null };
     }
 
-    const { data, error } = await supabase
+    const broadcastResult = await supabase
       .from('notifications')
       .select(`
         *,
@@ -61,16 +62,32 @@ export const getUserNotifications = async (): Promise<{ data: Notification[] | n
       `)
       .eq('active', true)
       .or('expires_at.is.null,expires_at.gt.now()')
-      .or(`target_type.eq.broadcast,target_user_id.eq.${user.id}`)
+      .eq('target_type', 'broadcast')
       .order('sent_at', { ascending: false });
 
-    if (error) {
-      console.log('❌ Supabase error loading notifications:', error);
+    const individualResult = await supabase
+      .from('notifications')
+      .select(`
+        *,
+        post:posts(id, title, slug),
+        creator:profiles!notifications_created_by_fkey(id, full_name, role)
+      `)
+      .eq('active', true)
+      .or('expires_at.is.null,expires_at.gt.now()')
+      .eq('target_type', 'individual')
+      .eq('target_user_id', user.id)
+      .order('sent_at', { ascending: false });
+
+    if (broadcastResult.error || individualResult.error) {
+      console.log('❌ Supabase error loading notifications:', broadcastResult.error || individualResult.error);
       return { data: getMockNotifications(), error: null };
     }
 
-    console.log('✅ Notifications loaded from Supabase:', data?.length || 0);
-    return { data, error: null };
+    const allData = [...(broadcastResult.data || []), ...(individualResult.data || [])];
+    allData.sort((a, b) => new Date(b.sent_at || 0).getTime() - new Date(a.sent_at || 0).getTime());
+
+    console.log('✅ Notifications loaded from Supabase:', allData.length);
+    return { data: allData, error: null };
   } catch (error) {
     console.warn('🔔 Error fetching notifications, using mock data:', error);
     return { data: getMockNotifications(), error: null };
@@ -116,16 +133,27 @@ export const createNotification = async (notificationData: CreateNotificationDat
       return { data: mockNotification, error: null };
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return { data: null, error: { message: 'User not authenticated' } };
+    // Check for admin user first
+    const admin = getCurrentAdmin();
+    let creatorId: string | undefined;
+
+    if (!admin) {
+      // Check for regular user auth
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return { data: null, error: { message: 'User not authenticated' } };
+      }
+      creatorId = user.id;
     }
+    // For admin, creatorId remains undefined (null in db)
 
     const { data, error } = await supabase
       .from('notifications')
       .insert({
         ...notificationData,
-        created_by: user.id
+        ...(creatorId && { created_by: creatorId }),
+        active: true,
+        sent_at: new Date().toISOString()
       })
       .select(`
         *,
@@ -133,6 +161,21 @@ export const createNotification = async (notificationData: CreateNotificationDat
         creator:profiles!notifications_created_by_fkey(id, full_name, role)
       `)
       .single();
+
+    if (error) {
+      console.log('⚠️ Supabase insert failed, using mock:', error);
+      const mockNotification: Notification = {
+        id: Date.now().toString(),
+        ...notificationData,
+        created_by: admin ? undefined : 'system',
+        read_by: [],
+        sent_at: new Date().toISOString(),
+        active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      return { data: mockNotification, error: null };
+    }
 
     return { data, error };
   } catch (error) {
@@ -216,7 +259,7 @@ export const getUnreadNotificationsCount = async (): Promise<{ count: number; er
       .select('id, read_by')
       .eq('active', true)
       .or('expires_at.is.null,expires_at.gt.now()')
-      .or(`target_type.eq.broadcast,target_user_id.eq.${user.id}`);
+      .or(`target_type.eq.broadcast,and(target_type.eq.individual,target_user_id.eq.${user.id})`);
 
     if (error) {
       return { count: 0, error };

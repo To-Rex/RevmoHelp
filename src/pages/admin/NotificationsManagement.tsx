@@ -22,23 +22,28 @@ import {
   MessageSquare,
   Globe,
   Mail,
-  ChevronDown
+  ChevronDown,
+  Phone
 } from 'lucide-react';
 import { 
   getAllNotifications, 
   createNotification, 
   deleteNotification 
 } from '../../lib/notifications';
-import { getUserProfiles } from '../../lib/adminUsers';
+import { getUserProfiles, getAuthUsers } from '../../lib/adminUsers';
 import { getPosts } from '../../lib/posts';
 import type { Notification, CreateNotificationData } from '../../lib/notifications';
 import type { User as UserType } from '../../types';
 import type { Post } from '../../types';
 
+interface UserWithProvider extends UserType {
+  provider?: string;
+}
+
 const NotificationsManagement: React.FC = () => {
   const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<UserWithProvider[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,6 +54,37 @@ const NotificationsManagement: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [targetDropdownOpen, setTargetDropdownOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserWithProvider | null>(null);
+  const [userSearchTerm, setUserSearchTerm] = useState('');
+  const [userSortBy, setUserSortBy] = useState('all');
+
+  const processedUsers = (() => {
+    let usersList = users;
+
+    // Apply filters and sorting
+    if (userSortBy === 'phone') {
+      usersList = users.filter(user => user.provider === 'phone').sort((a, b) => a.full_name.localeCompare(b.full_name));
+    } else if (userSortBy === 'email') {
+      usersList = users.filter(user => user.provider === 'email').sort((a, b) => a.full_name.localeCompare(b.full_name));
+    } else if (userSortBy === 'google') {
+      usersList = users.filter(user => user.provider === 'google').sort((a, b) => a.full_name.localeCompare(b.full_name));
+    } else if (userSortBy === 'name') {
+      usersList = [...users].sort((a, b) => a.full_name.localeCompare(b.full_name));
+    } else if (userSortBy === 'created_at') {
+      usersList = [...users].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
+    // For 'all', no filtering or sorting
+
+    return usersList;
+  })();
+
+  const filteredUsers = processedUsers.filter(user =>
+    user.full_name.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+    (user.email && user.email.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
+    (user.phone && user.phone.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
+    (user.provider && user.provider.toLowerCase().includes(userSearchTerm.toLowerCase()))
+  );
 
   const [formData, setFormData] = useState<CreateNotificationData>({
     title: '',
@@ -67,9 +103,10 @@ const NotificationsManagement: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [notificationsResult, usersResult, postsResult] = await Promise.all([
+      const [notificationsResult, profilesResult, authResult, postsResult] = await Promise.all([
         getAllNotifications(),
         getUserProfiles(),
+        getAuthUsers(),
         getPosts('uz', { published: true })
       ]);
 
@@ -77,8 +114,30 @@ const NotificationsManagement: React.FC = () => {
         setNotifications(notificationsResult.data);
       }
 
-      if (usersResult.data) {
-        setUsers(usersResult.data);
+      if (authResult.data) {
+        const authUsers = authResult.data;
+        const profiles = profilesResult.data || [];
+        const usersWithProvider = authUsers.map(authUser => {
+          const profile = profiles.find(p => p.id === authUser.id);
+          let provider = authUser.app_metadata.provider;
+          if (!provider) {
+            if (authUser.phone) provider = 'phone';
+            else if (authUser.email) provider = 'email';
+            else provider = 'unknown';
+          }
+          return {
+            id: authUser.id,
+            email: authUser.email,
+            full_name: profile?.full_name || authUser.user_metadata?.full_name || authUser.user_metadata?.name || 'Unknown',
+            phone: profile?.phone || authUser.phone || authUser.user_metadata?.phone,
+            role: profile?.role || 'patient',
+            avatar_url: profile?.avatar_url || authUser.user_metadata?.avatar_url || authUser.user_metadata?.picture,
+            created_at: profile?.created_at || authUser.created_at,
+            updated_at: profile?.updated_at || authUser.updated_at,
+            provider: provider
+          } as UserWithProvider;
+        });
+        setUsers(usersWithProvider);
       }
 
       if (postsResult.data) {
@@ -93,7 +152,16 @@ const NotificationsManagement: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      if (name === 'target_type' && value !== 'individual') {
+        newData.target_user_id = '';
+      }
+      return newData;
+    });
+    if (name === 'target_type' && value !== 'individual') {
+      setSelectedUser(null);
+    }
     if (message.text) setMessage({ type: '', text: '' });
   };
 
@@ -107,6 +175,7 @@ const NotificationsManagement: React.FC = () => {
       post_id: '',
       expires_at: ''
     });
+    setSelectedUser(null);
   };
 
   const openCreateModal = () => {
@@ -506,7 +575,7 @@ const NotificationsManagement: React.FC = () => {
                     value={formData.title}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                     placeholder={t('notificationsTitlePlaceholder')}
                   />
                 </div>
@@ -519,7 +588,7 @@ const NotificationsManagement: React.FC = () => {
                     name="type"
                     value={formData.type}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none"
                   >
                     <option value="info">{t('notificationsInfoType')}</option>
                     <option value="success">{t('notificationsSuccessType')}</option>
@@ -536,7 +605,7 @@ const NotificationsManagement: React.FC = () => {
                     name="target_type"
                     value={formData.target_type}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none"
                   >
                     <option value="broadcast">{t('notificationsBroadcastOption')}</option>
                     <option value="individual">{t('notificationsIndividualOption')}</option>
@@ -548,20 +617,94 @@ const NotificationsManagement: React.FC = () => {
                     <label className="block text-sm font-medium theme-text-secondary mb-2">
                       {t('notificationsUserLabel')}
                     </label>
-                    <select
-                      name="target_user_id"
-                      value={formData.target_user_id}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
-                    >
-                      <option value="">{t('notificationsSelectUser')}</option>
-                      {users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                          {user.full_name} ({user.email})
-                        </option>
-                      ))}
-                    </select>
+                    <div className="relative">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setUserDropdownOpen(!userDropdownOpen); if (!userDropdownOpen) setUserSearchTerm(''); }}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text text-left flex items-center justify-between"
+                      >
+                        <span>{selectedUser ? selectedUser.full_name : t('notificationsSelectUser')}</span>
+                        <ChevronDown className={`theme-text-muted transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`} size={16} />
+                      </button>
+                      {userDropdownOpen && (
+                        <div onClick={(e) => e.stopPropagation()} className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                          <div className="p-2 border-b border-gray-200 space-y-2">
+                            <div className="text-xs text-gray-500">{filteredUsers.length} users</div>
+                            <div className="flex space-x-2">
+                              <div className="relative flex-2">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 theme-text-muted" size={14} />
+                                <input
+                                  type="text"
+                                  placeholder="Search users"
+                                  value={userSearchTerm}
+                                  onChange={(e) => setUserSearchTerm(e.target.value)}
+                                  className="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              </div>
+                              <select
+                                value={userSortBy}
+                                onChange={(e) => setUserSortBy(e.target.value)}
+                                className="flex-1 px-2 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 theme-text text-sm"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <option value="all">All</option>
+                                <option value="name">Name</option>
+                                <option value="phone">Phone</option>
+                                <option value="email">Email</option>
+                                <option value="google">Google</option>
+                                <option value="created_at">Date</option>
+                              </select>
+                            </div>
+                          </div>
+                          {filteredUsers.map((user) => (
+                            <div
+                              key={user.id}
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setFormData(prev => ({ ...prev, target_user_id: user.id }));
+                                setUserDropdownOpen(false);
+                              }}
+                              className="px-4 py-3 hover:bg-gray-50 cursor-pointer theme-text flex items-center space-x-3"
+                            >
+                              {user.avatar_url ? (
+                                <img
+                                  src={user.avatar_url}
+                                  alt={user.full_name}
+                                  className="w-8 h-8 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                                  <span className="theme-accent font-medium text-xs">
+                                    {user.full_name.charAt(0)}
+                                  </span>
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-medium text-gray-900 truncate">
+                                  {user.full_name}
+                                </div>
+                                {user.provider === 'google' ? (
+                                  <div className="flex items-center text-sm text-gray-600 truncate">
+                                    <Globe size={14} className="mr-1 flex-shrink-0" />
+                                    <span className="truncate">{user.email}</span>
+                                  </div>
+                                ) : user.phone && (!user.email || user.email.includes('@example.invalid')) ? (
+                                  <div className="flex items-center text-sm text-gray-500 truncate">
+                                    <Phone size={14} className="mr-1 flex-shrink-0" />
+                                    <span className="truncate">{user.phone}</span>
+                                  </div>
+                                ) : user.email ? (
+                                  <div className="flex items-center text-sm text-gray-600 truncate">
+                                    <Mail size={14} className="mr-1 flex-shrink-0" />
+                                    <span className="truncate">{user.email}</span>
+                                  </div>
+                                ) : null}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -573,7 +716,7 @@ const NotificationsManagement: React.FC = () => {
                     name="post_id"
                     value={formData.post_id}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text appearance-none"
                   >
                     <option value="">{t('notificationsNoArticleSelected')}</option>
                     {posts.map((post) => (
@@ -593,7 +736,7 @@ const NotificationsManagement: React.FC = () => {
                     name="expires_at"
                     value={formData.expires_at}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text"
                   />
                 </div>
               </div>
@@ -608,7 +751,7 @@ const NotificationsManagement: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full px-3 py-2 theme-border border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 theme-bg theme-text resize-none"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 theme-text resize-none"
                   placeholder={t('notificationsMessagePlaceholder')}
                 />
                 <div className="text-xs theme-text-muted mt-1">

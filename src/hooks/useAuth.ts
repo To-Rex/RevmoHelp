@@ -86,10 +86,29 @@ export const useAuth = () => {
           console.log('✅ useAuth: User session loaded:', userData.email);
           console.log('🔍 Auth provider:', provider);
         } else {
-          console.log('❌ useAuth: No session found');
-          setUser(null);
-          setAuthProvider(null);
-          setSession(null);
+          // Check for custom user (e.g., Telegram)
+          const customUserId = localStorage.getItem('custom_user_id');
+          if (customUserId) {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', customUserId)
+              .single();
+            if (profile) {
+              setUser(profile);
+              setAuthProvider('telegram');
+              console.log('✅ useAuth: Custom user loaded:', profile.full_name);
+            } else {
+              localStorage.removeItem('custom_user_id');
+              setUser(null);
+              setAuthProvider(null);
+            }
+          } else {
+            console.log('❌ useAuth: No session found');
+            setUser(null);
+            setAuthProvider(null);
+            setSession(null);
+          }
         }
       } catch (err) {
         console.error('Session loading error:', err);
@@ -138,8 +157,27 @@ export const useAuth = () => {
             console.log('✅ useAuth: User set from state change:', userData.email);
             console.log('🔍 Full user data:', userData);
           } else {
-            setUser(null);
-            setAuthProvider(null);
+            if (!supabase) return;
+            // Check for custom user
+            const customUserId = localStorage.getItem('custom_user_id');
+            if (customUserId) {
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', customUserId)
+                .single();
+              if (profile) {
+                setUser(profile);
+                setAuthProvider('telegram');
+              } else {
+                localStorage.removeItem('custom_user_id');
+                setUser(null);
+                setAuthProvider(null);
+              }
+            } else {
+              setUser(null);
+              setAuthProvider(null);
+            }
             setSession(null);
 
             // Clear user cache

@@ -1795,7 +1795,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('active', e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Faol</span>
+                  <span className="text-sm theme-text-secondary">{t('diseasesActiveCheckbox')}</span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -1804,7 +1804,7 @@ const DiseasesManagement: React.FC = () => {
                     onChange={(e) => handleInputChange('featured', e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <span className="text-sm theme-text-secondary">Asosiy kasallik</span>
+                  <span className="text-sm theme-text-secondary">{t('diseasesFeaturedCheckbox')}</span>
                 </label>
               </div>
 

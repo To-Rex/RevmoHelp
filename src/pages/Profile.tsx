@@ -21,6 +21,10 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  const isGeneratedEmail = (email: string) => {
+    return /^user-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}@example\.invalid$/.test(email);
+  };
+
   useEffect(() => {
     if (user) {
       loadUserData();
@@ -114,8 +118,8 @@ const Profile: React.FC = () => {
 
         
         {/* Profile Content */}
-        <div className="relative -mt-16 sm:-mt-20 px-4 sm:px-6">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+        <div className="relative -mt-16 sm:-mt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="bg-white rounded-2xl theme-shadow-lg theme-border border p-6 sm:p-8 hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
             {/* Centered Avatar and Basic Info */}
             <div className="text-center mb-8">
               <div className="relative inline-block mb-4">
@@ -138,29 +142,31 @@ const Profile: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 {user.full_name}
               </h1>
-              <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-4">
+              <div className="inline-flex items-center px-4 py-2 bg-highlight-50 theme-accent rounded-full text-sm font-medium mb-4">
                 {t(user.role)}
               </div>
             </div>
 
             {/* Contact Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className={`mb-8 gap-4 ${!isGeneratedEmail(user.email) ? 'grid grid-cols-1 sm:grid-cols-3' : 'flex flex-col sm:flex-row justify-center'}`}>
+              {!isGeneratedEmail(user.email) && (
               <div className="bg-gray-50 rounded-xl p-4 text-center">
-                <Mail className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                <Mail className="w-6 h-6 theme-text-secondary mx-auto mb-2" />
                 <div className="text-sm font-medium text-gray-900 mb-1">{t('email')}</div>
                 <div className="text-xs text-gray-600 truncate">{user.email}</div>
               </div>
+              )}
 
               {user.phone && (
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
-                  <Phone className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <div className="text-sm font-medium text-gray-900 mb-1">{t('phone')}</div>
-                  <div className="text-xs text-gray-600">{user.phone}</div>
-                </div>
+              <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <Phone className="w-6 h-6 theme-text-secondary mx-auto mb-2" />
+                <div className="text-sm font-medium text-gray-900 mb-1">{t('phone')}</div>
+                <div className="text-xs text-gray-600">{user.phone}</div>
+              </div>
               )}
 
               <div className="bg-gray-50 rounded-xl p-4 text-center">
-                <Calendar className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                <Calendar className="w-6 h-6 theme-text-secondary mx-auto mb-2" />
                 <div className="text-sm font-medium text-gray-900 mb-1">{t('memberSince')}</div>
                 <div className="text-xs text-gray-600">{formatDate(user.created_at)}</div>
               </div>
@@ -185,7 +191,7 @@ const Profile: React.FC = () => {
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                <div className="text-lg font-bold text-blue-600 mb-1">100%</div>
+                <div className="text-lg font-bold theme-accent mb-1">100%</div>
                 <div className="text-xs text-gray-600">{t('profileCompleteness')}</div>
               </div>
 
@@ -197,8 +203,8 @@ const Profile: React.FC = () => {
 
             {/* Patient Description */}
             {user.role === 'patient' && (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-                <p className="text-sm text-blue-800 text-center">
+              <div className="bg-highlight-50 border border-secondary-200 rounded-xl p-4 mb-6">
+                <p className="text-sm theme-text-secondary text-center">
                   {t('useMedicalInfo')}
                 </p>
               </div>
@@ -210,7 +216,7 @@ const Profile: React.FC = () => {
                 <>
                   <Link
                     to="/doctor-dashboard"
-                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
+                    className="flex items-center space-x-2 theme-accent-bg hover:opacity-90 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <Stethoscope size={18} />
                     <span>{t('doctorPanel')}</span>
@@ -231,14 +237,14 @@ const Profile: React.FC = () => {
                 <>
                   <Link
                     to="/consultation"
-                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
+                    className="flex items-center space-x-2 theme-accent-bg hover:opacity-90 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <Stethoscope size={18} />
                     <span>{t('consultation')}</span>
                   </Link>
                   <Link
                     to="/posts"
-                    className="flex items-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
+                    className="flex items-center space-x-2 theme-accent-bg hover:opacity-90 text-white px-6 py-3 rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                   >
                     <BookOpen size={18} />
                     <span>{t('articles')}</span>
@@ -263,33 +269,35 @@ const Profile: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Modern Tabs */}
-         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-8 overflow-hidden">
-           <div className="flex overflow-x-auto scrollbar-hide">
-             {tabs.map((tab, index) => {
-               const Icon = tab.icon;
-               const isActive = activeTab === tab.id;
-               return (
-                 <button
-                   key={tab.id}
-                   onClick={() => setActiveTab(tab.id)}
-                   className={`relative flex items-center space-x-3 px-6 py-4 font-medium transition-all duration-300 whitespace-nowrap text-sm sm:text-base min-w-max ${
-                     isActive
-                       ? 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
-                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                   }`}
-                 >
-                   <Icon size={20} className="flex-shrink-0" />
-                   <span>{tab.label}</span>
-                   {tab.badge && tab.badge > 0 && (
-                     <div className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                       {tab.badge > 9 ? '9+' : tab.badge}
-                     </div>
-                   )}
-                 </button>
-               );
-             })}
-           </div>
-         </div>
+        <div className="bg-white rounded-2xl theme-shadow-lg theme-border border mb-8 overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+          <div className="flex items-center justify-center p-4">
+            <div className="inline-flex rounded-lg theme-bg-secondary p-1">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center space-x-2 px-4 lg:px-6 py-2 lg:py-3 font-semibold transition-all duration-200 whitespace-nowrap rounded-md text-sm ${
+                      isActive
+                        ? 'theme-accent-bg text-white shadow-sm'
+                        : 'theme-text-secondary hover:theme-accent'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    <span>{tab.label}</span>
+                    {tab.badge && tab.badge > 0 && (
+                      <div className="ml-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {tab.badge > 9 ? '9+' : tab.badge}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
         {/* Tab Content */}
         <div className="space-y-6 sm:space-y-8">
@@ -297,7 +305,7 @@ const Profile: React.FC = () => {
           {activeTab === 'profile' && (
             <div className="space-y-4 sm:space-y-6">
               {/* Personal Information Card */}
-               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                  <div className="bg-white px-6 py-4 border-b border-gray-100">
                    <div className="flex items-center space-x-3">
                      <div className="p-3 bg-blue-100 rounded-xl">
@@ -311,7 +319,7 @@ const Profile: React.FC = () => {
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <User size={16} className="text-blue-600 flex-shrink-0" />
+                         <User size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('fullName')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{user.full_name}</div>
@@ -319,19 +327,21 @@ const Profile: React.FC = () => {
                        </div>
                      </div>
 
+                     {!isGeneratedEmail(user.email) && (
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <Mail size={16} className="text-blue-600 flex-shrink-0" />
+                         <Mail size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('emailAddress')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium break-all">{user.email}</div>
                          </div>
                        </div>
                      </div>
+                     )}
 
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <Phone size={16} className="text-blue-600 flex-shrink-0" />
+                         <Phone size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('phoneNumber')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{user.phone || t('notSpecified')}</div>
@@ -341,7 +351,7 @@ const Profile: React.FC = () => {
 
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <Briefcase size={16} className="text-blue-600 flex-shrink-0" />
+                         <Briefcase size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('role')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">
@@ -353,7 +363,7 @@ const Profile: React.FC = () => {
 
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <Calendar size={16} className="text-blue-600 flex-shrink-0" />
+                         <Calendar size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('registered')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{formatDate(user.created_at)}</div>
@@ -363,7 +373,7 @@ const Profile: React.FC = () => {
 
                      <div className="space-y-3">
                        <div className="flex items-center space-x-3">
-                         <Activity size={16} className="text-blue-600 flex-shrink-0" />
+                         <Activity size={16} className="theme-text-secondary flex-shrink-0" />
                          <div className="flex-1">
                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('lastUpdate')}</label>
                            <div className="bg-gray-50 px-4 py-3 rounded-xl text-gray-900 font-medium">{formatDate(user.updated_at)}</div>
@@ -376,7 +386,7 @@ const Profile: React.FC = () => {
 
               {/* Modern Patient Benefits */}
                 {user.role === 'patient' && (
-                  <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                  <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                    <div className="bg-white px-6 py-4 border-b border-gray-100">
                      <div className="flex items-center space-x-3">
                        <div className="p-3 bg-green-100 rounded-xl">
@@ -440,14 +450,14 @@ const Profile: React.FC = () => {
                      <div className="flex flex-col sm:flex-row gap-4">
                        <Link
                          to="/consultation"
-                         className="flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
+                         className="flex items-center justify-center space-x-2 theme-accent-bg hover:opacity-90 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
                        >
                          <Stethoscope size={20} />
                          <span>{t('startConsultation')}</span>
                        </Link>
                        <Link
                          to="/posts"
-                         className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
+                         className="flex items-center justify-center space-x-2 theme-accent-bg hover:opacity-90 text-white px-6 py-4 rounded-xl transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl w-full sm:w-auto"
                        >
                          <BookOpen size={20} />
                          <span>{t('readArticles')}</span>
@@ -459,7 +469,7 @@ const Profile: React.FC = () => {
 
                {/* Become Doctor Section */}
                {user.role === 'patient' && (
-                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                 <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                    <div className="bg-white px-6 py-4 border-b border-gray-100">
                      <div className="flex items-center space-x-3">
                        <div className="p-3 bg-green-100 rounded-xl">
@@ -490,7 +500,7 @@ const Profile: React.FC = () => {
           )}
           {/* Modern Doctor Info Tab (only for doctors) */}
            {activeTab === 'doctor-info' && user.role === 'doctor' && (
-             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+             <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="bg-white px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
@@ -521,7 +531,7 @@ const Profile: React.FC = () => {
                           <div className="p-2 bg-blue-500 rounded-lg">
                             <Stethoscope size={16} className="text-white" />
                           </div>
-                          <span className="text-sm font-medium text-blue-800">{t('specialization')}</span>
+                          <span className="text-sm font-medium theme-text-secondary">{t('specialization')}</span>
                         </div>
                         <p className="text-gray-900 font-semibold text-lg">{doctorProfile.specialization}</p>
                       </div>
@@ -625,8 +635,8 @@ const Profile: React.FC = () => {
                   </div>
                 ) : (
                   <div className="text-center py-16">
-                    <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <Stethoscope size={40} className="text-blue-600" />
+                    <div className="w-24 h-24 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                      <Stethoscope size={40} className="theme-text-secondary" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-600 mb-3">
                       {t('doctorProfileNotCreated')}
@@ -649,12 +659,12 @@ const Profile: React.FC = () => {
 
           {/* Modern Posts Tab (only for doctors) */}
            {activeTab === 'posts' && user.role === 'doctor' && (
-             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+             <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="bg-white px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="p-3 bg-blue-100 rounded-xl">
-                      <FileText size={20} className="text-blue-600" />
+                    <div className="p-3 bg-secondary-100 rounded-xl">
+                      <FileText size={20} className="theme-text-secondary" />
                     </div>
                     <h2 className="text-xl font-semibold text-gray-900">{t('myArticles')}</h2>
                   </div>
@@ -716,7 +726,7 @@ const Profile: React.FC = () => {
                     <div className="text-center pt-6">
                       <Link
                         to="/doctor/posts"
-                        className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-semibold text-lg hover:underline"
+                        className="inline-flex items-center space-x-2 theme-accent hover:text-blue-800 font-semibold text-lg hover:underline"
                       >
                         <span>{t('viewAllArticles')} ({doctorPosts.length})</span>
                         <ArrowRight size={18} />
@@ -747,11 +757,11 @@ const Profile: React.FC = () => {
 
           {/* Modern Notifications Tab */}
            {activeTab === 'notifications' && (
-             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+             <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
               <div className="bg-white px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center space-x-3">
-                  <div className="p-3 bg-blue-100 rounded-xl">
-                    <Bell size={20} className="text-blue-600" />
+                  <div className="p-3 bg-secondary-100 rounded-xl">
+                    <Bell size={20} className="theme-text-secondary" />
                   </div>
                   <h2 className="text-lg font-semibold text-gray-900">{t('notifications')}</h2>
                 </div>
@@ -788,7 +798,7 @@ const Profile: React.FC = () => {
                               {notification.post && (
                                 <Link
                                   to={`/posts/${notification.post.slug}`}
-                                  className="text-blue-600 hover:text-blue-800 font-medium text-sm hover:underline"
+                                  className="theme-accent hover:text-blue-800 font-medium text-sm hover:underline"
                                 >
                                   {t('viewArticle')} →
                                 </Link>
@@ -816,11 +826,11 @@ const Profile: React.FC = () => {
           {activeTab === 'settings' && (
             <div className="space-y-8">
               {/* Account Settings */}
-               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <div className="bg-white px-6 py-4 border-b border-gray-100">
                   <div className="flex items-center space-x-3">
-                    <div className="p-3 bg-blue-100 rounded-xl">
-                      <Settings size={20} className="text-blue-600" />
+                    <div className="p-3 bg-secondary-100 rounded-xl">
+                      <Settings size={20} className="theme-text-secondary" />
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">{t('accountSettings')}</h2>
                   </div>
@@ -866,7 +876,7 @@ const Profile: React.FC = () => {
               </div>
 
               {/* Privacy Settings */}
-               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <div className="bg-white px-6 py-4 border-b border-gray-100">
                   <div className="flex items-center space-x-3">
                     <div className="p-3 bg-green-100 rounded-xl">
@@ -916,7 +926,7 @@ const Profile: React.FC = () => {
               </div>
 
               {/* Danger Zone */}
-               <div className="bg-white rounded-2xl shadow-lg border border-red-200 overflow-hidden">
+               <div className="bg-white rounded-2xl theme-shadow-lg theme-border border border-red-200 overflow-hidden hover:theme-shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover-medical" style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.03), 0 -6px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                 <div className="bg-white px-6 py-4 border-b border-red-200">
                   <div className="flex items-center space-x-3">
                     <div className="p-3 bg-red-100 rounded-xl">
