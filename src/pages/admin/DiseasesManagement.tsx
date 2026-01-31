@@ -59,6 +59,7 @@ const DiseasesManagement: React.FC = () => {
     name: '',
     slug: '',
     description: '',
+    full_description: '',
     symptoms: [],
     treatment_methods: [],
     prevention_tips: [],
@@ -72,6 +73,7 @@ const DiseasesManagement: React.FC = () => {
       ru: {
         name: '',
         description: '',
+        full_description: '',
         symptoms: [],
         treatment_methods: [],
         prevention_tips: [],
@@ -82,6 +84,7 @@ const DiseasesManagement: React.FC = () => {
       en: {
         name: '',
         description: '',
+        full_description: '',
         symptoms: [],
         treatment_methods: [],
         prevention_tips: [],
@@ -458,6 +461,7 @@ const DiseasesManagement: React.FC = () => {
       name: '',
       slug: '',
       description: '',
+      full_description: '',
       symptoms: [],
       treatment_methods: [],
       prevention_tips: [],
@@ -471,6 +475,7 @@ const DiseasesManagement: React.FC = () => {
         ru: {
           name: '',
           description: '',
+          full_description: '',
           symptoms: [],
           treatment_methods: [],
           prevention_tips: [],
@@ -481,6 +486,7 @@ const DiseasesManagement: React.FC = () => {
         en: {
           name: '',
           description: '',
+          full_description: '',
           symptoms: [],
           treatment_methods: [],
           prevention_tips: [],
@@ -521,6 +527,7 @@ const DiseasesManagement: React.FC = () => {
       ru: {
         name: '',
         description: '',
+        full_description: '',
         symptoms: [],
         treatment_methods: [],
         prevention_tips: [],
@@ -531,6 +538,7 @@ const DiseasesManagement: React.FC = () => {
       en: {
         name: '',
         description: '',
+        full_description: '',
         symptoms: [],
         treatment_methods: [],
         prevention_tips: [],
@@ -553,6 +561,7 @@ const DiseasesManagement: React.FC = () => {
           translations[translation.language] = {
             name: translation.name || '',
             description: translation.description || '',
+            full_description: translation.full_description || '',
             symptoms: Array.isArray(translation.symptoms) ? translation.symptoms : [],
             treatment_methods: Array.isArray(translation.treatment_methods) ? translation.treatment_methods : [],
             prevention_tips: Array.isArray(translation.prevention_tips) ? translation.prevention_tips : [],
@@ -570,6 +579,7 @@ const DiseasesManagement: React.FC = () => {
       // Generate Russian translation from Uzbek name (simple placeholder)
       translations.ru.name = disease.name; // Keep Uzbek name as placeholder
       translations.ru.description = disease.description || '';
+      translations.ru.full_description = disease.full_description || '';
       translations.ru.symptoms = Array.isArray(disease.symptoms) ? disease.symptoms : [];
       translations.ru.treatment_methods = Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [];
       translations.ru.prevention_tips = Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [];
@@ -582,6 +592,7 @@ const DiseasesManagement: React.FC = () => {
       // Generate English translation from Uzbek name (simple placeholder)
       translations.en.name = disease.name; // Keep Uzbek name as placeholder
       translations.en.description = disease.description || '';
+      translations.en.full_description = disease.full_description || '';
       translations.en.symptoms = Array.isArray(disease.symptoms) ? disease.symptoms : [];
       translations.en.treatment_methods = Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [];
       translations.en.prevention_tips = Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [];
@@ -594,6 +605,7 @@ const DiseasesManagement: React.FC = () => {
       name: disease.name || '',
       slug: disease.slug || '',
       description: disease.description || '',
+      full_description: disease.full_description || '',
       symptoms: Array.isArray(disease.symptoms) ? disease.symptoms : [],
       treatment_methods: Array.isArray(disease.treatment_methods) ? disease.treatment_methods : [],
       prevention_tips: Array.isArray(disease.prevention_tips) ? disease.prevention_tips : [],
@@ -1141,6 +1153,30 @@ const DiseasesManagement: React.FC = () => {
                 )}
               </div>
 
+              <div>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">
+                  To'liq Tavsif ({languages.find(l => l.code === activeLanguageTab)?.label})
+                </label>
+                {activeLanguageTab === 'uz' ? (
+                  <textarea
+                    value={formData.full_description || ''}
+                    onChange={(e) => handleInputChange('full_description', e.target.value)}
+                    rows={8}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida to'liq va batafsil ma'lumot..."
+                  />
+                ) : (
+                  <textarea
+                    name="full_description"
+                    value={formData.translations?.[activeLanguageTab]?.full_description || ''}
+                    onChange={handleTranslationChange}
+                    rows={8}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida to'liq va batafsil ma'lumot..."
+                  />
+                )}
+              </div>
+
 
               {/* SEO Settings - Only show when editing */}
               {editingDisease && (
@@ -1585,6 +1621,30 @@ const DiseasesManagement: React.FC = () => {
                     rows={4}
                     className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
                     placeholder="Kasallik haqida batafsil ma'lumot"
+                  />
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium theme-text-secondary mb-2">
+                  To'liq Tavsif ({languages.find(l => l.code === activeLanguageTab)?.label})
+                </label>
+                {activeLanguageTab === 'uz' ? (
+                  <textarea
+                    value={formData.full_description || ''}
+                    onChange={(e) => handleInputChange('full_description', e.target.value)}
+                    rows={8}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida to'liq va batafsil ma'lumot..."
+                  />
+                ) : (
+                  <textarea
+                    name="full_description"
+                    value={formData.translations?.[activeLanguageTab]?.full_description || ''}
+                    onChange={handleTranslationChange}
+                    rows={8}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:border-blue-500 transition-all duration-200 resize-vertical"
+                    placeholder="Kasallik haqida to'liq va batafsil ma'lumot..."
                   />
                 )}
               </div>

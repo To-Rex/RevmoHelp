@@ -6,6 +6,7 @@ export interface Disease {
   name: string;
   slug: string;
   description: string;
+  full_description?: string;
   symptoms: string[];
   treatment_methods: string[];
   prevention_tips: string[];
@@ -28,6 +29,7 @@ export interface DiseaseTranslation {
   language: 'uz' | 'ru' | 'en';
   name: string;
   description: string;
+  full_description?: string;
   symptoms: string[];
   treatment_methods: string[];
   prevention_tips: string[];
@@ -42,6 +44,7 @@ export interface CreateDiseaseData {
   name: string;
   slug: string;
   description: string;
+  full_description?: string;
   symptoms: string[];
   treatment_methods: string[];
   prevention_tips: string[];
@@ -57,6 +60,7 @@ export interface CreateDiseaseData {
     [key: string]: {
       name: string;
       description: string;
+      full_description?: string;
       symptoms: string[];
       treatment_methods: string[];
       prevention_tips: string[];
@@ -469,6 +473,7 @@ export const createDisease = async (diseaseData: CreateDiseaseData): Promise<{ d
           name: diseaseData.name,
           slug: diseaseData.slug,
           description: diseaseData.description,
+          full_description: diseaseData.full_description,
           symptoms: diseaseData.symptoms,
           treatment_methods: diseaseData.treatment_methods,
           prevention_tips: diseaseData.prevention_tips,
@@ -512,6 +517,7 @@ export const createDisease = async (diseaseData: CreateDiseaseData): Promise<{ d
           language: lang,
           name: translation.name,
           description: translation.description,
+          full_description: translation.full_description,
           symptoms: translation.symptoms,
           treatment_methods: translation.treatment_methods,
           prevention_tips: translation.prevention_tips,
@@ -594,6 +600,7 @@ export const updateDisease = async (diseaseData: UpdateDiseaseData): Promise<{ d
             language: lang,
             name: translation.name,
             description: translation.description,
+            full_description: translation.full_description,
             symptoms: translation.symptoms,
             treatment_methods: translation.treatment_methods,
             prevention_tips: translation.prevention_tips,
